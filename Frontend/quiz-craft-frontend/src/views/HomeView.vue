@@ -6,9 +6,6 @@ import SliderComponent from '../components/SliderComponent.vue';
 
 <template>
   <section class="slider_section ">
-      <div class="dot_design">
-        <img src="images/dots.png" alt="">
-      </div>
       <div id="customCarousel1" class="carousel slide" data-ride="carousel">
         <div class="carousel-inner">
           <div class="carousel-item active">
@@ -37,7 +34,7 @@ import SliderComponent from '../components/SliderComponent.vue';
                 </div>
                 <div class="col-md-6">
                   <div class="img-box">
-                    <img src="images/slider-img.jpg" alt="">
+                    <img  alt="">
                   </div>
                 </div>
               </div>

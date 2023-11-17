@@ -26,7 +26,7 @@
                 </div>
                 <div class="col-md-6">
                     <div class="img-box">
-                        <img src="images/slider-img.jpg" alt="">
+                        <img  alt="">
                     </div>
                 </div>
             </div>
