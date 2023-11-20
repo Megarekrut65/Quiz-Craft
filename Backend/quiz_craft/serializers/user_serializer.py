@@ -39,3 +39,14 @@ class UserRegistrationSerializer(serializers.Serializer):
 
     def update(self, instance, validated_data):
         pass
+
+
+class UserLoginSerializer(serializers.Serializer):
+    username = serializers.CharField(max_length=150)
+    password = serializers.CharField(write_only=True)
+
+    def create(self, validated_data):
+        pass
+
+    def update(self, instance, validated_data):
+        pass
