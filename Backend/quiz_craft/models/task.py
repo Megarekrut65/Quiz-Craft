@@ -1,10 +1,11 @@
 from django.db import models
+from ..models.user import UserProfile
 
 
-class Task(models.Model):
-    title = models.CharField(max_length=500)
-    description = models.TextField(max_length=1000)
-    questions = models.ManyToManyField('Question', related_name='tasks')
+class Answer(models.Model):
+    option = models.CharField(max_length=100)
+    correct = models.BooleanField()
+    question = models.ForeignKey('Question', on_delete=models.CASCADE, related_name='answers', default=1)
 
 
 class Question(models.Model):
@@ -17,9 +18,10 @@ class Question(models.Model):
     type = models.CharField(max_length=10, choices=QUESTION_TYPES)
     description = models.CharField(max_length=200)
     max_grade = models.IntegerField()
-    answers = models.ManyToManyField('Answer', related_name='questions')
+    task = models.ForeignKey('Task', on_delete=models.CASCADE, related_name='questions', default=1)
 
 
-class Answer(models.Model):
-    option = models.CharField(max_length=100)
-    correct = models.BooleanField()
+class Task(models.Model):
+    title = models.CharField(max_length=500)
+    description = models.TextField(max_length=1000)
+    created_by = models.ForeignKey(UserProfile, on_delete=models.CASCADE, related_name='created_tasks', default=1)
