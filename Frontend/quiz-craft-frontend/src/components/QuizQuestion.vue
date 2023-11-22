@@ -2,6 +2,10 @@
 import { ref, toRaw } from 'vue';
 
 const props = defineProps({
+    number:{
+        type: Number,
+        required: true
+    },
     data: {
         type: Object,
         required: true
@@ -35,8 +39,8 @@ props.updateSelf(toRaw(formData));
             <div class="col">
                 <form @change="updateSelf(toRaw(formData))">
                     <div class="form-row ">
-                        <div class="close"><i class="fa fa-close" @click="removeSelf(data.id)"></i></div>
-                        <div class="question-number"><h4>{{ data.id + 1 }}</h4></div>
+                        <div class="close"><i class="fa fa-close" @click="removeSelf(number)"></i></div>
+                        <div class="question-number"><h4>{{ number + 1 }}</h4></div>
                         <div class="form-group col-12 mt-4">
                             <input class="form-control" v-model="formData.description" placeholder="Description" type="text">
                         </div>
