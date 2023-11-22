@@ -3,7 +3,8 @@ from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
 
 from ..models.task import Task, TaskUID
-from ..serializers.task_serializer import TaskCreateSerializer, TaskListSerializer, TaskUIDSerializer
+from ..serializers.task_serializer import TaskCreateSerializer, TaskListSerializer, TaskUIDSerializer, \
+    TaskByUIDSerializer
 from ..decorators import TeacherRequiredMixin
 from ..utils import generate_unique_uid
 
@@ -86,3 +87,22 @@ class TaskUIDRetrieveDestroyView(TeacherRequiredMixin, generics.RetrieveDestroyA
         instance = queryset.first()
         instance.delete()
         return Response({"message": "TaskUID deleted successfully."}, status=status.HTTP_204_NO_CONTENT)
+
+
+class TaskRetrieveByUIDView(generics.RetrieveAPIView):
+    serializer_class = TaskByUIDSerializer
+    permission_classes = [IsAuthenticated]
+
+    def get_queryset(self):
+        uid = self.kwargs.get('uid')
+        return Task.objects.filter(task_uid__uid=uid)
+
+    def retrieve(self, request, *args, **kwargs):
+        queryset = self.get_queryset()
+        if not queryset.exists():
+            return Response({"error": "Task not found for the specified UID."},
+                            status=status.HTTP_404_NOT_FOUND)
+
+        instance = queryset.first()
+        serializer = self.get_serializer(instance)
+        return Response(serializer.data, status=status.HTTP_200_OK)

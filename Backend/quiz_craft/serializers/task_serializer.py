@@ -67,3 +67,24 @@ class TaskUIDSerializer(serializers.ModelSerializer):
         model = TaskUID
         fields = ['uid', 'task']
 
+
+class AnswerByUIDSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Answer
+        fields = ['option']
+
+
+class QuestionByUIDSerializer(serializers.ModelSerializer):
+    answers = AnswerByUIDSerializer(many=True)
+
+    class Meta:
+        model = Question
+        fields = ['type', 'description', 'max_grade', 'answers']
+
+
+class TaskByUIDSerializer(serializers.ModelSerializer):
+    questions = QuestionByUIDSerializer(many=True)
+
+    class Meta:
+        model = Task
+        fields = ['id', 'title', 'description', 'questions']
