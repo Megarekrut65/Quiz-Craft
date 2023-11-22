@@ -2,7 +2,7 @@
     display: flex; 
     justify-content: center;
 }
-.plus *:hover, .close *:hover{
+.plus *:hover, .close *:hover, .answer-number *:hover{
     cursor: pointer;
     opacity: 0.5;
 }
@@ -18,13 +18,23 @@
     opacity: 1;
 }
 
-.question-number{
+.question-number, .answer-number{
     position: absolute;
 
     left: 30px;
     top: 15px;
 
     font-weight: bold;
+}
+
+.answer-number{
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+
+    left: -25px;
+    top: 25%;
 }
 
 .block-move{

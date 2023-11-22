@@ -24,7 +24,7 @@ defineProps({
             <div class="modal-list" style="max-width: 400px; width: 100vh; height: auto;">
                 <div class="card" style="margin-top: 30vh;">
                     <div class="card-body text-center">
-                        <h4>{{ question }}</h4>
+                        <h5>{{ question }}</h5>
                         
 
                         <div style="display: flex; justify-content: space-around;" class="mt-4">

@@ -1,6 +1,6 @@
 <script setup>
 import { ref, toRaw } from 'vue';
-import {saveTask} from "../assets/js/task-api"
+import { saveTask } from "../assets/js/task-api"
 import QuizQuestion from '../components/QuizQuestion.vue';
 import ModalWindow from '../components/ModalWindow.vue'
 
@@ -11,7 +11,7 @@ const questions = ref([]);
 let id = 0;
 
 const addQuestion = () => {
-    questions.value.push({ id: id++, description: "", maxGrade: 1.0, type: "SINGLE" });
+    questions.value.push({ id: id++, description: "", maxGrade: 1.0, type: "SINGLE", answers: [] });
 };
 
 addQuestion();
@@ -31,26 +31,29 @@ const submitTask = () => {
 };
 
 const updateQuestion = (question) => {
-    const index = questions.value.findIndex(item=>item.id == question.id);
-    if (index != -1)
+    const index = questions.value.findIndex(item => item.id == question.id);
+    if (index != -1) {
+        question.answers = toRaw(question.answers);
         questions.value[index] = question;
+    }
+
 };
 
-const removeText = ref(""), removeSubmit = ref(()=>{}), removeCancel = ref(()=>{});
+const removeText = ref(""), removeSubmit = ref(() => { }), removeCancel = ref(() => { });
 
-const closeModal = ()=>{
+const closeModal = () => {
     removeText.value = "";
 
-    removeSubmit.value = ()=>{};
-    removeCancel.value = ()=>{};
+    removeSubmit.value = () => { };
+    removeCancel.value = () => { };
 };
 
-const removeQuestion = (number) => {
-    removeText.value = `Do you really want to remove question #${number+1}?`;
+const removeQuestion = (number, text) => {
+    removeText.value = `Do you really want to remove question #${number + 1} ${text}?`;
 
-    removeSubmit.value = ()=>{
+    removeSubmit.value = () => {
         questions.value.splice(number, 1);
-        questions.value = toRaw(questions.value);
+
         if (questions.value.length == 0) addQuestion();
 
         closeModal();
@@ -63,7 +66,7 @@ const removeQuestion = (number) => {
 </script>
 <template>
     <section class="book_section">
-        <ModalWindow :question="removeText" :submit="removeSubmit" :cancel="removeCancel" ></ModalWindow>
+        <ModalWindow :question="removeText" :submit="removeSubmit" :cancel="removeCancel"></ModalWindow>
         <div class="container">
             <div class="row">
                 <div class="col">
@@ -98,8 +101,8 @@ const removeQuestion = (number) => {
                 </div>
             </div>
             <div class="move-container">
-                <QuizQuestion class="move-block" v-for="(data, index) in questions" :key="data.id" :data="data" :number="index"
-                    :remove-self="removeQuestion" :update-self="updateQuestion" >
+                <QuizQuestion class="move-block" v-for="(data, index) in questions" :key="data.id" :data="data"
+                    :number="index" :remove-self="removeQuestion" :update-self="updateQuestion">
                 </QuizQuestion>
             </div>
 
