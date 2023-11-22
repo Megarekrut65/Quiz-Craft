@@ -1,0 +1,32 @@
+.plus{
+    display: flex; 
+    justify-content: center;
+}
+.plus *:hover, .close *:hover{
+    cursor: pointer;
+    opacity: 0.5;
+}
+
+.share, .close{
+    position: absolute;
+
+    right: 5%;
+    top:5%;
+}
+.close{
+    color: black;
+    opacity: 1;
+}
+
+.question-number{
+    position: absolute;
+
+    left: 30px;
+    top: 15px;
+
+    font-weight: bold;
+}
+
+.block-move{
+    cursor: grab;
+}
