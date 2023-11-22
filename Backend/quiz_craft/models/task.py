@@ -25,3 +25,8 @@ class Task(models.Model):
     title = models.CharField(max_length=500)
     description = models.TextField(max_length=1000)
     created_by = models.ForeignKey(UserProfile, on_delete=models.CASCADE, related_name='created_tasks', default=1)
+
+
+class TaskUID(models.Model):
+    uid = models.CharField(max_length=32, unique=True)
+    task = models.OneToOneField(Task, on_delete=models.CASCADE, related_name='task_uid')

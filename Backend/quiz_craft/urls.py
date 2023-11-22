@@ -1,5 +1,5 @@
 from django.urls import path
-from .views.task_views import TaskCreateView, TaskListView
+from .views.task_views import TaskCreateView, TaskListView, TaskDetailView, TaskUIDCreateView, TaskUIDRetrieveDestroyView
 from .views.user_views import UserProfileListView, UserRegistrationView, UserLoginView, UserLogoutView
 
 urlpatterns = [
@@ -9,4 +9,7 @@ urlpatterns = [
     path('logout/', UserLogoutView.as_view(), name='user-logout'),
     path('tasks/', TaskListView.as_view(), name='task-list'),
     path('tasks/create/', TaskCreateView.as_view(), name='task-create'),
+    path('tasks/<int:pk>/', TaskDetailView.as_view(), name='task-detail'),
+    path('tasks/generate-uid/', TaskUIDCreateView.as_view(), name='task-generate-uid'),
+    path('tasks/uid/<int:task_id>/', TaskUIDRetrieveDestroyView.as_view(), name='task-get-delete-uid'),
 ]

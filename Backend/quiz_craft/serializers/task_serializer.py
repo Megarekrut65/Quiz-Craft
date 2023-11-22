@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from ..models.task import Task, Answer, Question
+from ..models.task import Task, Answer, Question, TaskUID
 
 
 class AnswerSerializer(serializers.ModelSerializer):
@@ -46,14 +46,8 @@ class TaskCreateSerializer(serializers.ModelSerializer):
         return task
 
 
-class AnswerListSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = Answer
-        fields = ['option', 'correct']
-
-
 class QuestionListSerializer(serializers.ModelSerializer):
-    answers = AnswerListSerializer(many=True)
+    answers = AnswerSerializer(many=True)
 
     class Meta:
         model = Question
@@ -66,3 +60,10 @@ class TaskListSerializer(serializers.ModelSerializer):
     class Meta:
         model = Task
         fields = ['id', 'title', 'description', 'questions', 'created_by']
+
+
+class TaskUIDSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = TaskUID
+        fields = ['uid', 'task']
+
