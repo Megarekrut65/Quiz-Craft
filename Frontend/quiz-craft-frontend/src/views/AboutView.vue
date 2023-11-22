@@ -1,15 +1,14 @@
 <template>
-  <div class="about">
-    <h1>This is an about page</h1>
-  </div>
+    <main>
+        <div class="container">
+            <h1 class="mb-4 mt-4">About </h1>
+            <p>
+                On our website, teachers can create assignments for students.
+            </p>
+            <p>Tasks can be both test and written. </p>
+            <p>
+                We also provide an opportunity to generate tests with the help of AI.
+            </p>
+        </div>
+    </main>
 </template>
-
-<style>
-@media (min-width: 1024px) {
-  .about {
-    min-height: 100vh;
-    display: flex;
-    align-items: center;
-  }
-}
-</style>

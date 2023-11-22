@@ -1,0 +1,65 @@
+.plus{
+    display: flex; 
+    justify-content: center;
+}
+.plus *:hover, .close *:hover, .answer-number *:hover{
+    cursor: pointer;
+    opacity: 0.5;
+}
+
+.share, .close{
+    position: absolute;
+
+    right: 5%;
+    top:5%;
+}
+.close{
+    color: black;
+    opacity: 1;
+}
+
+.question-number, .answer-number{
+    position: absolute;
+
+    left: 30px;
+    top: 15px;
+
+    font-weight: bold;
+}
+
+.answer-number{
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+
+    left: -25px;
+    top: 25%;
+}
+
+.block-move{
+    cursor: grab;
+}
+
+.modal-container{
+    display: block;
+    position: fixed;
+    top: 0;
+    left: 0;
+    background-color: rgba(0, 0, 0, 0.258);
+    width: 100%;
+    height: 100%;
+    overflow-y: auto;
+    z-index: 9999;
+}
+
+.modal-list{
+    width: 90%;
+    height: 90vh;
+    margin: auto;
+    margin-top: 5vh;
+    margin-bottom: 5vh;
+}
+.hide{
+    display: none;
+}
