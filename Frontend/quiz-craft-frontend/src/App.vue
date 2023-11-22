@@ -7,9 +7,9 @@
       <div class="header_bottom">
         <div class="container-fluid">
           <nav class="navbar navbar-expand-lg custom_nav-container ">
-            <a class="navbar-brand" href="/" style="padding: 0;">
+            <RouterLink class="navbar-brand" to="/" style="padding: 0;">
               <img src="./assets/images/logo.png" alt="Logo" style="width: 40px;">
-            </a>
+            </RouterLink>
 
 
             <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
@@ -20,35 +20,38 @@
               <div class="d-flex mr-auto flex-column flex-lg-row align-items-center">
                 <ul class="navbar-nav  ">
                   <li class="nav-item active">
-                    <a class="nav-link" href="/">Home</a>
+                    <RouterLink class="nav-link" to="/">Home</RouterLink>
                   </li>
                   <li class="nav-item">
-                    <a class="nav-link" href="/quizzes">My Quizzes</a>
+                    <RouterLink class="nav-link" to="/quizzes">My Quizzes</RouterLink>
                   </li>
                   <li class="nav-item">
-                    <a class="nav-link" href="/quiz/editor">Create Quiz</a>
+                    <RouterLink class="nav-link" to="/quiz/editor">Create Quiz</RouterLink>
                   </li>
                   <li class="nav-item">
-                    <a class="nav-link" href="/about">About</a>
+                    <RouterLink class="nav-link" to="/about">About</RouterLink>
                   </li>
                   <li class="nav-item">
-                    <a class="nav-link" href="/contacts">Contact Us</a>
+                    <RouterLink class="nav-link" to="/contacts">Contact Us</RouterLink>
+                  </li>
+                  <li class="nav-item">
+                    <RouterLink class="nav-link" to="/privacy">Privacy policy</RouterLink>
                   </li>
                 </ul>
               </div>
               <div class="quote_btn-container">
-                <a href="/">
+                <RouterLink to="/login">
                   <i class="fa fa-user" aria-hidden="true"></i>
                   <span>
-                    Login
+                    Sign In
                   </span>
-                </a>
-                <a href="/">
+                </RouterLink>
+                <RouterLink to="/register">
                   <i class="fa fa-user" aria-hidden="true"></i>
                   <span>
                     Sign Up
                   </span>
-                </a>
+                </RouterLink>
               
               </div>
             </div>
@@ -58,7 +61,7 @@
     </header>
 
 
-    <div class="container-fluid" style="min-height: 100vh;">
+    <div class="container-fluid" style="min-height: 100vh; padding-top: 80px;">
         <RouterView />
     </div>
 
@@ -80,21 +83,9 @@
             </h5>
             <div class="info_contact">
               <a href="">
-                <i class="fa fa-map-marker" aria-hidden="true"></i>
-                <span>
-                  Location
-                </span>
-              </a>
-              <a href="">
-                <i class="fa fa-phone" aria-hidden="true"></i>
-                <span>
-                  Call +01 1234567890
-                </span>
-              </a>
-              <a href="">
                 <i class="fa fa-envelope"></i>
                 <span>
-                  demo@gmail.com
+                  example@gmail.com
                 </span>
               </a>
             </div>
@@ -119,24 +110,12 @@
                 Useful link
               </h5>
               <div class="info_links_menu">
-                <a class="active" href="index.html">
+                <RouterLink to="/">
                   Home
-                </a>
-                <a href="about.html">
+                </RouterLink>
+                <RouterLink to="/about">
                   About
-                </a>
-                <a href="treatment.html">
-                  Treatment
-                </a>
-                <a href="doctor.html">
-                  Doctors
-                </a>
-                <a href="testimonial.html">
-                  Testimonial
-                </a>
-                <a href="contact.html">
-                  Contact us
-                </a>
+                </RouterLink>
               </div>
             </div>
           </div>
@@ -144,13 +123,5 @@
       </div>
     </div>
     </section>
-    <footer class="footer_section">
-    <div class="container">
-      <p>
-        &copy; <span id="displayYear"></span> All Rights Reserved By
-        <a href="https://html.design/">Free Html Templates</a>
-      </p>
-    </div>
-  </footer>
 </template>
 
