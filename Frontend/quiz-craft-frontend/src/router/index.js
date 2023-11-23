@@ -12,6 +12,12 @@ const router = createRouter({
       path: '/',
       name: 'home',
       component: () => import('../views/HomeView.vue')
+    }
+    ,
+    {
+      path: '/quizzes',
+      name: 'quizzes',
+      component: () => import('../views/QuizzesView.vue')
     },
     {
       path: '/quiz/editor',

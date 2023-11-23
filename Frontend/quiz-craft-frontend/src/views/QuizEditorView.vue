@@ -3,6 +3,9 @@ import { ref, toRaw } from 'vue';
 import { saveTask } from "../assets/js/task-api"
 import QuizEditorQuestion from '../components/editor/QuizEditorQuestion.vue';
 import ModalWindow from '../components/ModalWindow.vue'
+import ShareWindow from '../components/ShareWindow.vue';
+
+const readOnly = ref(false);
 
 const taskTitle = ref("Unnamed"), taskDescription = ref("");
 
@@ -16,10 +19,6 @@ const addQuestion = () => {
 
 addQuestion();
 
-const shareTask = () => {
-
-};
-
 const updateQuestion = (question) => {
     const index = questions.value.findIndex(item => item.id == question.id);
     if (index != -1) {
@@ -29,19 +28,19 @@ const updateQuestion = (question) => {
 
 };
 
-const removeText = ref(""), removeSubmit = ref(() => { }), removeCancel = ref(() => { });
+const modalText = ref(""), modalSubmit = ref(() => { }), modalCancel = ref(() => { });
 
 const closeModal = () => {
-    removeText.value = "";
+    modalText.value = "";
 
-    removeSubmit.value = () => { };
-    removeCancel.value = () => { };
+    modalSubmit.value = () => { };
+    modalCancel.value = () => { };
 };
 
 const removeQuestion = (number, text) => {
-    removeText.value = `Do you really want to remove question #${number + 1} ${text}?`;
+    modalText.value = `Do you really want to remove question #${number + 1} ${text}?`;
 
-    removeSubmit.value = () => {
+    modalSubmit.value = () => {
         questions.value.splice(number, 1);
 
         if (questions.value.length == 0) addQuestion();
@@ -49,43 +48,49 @@ const removeQuestion = (number, text) => {
         closeModal();
     };
 
-    removeCancel.value = closeModal;
+    modalCancel.value = closeModal;
 };
 
 const errorMessage = ref("");
 
-const closeError = ()=>{
+const closeError = () => {
     errorMessage.value = "";
 };
 
-const validateData = (task)=>{
+const errorLog = (err)=>{
+    console.log(err);
+
+    errorMessage.value = err.message;
+}
+
+const validateData = (task) => {
     errorMessage.value = "";
 
-    if(task.title.length == 0){
+    if (task.title.length == 0) {
         errorMessage.value = "Title is empty!";
         return false;
     }
-    for(let i in task.questions){
+    for (let i in task.questions) {
         const question = task.questions[i];
 
-        if(question.description.length == 0){
-            errorMessage.value = `Question ${parseInt(i)+1} description is empty!`;
+        if (question.description.length == 0) {
+            errorMessage.value = `Question ${parseInt(i) + 1} description is empty!`;
             return false;
         }
 
         let isCorrect = false;
 
-        for(let j in question.answers){
+        for (let j in question.answers) {
             const answer = question.answers[j];
 
-            if(answer.option.length == 0){
-                errorMessage.value = `Answer ${parseInt(i)+1} option in question '${question.description}'' is empty!`;
+            if (answer.option.length == 0) {
+                errorMessage.value = `Answer ${parseInt(i) + 1} option in question '${question.description}'' is empty!`;
                 return false;
             }
             isCorrect ||= answer.correct;
         }
 
-        if (!isCorrect){
+        if (!isCorrect) {
             errorMessage.value = `There must be at least one correct answer in question '${question.description}''!`;
             return false;
         }
@@ -94,15 +99,15 @@ const validateData = (task)=>{
     return true;
 }
 
-const extractTask = ()=>{
+const extractTask = () => {
     const questionsValue = toRaw(questions.value);
 
-    for(let i in questionsValue){
+    for (let i in questionsValue) {
         questionsValue[i].description = questionsValue[i].description.trim();
-        if(questionsValue[i].type == "TEXT"){
+        if (questionsValue[i].type == "TEXT") {
             questionsValue[i].answers = [];
         }
-        for (let j in questionsValue[i].answers){
+        for (let j in questionsValue[i].answers) {
             questionsValue[i].answers[j].option = questionsValue[i].answers[j].option.trim();
         }
     }
@@ -114,27 +119,42 @@ const extractTask = ()=>{
     };
 
     return task;
-}
+};
+
+const active = ref(false);
+
+const shareTask = ()=>{
+    active.value = true;
+};
+
+const closeSharing = ()=>{
+    active.value = false;
+};
 
 const submitTask = () => {
-    
     const task = extractTask();
-    if(!validateData(task)) return;
+    if (!validateData(task)) return;
 
-    saveTask(task)
-    .then(res=>{
-        console.log(res);
-    })
-    .catch(err=>{
-        console.log(err);
-        errorMessage.value = err.message;
-    });
+    modalText.value = "After saving task you can't edit it anymore!";
+
+    modalSubmit.value = () => {
+        saveTask(task)
+            .then(res => {
+                console.log(res);
+                readOnly.value = true;
+            })
+            .catch(errorLog);
+            closeModal();
+    };
+
+    modalCancel.value = closeModal;
 };
 </script>
 <template>
     <section class="book_section">
-        <ModalWindow :question="removeText" :submit="removeSubmit" :cancel="removeCancel"></ModalWindow>
+        <ModalWindow :question="modalText" :submit="modalSubmit" :cancel="modalCancel"></ModalWindow>
         <ModalWindow :question="errorMessage" :cancel="closeError"></ModalWindow>
+        <ShareWindow :active="active" task-id=1 :close="closeSharing" :error-log="errorLog"></ShareWindow>
         <div class="container">
             <div class="row">
                 <div class="col">
@@ -146,14 +166,15 @@ const submitTask = () => {
                                 </div>
                                 <div class="form-group col-lg-6">
                                     <input type="text" class="form-control" placeholder="Quiz name" v-model="taskTitle"
-                                        required>
+                                        required v-bind:readonly="readOnly">
 
                                 </div>
                             </h4>
                             <div class="share">
                                 <div>
-                                    <button type="button" class="btn btn-success mr-4" @click="submitTask">Save</button>
-                                    <button type="button" class="btn btn-warning" @click="shareTask">Share</button>
+                                    <button v-if="!readOnly" type="button" class="btn btn-success mr-4"
+                                        @click="submitTask">Save</button>
+                                    <button v-else type="button" class="btn btn-warning" @click="shareTask">Share</button>
                                 </div>
                             </div>
 
@@ -161,7 +182,8 @@ const submitTask = () => {
 
                         <div class="form-row">
                             <div class="form-group col-12">
-                                <input type="text" class="form-control" placeholder="Description" v-model="taskDescription">
+                                <input v-bind:readonly="readOnly" type="text" class="form-control" placeholder="Description"
+                                    v-model="taskDescription">
                             </div>
                         </div>
 
@@ -170,7 +192,7 @@ const submitTask = () => {
             </div>
             <div class="move-container">
                 <QuizEditorQuestion class="move-block" v-for="(data, index) in questions" :key="data.id" :data="data"
-                    :number="index" :remove-self="removeQuestion" :update-self="updateQuestion">
+                    :number="index" :remove-self="removeQuestion" :update-self="updateQuestion" :read-only="readOnly">
                 </QuizEditorQuestion>
             </div>
 

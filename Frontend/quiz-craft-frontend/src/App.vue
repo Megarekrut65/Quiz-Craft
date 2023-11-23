@@ -1,5 +1,22 @@
 <script setup>
+import { ref } from "vue";
+import {subscribeUserChangeState, userIsLogged, getUsername, logout} from "./assets/js/user-api";
 
+const isLogged = ref(userIsLogged()), username = ref(getUsername());
+
+const changeState = (logged)=>{
+  isLogged.value = logged;
+};
+
+const logoutUser = ()=>{
+  logout().then(()=>{
+
+  }).catch(err=>{
+    console.log(err);
+  });
+}
+
+subscribeUserChangeState(changeState);
 </script>
 
 <template>
@@ -39,7 +56,11 @@
                   </li>
                 </ul>
               </div>
-              <div class="quote_btn-container">
+              <div class="quote_btn-container" v-if="isLogged">
+                <p>{{username}}</p>
+                <a value="Logout" @click="logoutUser"></a>
+              </div>
+              <div class="quote_btn-container" v-else>
                 <RouterLink to="/login">
                   <i class="fa fa-user" aria-hidden="true"></i>
                   <span>
