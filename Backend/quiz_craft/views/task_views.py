@@ -3,14 +3,15 @@ from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
 
 from ..models.task import Task, TaskUID
+from ..permissions import IsTeacher
 from ..serializers.task_serializer import TaskCreateSerializer, TaskListSerializer, TaskUIDSerializer, \
     TaskByUIDSerializer
-from ..decorators import TeacherRequiredMixin
 from ..utils import generate_unique_uid
 
 
-class TaskCreateView(TeacherRequiredMixin, generics.CreateAPIView):
+class TaskCreateView(generics.CreateAPIView):
     serializer_class = TaskCreateSerializer
+    permission_classes = [IsTeacher]
 
     def perform_create(self, serializer):
         serializer.save(created_by=self.request.user.userprofile)
@@ -23,24 +24,27 @@ class TaskCreateView(TeacherRequiredMixin, generics.CreateAPIView):
         return Response(serializer.data, status=status.HTTP_201_CREATED, headers=headers)
 
 
-class TaskListView(TeacherRequiredMixin, generics.ListAPIView):
+class TaskListView(generics.ListAPIView):
     serializer_class = TaskListSerializer
+    permission_classes = [IsTeacher]
 
     def get_queryset(self):
         user_profile = self.request.user.userprofile
         return Task.objects.filter(created_by=user_profile)
 
 
-class TaskDetailView(TeacherRequiredMixin, generics.RetrieveAPIView):
+class TaskDetailView(generics.RetrieveAPIView):
     serializer_class = TaskListSerializer
+    permission_classes = [IsTeacher]
 
     def get_queryset(self):
         user_profile = self.request.user.userprofile
         return Task.objects.filter(created_by=user_profile)
 
 
-class TaskUIDCreateView(TeacherRequiredMixin, generics.CreateAPIView):
+class TaskUIDCreateView(generics.CreateAPIView):
     serializer_class = TaskUIDSerializer
+    permission_classes = [IsTeacher]
 
     def create(self, request, *args, **kwargs):
         task_id = request.data['task_id']
@@ -61,8 +65,9 @@ class TaskUIDCreateView(TeacherRequiredMixin, generics.CreateAPIView):
         return Response(serializer.data, status=status.HTTP_201_CREATED, headers=headers)
 
 
-class TaskUIDRetrieveDestroyView(TeacherRequiredMixin, generics.RetrieveDestroyAPIView):
+class TaskUIDRetrieveDestroyView(generics.RetrieveDestroyAPIView):
     serializer_class = TaskUIDSerializer
+    permission_classes = [IsTeacher]
 
     def get_queryset(self):
         task_id = self.kwargs.get('task_id')
