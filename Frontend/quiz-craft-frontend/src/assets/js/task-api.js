@@ -23,7 +23,7 @@ export const getTaskById = async(id)=>{
             Authorization: `Token ${getToken()}`
         }
     };
-    return sendAsync(`${SERVER_URL}tasks/${id}/`, request);
+    return sendAsync(`${SERVER_URL}api/tasks/${id}/`, request);
 };
 
 export const getTaskByUid = async(uid)=>{
@@ -34,18 +34,23 @@ export const getTaskByUid = async(uid)=>{
             Authorization: `Token ${getToken()}`
         }
     };
-    return sendAsync(`${SERVER_URL}tasks/uid/get-task/${uid}/`, request);
+    return sendAsync(`${SERVER_URL}api/tasks/uid/get-task/${uid}/`, request);
 };
 
 export const shareTask = (id)=>{
+    const data = {
+        "task_id":id
+    };
+
     const request = {
         method: "POST",
         headers: {
             "Content-Type": "application/json",
             Authorization: `Token ${getToken()}`
         },
-        body: JSON.stringify({"task_id":id})
+        body: JSON.stringify(data)
     };
+
     return sendAsync(`${SERVER_URL}api/tasks/generate-uid/`, request);
 };
 
