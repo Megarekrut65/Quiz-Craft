@@ -71,7 +71,7 @@ class TaskUIDSerializer(serializers.ModelSerializer):
 class AnswerByUIDSerializer(serializers.ModelSerializer):
     class Meta:
         model = Answer
-        fields = ['option']
+        fields = ['id', 'option']
 
 
 class QuestionByUIDSerializer(serializers.ModelSerializer):
@@ -79,7 +79,7 @@ class QuestionByUIDSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Question
-        fields = ['type', 'description', 'max_grade', 'answers']
+        fields = ['id', 'type', 'description', 'max_grade', 'answers']
 
 
 class TaskByUIDSerializer(serializers.ModelSerializer):
@@ -87,4 +87,4 @@ class TaskByUIDSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Task
-        fields = ['id', 'title', 'description', 'questions']
+        fields = ['title', 'description', 'questions']
