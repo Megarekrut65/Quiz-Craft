@@ -26,18 +26,18 @@ const uidUrl = ref("");
 if (props.taskId != -1){
     getTaskUid(props.taskId).then(res=>{
         uidUrl.value = `${window.location.origin}/quiz/${res.uid}`;
-    }).catch(props.errorLog);
+    });
 }
 
 
 const share = ()=>{
-    shareTask(props.id).then(res=>{
+    shareTask(props.taskId).then(res=>{
         uidUrl.value = `${window.location.origin}/quiz/${res.uid}`;
     }).catch(props.errorLog);
 };
 
 const deleteSharing = ()=>{
-    closeTask(props.id).then(()=>{
+    closeTask(props.taskId).then(()=>{
         uidUrl.value = "";
     }).catch(props.errorLog);
 };

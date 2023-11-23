@@ -1,6 +1,7 @@
 <script setup>
 import { ref, toRaw } from 'vue';
 
+
 const props = defineProps({
     number: {
         type: Number,
@@ -23,6 +24,7 @@ const answerValue = (type == "MULTI")?ref([]):ref();
 
 if (type == "SINGLE") {
     answerValue.value = props.data.answers[0].id;
+    props.updateSelf(props.data.id, type, toRaw(answerValue.value))
 }
 
 

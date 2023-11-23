@@ -30,7 +30,7 @@ const data = props.data;
 const formData = ref({
     id: data.id,
     option: data.option,
-    correct: false
+    correct: data.correct
 });
 
 props.updateSelf(toRaw(formData));

@@ -1,79 +1,23 @@
 <script setup>
 import { ref } from 'vue';
 import QuizTakerQuestion from '../components/taker/QuizTakerQuestion.vue';
+import ModalWindow from '../components/ModalWindow.vue';
 import {sendResponse} from "../assets/js/response-api";
+import { useRoute } from 'vue-router';
+import { getUsername } from '../assets/js/user-api';
+import { getTaskByUid } from '../assets/js/task-api';
 
+let {uid} = useRoute().params;
 
-const taskTitle = ref("Sample Task"), taskDescription = ref("This is a sample task description."), username = ref("username");
+const taskTitle = ref(""), taskDescription = ref(""), username = ref(getUsername());
 
-const questions = ref([
-    {
-        "id":1,
-        "type": "SINGLE",
-        "description": "What is 2 + 2?",
-        "maxGrade": 10,
-        "answers": [
-            {
-                "id": 1,
-                "option": "3"
-            },
-            {
-                "id": 2,
-                "option": "4"
-            },
-            {
-                "id": 3,
-                "option": "5"
-            }
-        ]
-    },
-    {
-        "id":2,
-        "type": "TEXT",
-        "description": "What is your name?",
-        "maxGrade": 0
-    },
-    {
-        "id":3,
-        "type": "TEXT",
-        "description": "What is your name?",
-        "maxGrade": 0
-    },
-    {
-        "id":4,
-        "type": "MULTI",
-        "description": "What colors not in rainbow?",
-        "maxGrade": 5,
-        "answers": [
-            {
-                "id": 1,
-                "option": "Red"
-            },
-            {
-                "id": 2,
-                "option": "Black"
-            },
-            {
-                "id": 3,
-                "option": "Yellow"
-            },
-            {
-                "id": 4,
-                "option": "Gold"
-            },
-            {
-                "id": 5,
-                "option": "Gray"
-            }
-        ]
-    }
-]);
+const questions = ref([]);
 
 const answers = {};
+const loaded = ref(false);
 
 
 const updateAnswer = (questionId, type, value)=>{
-    console.log(questionId, type, value);
 
     if (type == "TEXT"){
         answers[questionId] = [{"question_id": questionId, "text_answer": value}];
@@ -89,6 +33,20 @@ const updateAnswer = (questionId, type, value)=>{
 };
 
 
+const errorMessage = ref("");
+
+const closeError = () => {
+    errorMessage.value = "";
+};
+
+const errorLog = (err)=>{
+    console.log(err);
+    const obj = JSON.parse(err.message);
+    const message = obj.detail?obj.detail:obj;
+
+    errorMessage.value = JSON.stringify(message);
+}
+
 const submitAnswers = ()=>{
     let list = [];
 
@@ -96,14 +54,32 @@ const submitAnswers = ()=>{
         list = list.concat(answers[key]);
     }
 
-    const response = {"uid":"", "question_responses":list};
-    sendResponse(response);
+    const response = {"uid":uid, "question_responses":list};
+
+    sendResponse(response).then(()=>{
+        window.location = "/quiz/submitted";
+    }).catch(errorLog)
 };
+
+
+getTaskByUid(uid).then(res=>{
+    taskTitle.value = res.title;
+    taskDescription.value = res.description;
+
+    questions.value = res.questions.map(item=>{
+        const newItem = JSON.parse(JSON.stringify(item));
+        newItem.maxGrade = item["max_grade"];
+        return newItem;
+    });
+
+    loaded.value = true;
+}).catch(errorLog)
 
 </script>
 <template>
     <section class="book_section">
-        <div class="container">
+        <ModalWindow :question="errorMessage" :cancel="closeError"></ModalWindow>
+        <div class="container" v-if="loaded">
             <div class="row">
                 <div class="col">
                     <form>

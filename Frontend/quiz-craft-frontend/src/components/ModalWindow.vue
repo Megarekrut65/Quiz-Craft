@@ -1,6 +1,6 @@
 <script setup>
 
-defineProps({
+const props = defineProps({
     question:{
         type: String,
         required: true
@@ -15,12 +15,15 @@ defineProps({
     }
 });
 
+const close = (event)=>{
+    if(event.target.className == "modal-container") props.cancel();
+};
 
 </script>
 
 <template>
     <main>
-        <div v-bind:class="question !== ''? 'modal-container' : 'modal-container hide'" @click="cancel">
+        <div v-bind:class="question !== ''? 'modal-container' : 'modal-container hide'" @click="close">
             <div class="modal-list" style="max-width: 500px; width: 100vh; height: auto;">
                 <div class="card" style="margin-top: 30vh;">
                     <div class="card-body text-center">
