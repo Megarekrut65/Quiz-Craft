@@ -1,5 +1,5 @@
 import { SERVER_URL } from "./data";
-import { sendAsync } from "./utilities";
+import { sendAsync, getToken } from "./utilities";
 
 
 
@@ -36,8 +36,10 @@ export const logout = ()=>{
     const request = {
         method: "POST",
         headers: {
-            "Content-Type": "application/json"
-        }
+            "Content-Type": "application/json",
+            Authorization: `Token ${getToken()}`
+        },
+        body:"{}"
     };
     return sendAsync(`${SERVER_URL}api/logout/`, request).then(
         ()=>{

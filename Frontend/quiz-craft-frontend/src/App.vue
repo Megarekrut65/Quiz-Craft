@@ -6,6 +6,7 @@ const isLogged = ref(userIsLogged()), username = ref(getUsername());
 
 const changeState = (logged)=>{
   isLogged.value = logged;
+  username.value = getUsername();
 };
 
 const logoutUser = ()=>{
@@ -43,7 +44,7 @@ subscribeUserChangeState(changeState);
                     <RouterLink class="nav-link" to="/quizzes">My Quizzes</RouterLink>
                   </li>
                   <li class="nav-item">
-                    <RouterLink class="nav-link" to="/quiz/editor">Create Quiz</RouterLink>
+                    <RouterLink class="nav-link" to="/quiz/editor-new">Create Quiz</RouterLink>
                   </li>
                   <li class="nav-item">
                     <RouterLink class="nav-link" to="/about">About</RouterLink>
@@ -56,9 +57,9 @@ subscribeUserChangeState(changeState);
                   </li>
                 </ul>
               </div>
-              <div class="quote_btn-container" v-if="isLogged">
-                <p>{{username}}</p>
-                <a value="Logout" @click="logoutUser"></a>
+              <div class="user-header" v-if="isLogged">
+                <div class="mr-4">{{username}}</div>
+                <div @click="logoutUser" class="logout nav-link">Logout</div>
               </div>
               <div class="quote_btn-container" v-else>
                 <RouterLink to="/login">

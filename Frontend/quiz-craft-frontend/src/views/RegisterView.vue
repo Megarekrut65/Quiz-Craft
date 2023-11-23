@@ -13,7 +13,9 @@ const submit = () => {
     isLoading.value = true;
     register(username.value, email.value, name.value, password.value, role.value)
         .then(() => login(username.value, password.value)
-        .then(()=>isLoading.value = false)
+        .then(()=>{
+            window.location = "/";
+        })
         .catch(err=>{
             error.value = err;
             isLoading.value = false;
@@ -34,7 +36,7 @@ const submit = () => {
             <div class="d-flex align-items-center justify-content-center">
                 <div class="row justify-content-center">
                     <div class="col-12">
-                        <div class="card mb-0" style="padding-left: 10px; padding-right: 10px;">
+                        <div class="card mb-4" style="padding-left: 10px; padding-right: 10px;">
                             <div class="card-body">
                                 <div class="text-nowrap logo-img text-center d-block">
                                     <img src="../assets/images/logo.png" height="80" alt="logo">

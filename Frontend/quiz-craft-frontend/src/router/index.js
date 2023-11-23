@@ -20,8 +20,15 @@ const router = createRouter({
       component: () => import('../views/QuizzesView.vue')
     },
     {
-      path: '/quiz/editor',
+      path: '/quiz/editor-new',
+      name: 'quiz-editor-new',
+      replace: true,
+      component: () => import('../views/QuizEditorView.vue')
+    },
+    {
+      path: '/quiz/editor/:paramId',
       name: 'quiz-editor',
+      replace: true,
       component: () => import('../views/QuizEditorView.vue')
     },
     {
