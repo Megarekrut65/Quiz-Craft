@@ -4,9 +4,9 @@ from rest_framework import generics, status
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
 
-from ..decorators import TeacherRequiredMixin
 from ..models.response import TaskResponse, QuestionResponse
 from ..models.task import Task, Question, Answer, TaskUID
+from ..permissions import IsTeacher
 from ..serializers.response_serializer import TaskResponseSerializer, TaskResponseListSerializer, \
     TaskResponseDetailSerializer
 
@@ -101,8 +101,9 @@ class TaskResponseRetrieveView(generics.RetrieveAPIView):
         return Response(serializer.data, status=status.HTTP_200_OK)
 
 
-class TaskResponsesListView(TeacherRequiredMixin, generics.ListAPIView):
+class TaskResponsesListView(generics.ListAPIView):
     serializer_class = TaskResponseListSerializer
+    permission_classes = [IsTeacher]
 
     def get_queryset(self):
         task_id = self.kwargs.get('task_id')
@@ -115,8 +116,9 @@ class TaskResponsesListView(TeacherRequiredMixin, generics.ListAPIView):
         return Response(serializer.data, status=status.HTTP_200_OK)
 
 
-class TaskResponseDetailView(TeacherRequiredMixin, generics.RetrieveAPIView):
+class TaskResponseDetailView(generics.RetrieveAPIView):
     serializer_class = TaskResponseDetailSerializer
+    permission_classes = [IsTeacher]
 
     def get_queryset(self):
         response_id = self.kwargs.get('pk')
