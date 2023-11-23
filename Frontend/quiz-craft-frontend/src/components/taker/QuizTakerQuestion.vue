@@ -23,7 +23,7 @@ const type = props.data.type;
 const answerValue = (type == "MULTI")?ref([]):ref();
 
 if (type == "SINGLE") {
-    answerValue.value = props.data.answers[0].id;
+    answerValue.value = props.data.answers[0]?.id ?? -1;
     props.updateSelf(props.data.id, type, toRaw(answerValue.value))
 }
 

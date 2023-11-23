@@ -64,7 +64,7 @@
     display: none;
 }
 
-.logout:hover{
+.logout:hover, .share-url i:hover{
     cursor: pointer;
     opacity: 0.5;
 }
@@ -76,5 +76,10 @@
 .user-header{
     display: flex;
     justify-content: center;
+    align-items: center;
+}
+.share-url{
+    display: flex;
+    justify-content: space-between;
     align-items: center;
 }

@@ -20,7 +20,7 @@ const router = createRouter({
       component: () => import('../views/QuizzesView.vue')
     },
     {
-      path: '/quiz/editor-new',
+      path: '/quiz/editor/new',
       name: 'quiz-editor-new',
       component: () => import('../views/QuizEditorNewView.vue')
     },

@@ -96,7 +96,7 @@ const removeAnswer = (number, text) => {
                         </div>
                         <div class="form-group col-12 col-md-6">
                             <label>Max grade</label>
-                            <input v-bind:readonly="readOnly" class="form-control" v-model="formData.maxGrade" placeholder="Description" type="number">
+                            <input v-bind:readonly="readOnly" min="0" max="32000" class="form-control" v-model="formData.maxGrade" placeholder="Description" type="number">
                         </div>
                         <div class="form-group col-12 col-md-6">
                             <label>Question type</label>

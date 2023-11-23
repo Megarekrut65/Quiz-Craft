@@ -6,6 +6,7 @@ import {sendResponse} from "../assets/js/response-api";
 import { useRoute } from 'vue-router';
 import { getUsername } from '../assets/js/user-api';
 import { getTaskByUid } from '../assets/js/task-api';
+import { parseError } from '../assets/js/utilities';
 
 let {uid} = useRoute().params;
 
@@ -41,10 +42,8 @@ const closeError = () => {
 
 const errorLog = (err)=>{
     console.log(err);
-    const obj = JSON.parse(err.message);
-    const message = obj.detail?obj.detail:obj;
 
-    errorMessage.value = JSON.stringify(message);
+    errorMessage.value = parseError(err);
 }
 
 const submitAnswers = ()=>{

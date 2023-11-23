@@ -17,3 +17,30 @@ export const sendAsync = async(endpoint, request)=>{
 };
 
 export const getToken = ()=>localStorage.getItem("token");
+
+export const parseError = (err)=>{
+    try{
+        const obj = JSON.parse(err.message);
+        const message = obj.detail?obj.detail:obj.error?obj.error:JSON.stringify(obj);
+
+        return message;
+    }catch(error){
+        return err;
+    }
+};
+
+export const copyToBuffer = (text)=>{
+    const item = document.createElement("div");
+    item.textContent = text;
+    document.body.appendChild(item);
+
+    const range = document.createRange();
+    range.selectNodeContents(item);
+    const selection = window.getSelection();
+    selection.removeAllRanges();
+    selection.addRange(range);
+
+    document.execCommand('copy');
+
+    document.body.removeChild(item);
+};

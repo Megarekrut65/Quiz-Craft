@@ -5,6 +5,7 @@ import { getTaskById, saveTask } from "../assets/js/task-api"
 import QuizEditorQuestion from '../components/editor/QuizEditorQuestion.vue';
 import ModalWindow from '../components/ModalWindow.vue'
 import ShareWindow from '../components/ShareWindow.vue';
+import { parseError } from '../assets/js/utilities';
 
 const props = defineProps({
     paramId:{
@@ -70,10 +71,8 @@ const closeError = () => {
 const errorLog = (err)=>{
     active.value = false;
     console.log(err);
-    const obj = JSON.parse(err.message);
-    const message = obj.detail?obj.detail:obj;
 
-    errorMessage.value = JSON.stringify(message);
+    errorMessage.value = parseError(err);
 }
 
 const validateData = (task) => {
@@ -162,6 +161,7 @@ const submitTask = () => {
             .then(res => {
                 console.log(res);
                 readOnly.value = true;
+                window.location = `/quiz/editor/${res.id}`;
             })
             .catch(errorLog);
             closeModal();
