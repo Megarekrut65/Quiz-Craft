@@ -19,6 +19,7 @@ const readOnly = ref(props.paramId !=-1 ?true:false);
 const taskTitle = ref("Unnamed"), taskDescription = ref("");
 
 const questions = ref([]);
+const loaded = ref(!readOnly.value);
 
 let id = 0;
 
@@ -69,8 +70,10 @@ const closeError = () => {
 const errorLog = (err)=>{
     active.value = false;
     console.log(err);
+    const obj = JSON.parse(err.message);
+    const message = obj.detail?obj.detail:obj;
 
-    errorMessage.value = err.message;
+    errorMessage.value = JSON.stringify(message);
 }
 
 const validateData = (task) => {
@@ -169,7 +172,7 @@ const submitTask = () => {
 
 if(readOnly.value){
     getTaskById(props.paramId).then(res=>{
-        console.log(res)
+
         taskTitle.value = res.title;
         taskDescription.value = res.description;
 
@@ -178,15 +181,17 @@ if(readOnly.value){
             newItem.maxGrade = item["max_grade"];
             return newItem;
         });
+
+        loaded.value = true;
     }).catch(errorLog);
 }
 </script>
 <template>
-    <section class="book_section">
+    <section class="book_section mb-4">
         <ModalWindow :question="modalText" :submit="modalSubmit" :cancel="modalCancel"></ModalWindow>
         <ModalWindow :question="errorMessage" :cancel="closeError"></ModalWindow>
         <ShareWindow :active="active" :task-id="paramId" :close="closeSharing" :error-log="errorLog"></ShareWindow>
-        <div class="container">
+        <div class="container" v-if="loaded">
             <div class="row">
                 <div class="col">
                     <form>
@@ -228,7 +233,7 @@ if(readOnly.value){
             </div>
 
 
-            <div class="row m-4">
+            <div class="row m-4" v-if="!readOnly">
                 <div class="col">
                     <div class="plus"><img src="../assets/images/plus.png" style="height: 70px;" @click="addQuestion"></div>
                 </div>

@@ -2,8 +2,6 @@ import { SERVER_URL } from "./data";
 import { sendAsync, getToken } from "./utilities";
 
 export const saveTask = async(task)=>{
-    console.log(task);
-
     const request = {
         method: "POST",
         headers: {

@@ -30,9 +30,14 @@ const router = createRouter({
       component: () => import('../views/QuizEditorView.vue')
     },
     {
-      path: '/quiz',
+      path: '/quiz/:uid',
       name: 'quiz-taker',
       component: () => import('../views/QuizTakerView.vue')
+    },
+    {
+      path: '/quiz/submitted',
+      name: 'quiz-submitted',
+      component: () => import('../views/QuizSubmittedView.vue')
     },
     {
       path: '/about',
