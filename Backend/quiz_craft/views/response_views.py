@@ -30,22 +30,33 @@ class TaskResponseCreateView(generics.CreateAPIView):
         for response_data in question_responses_data:
             question_id = response_data.get('question_id')
             answer_id = response_data.get('answer_id')
+            text_answer = response_data.get('text_answer', '')
 
             try:
                 question = Question.objects.get(id=question_id, task=task)
-                answer = Answer.objects.get(id=answer_id, question=question)
             except Question.DoesNotExist:
                 return Response({"error": f"Question with id {question_id} not found for the given task."},
                                 status=status.HTTP_404_NOT_FOUND)
-            except Answer.DoesNotExist:
-                return Response({"error": f"Answer with id {answer_id} not found for the given question."},
-                                status=status.HTTP_404_NOT_FOUND)
 
-            question_response = QuestionResponse(
-                task_response=task_response,
-                question=question,
-                answer=answer
-            )
+            if question.type == 'TEXT':
+                question_response = QuestionResponse(
+                    task_response=task_response,
+                    question=question,
+                    text_answer=text_answer
+                )
+            else:
+                try:
+                    answer = Answer.objects.get(id=answer_id, question=question)
+                except Answer.DoesNotExist:
+                    return Response({"error": f"Answer with id {answer_id} not found for the given question."},
+                                    status=status.HTTP_404_NOT_FOUND)
+
+                question_response = QuestionResponse(
+                    task_response=task_response,
+                    question=question,
+                    answer=answer
+                )
+
             question_responses.append(question_response)
 
         try:
