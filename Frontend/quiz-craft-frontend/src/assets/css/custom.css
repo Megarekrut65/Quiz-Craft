@@ -64,3 +64,17 @@
     display: none;
 }
 
+.logout:hover{
+    cursor: pointer;
+    opacity: 0.5;
+}
+.logout{
+    color: aliceblue;
+    text-transform: uppercase;
+}
+
+.user-header{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}

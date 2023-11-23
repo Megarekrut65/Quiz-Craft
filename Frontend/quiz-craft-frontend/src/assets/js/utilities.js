@@ -15,3 +15,5 @@ export const sendAsync = async(endpoint, request)=>{
     if(response.statusText === "No Content") return response.text();
     return response.json();
 };
+
+export const getToken = ()=>localStorage.getItem("token");

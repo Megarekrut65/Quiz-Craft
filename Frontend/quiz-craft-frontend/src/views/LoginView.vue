@@ -4,15 +4,17 @@ import { ref } from 'vue';
 import { login } from '../assets/js/user-api';
 import LoadingWindow from '../components/LoadingWindow.vue';
 
-const email = ref(""), password = ref("");
+const username = ref(""), password = ref("");
 const error = ref("");
 const isLoading = ref(false);
 
 const submit = () => {
     isLoading.value = true;
 
-    login(email.value, password.value)
-    .then(()=>isLoading.value = false)
+    login(username.value, password.value)
+    .then(()=>{
+            window.location = "/";
+        })
     .catch(err => {
         error.value = err;
         isLoading.value = false;
@@ -29,7 +31,7 @@ const submit = () => {
             <div class="d-flex align-items-center justify-content-center">
                 <div class="row justify-content-center">
                     <div class="col-12">
-                        <div class="card mb-0">
+                        <div class="card mb-4">
                             <div class="card-body">
                                 <div class="text-nowrap logo-img text-center d-block">
                                     <img src="../assets/images/logo.png" height="80" alt="logo">
@@ -37,8 +39,8 @@ const submit = () => {
                                 <p class="text-center">Teach and learn</p>
                                 <form @submit="submit" action="#" onsubmit="return false;">
                                     <div class="mb-3">
-                                        <label for="name" class="form-label">Email</label>
-                                        <input v-model="email" type="email" class="form-control" name="name" required
+                                        <label for="name" class="form-label">Username</label>
+                                        <input v-model="username" type="text" class="form-control" name="name" required
                                             maxlength="200">
                                     </div>
                                     <div class="mb-4">

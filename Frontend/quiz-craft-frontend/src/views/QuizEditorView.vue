@@ -1,11 +1,17 @@
 <script setup>
-import { ref, toRaw } from 'vue';
+import { ref, toRaw  } from 'vue';
+import { useRoute } from 'vue-router';
 import { saveTask } from "../assets/js/task-api"
 import QuizEditorQuestion from '../components/editor/QuizEditorQuestion.vue';
 import ModalWindow from '../components/ModalWindow.vue'
 import ShareWindow from '../components/ShareWindow.vue';
 
-const readOnly = ref(false);
+const {paramId} = useRoute().params;
+const taskId = ref(parseInt(paramId || -1));
+
+console.log(paramId)
+
+const readOnly = ref(paramId?true:false);
 
 const taskTitle = ref("Unnamed"), taskDescription = ref("");
 
@@ -58,6 +64,7 @@ const closeError = () => {
 };
 
 const errorLog = (err)=>{
+    active.value = false;
     console.log(err);
 
     errorMessage.value = err.message;
@@ -104,6 +111,8 @@ const extractTask = () => {
 
     for (let i in questionsValue) {
         questionsValue[i].description = questionsValue[i].description.trim();
+        questionsValue[i]["max_grade"] = questionsValue[i].maxGrade;
+
         if (questionsValue[i].type == "TEXT") {
             questionsValue[i].answers = [];
         }
@@ -154,7 +163,7 @@ const submitTask = () => {
     <section class="book_section">
         <ModalWindow :question="modalText" :submit="modalSubmit" :cancel="modalCancel"></ModalWindow>
         <ModalWindow :question="errorMessage" :cancel="closeError"></ModalWindow>
-        <ShareWindow :active="active" task-id=1 :close="closeSharing" :error-log="errorLog"></ShareWindow>
+        <ShareWindow :active="active" :task-id="taskId" :close="closeSharing" :error-log="errorLog"></ShareWindow>
         <div class="container">
             <div class="row">
                 <div class="col">
