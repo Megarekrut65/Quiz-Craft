@@ -1,7 +1,7 @@
 <script setup>
 import { ref, toRaw } from 'vue';
-import QuizAnswer from './QuizAnswer.vue';
-import ModalWindow from './ModalWindow.vue';
+import QuizEditorAnswer from './QuizEditorAnswer.vue';
+import ModalWindow from '../ModalWindow.vue';
 
 const props = defineProps({
     number: {
@@ -45,7 +45,7 @@ if (data.answers.length == 0) addAnswer();
 
 
 const updateAnswer = (answer) => {
-    const index = formData.value.answers.findIndex(item=>item.id == answer.id);
+    const index = formData.value.answers.findIndex(item => item.id == answer.id);
     if (index != -1)
         formData.value.answers[index] = answer;
 };
@@ -103,19 +103,22 @@ const removeAnswer = (number, text) => {
                             </select>
                         </div>
                     </div>
-                    <div class="form-row" style="display: flex; align-items: center; flex-direction: row;">
-                        Answers <span class="plus ml-1"><i class="fa fa-plus" @click="addAnswer"></i></span>
-                    </div>
-                    <div class="form-row mt-2">
-                        <div class="form-group col-9">
-                            <label>Option</label>
+                    <div v-if="formData.type != 'TEXT'">
+                        <div class="form-row" style="display: flex; align-items: center; flex-direction: row;">
+                            Answers <span class="plus ml-1"><i class="fa fa-plus" @click="addAnswer"></i></span>
                         </div>
-                        <div class="form-group col-3 text-center">
-                            <label>Is correct?</label>
+                        <div class="form-row mt-2">
+                            <div class="form-group col-9">
+                                <label>Option</label>
+                            </div>
+                            <div class="form-group col-3 text-center">
+                                <label>Is correct?</label>
+                            </div>
                         </div>
+                        <QuizEditorAnswer v-for="(data, index) in formData.answers" :key="data.id" :data="data"
+                            :number="index" :remove-self="removeAnswer" :update-self="updateAnswer"></QuizEditorAnswer>
                     </div>
-                    <QuizAnswer v-for="(data, index) in formData.answers" :key="data.id" :question="formData.id"
-                        :data="data" :number="index" :remove-self="removeAnswer" :update-self="updateAnswer"></QuizAnswer>
+
                 </form>
             </div>
         </div>

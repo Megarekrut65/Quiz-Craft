@@ -7,7 +7,7 @@
     opacity: 0.5;
 }
 
-.share, .close{
+.share, .close, .grade{
     position: absolute;
 
     right: 5%;
@@ -63,3 +63,4 @@
 .hide{
     display: none;
 }
+

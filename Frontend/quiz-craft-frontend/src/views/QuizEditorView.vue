@@ -1,7 +1,7 @@
 <script setup>
 import { ref, toRaw } from 'vue';
 import { saveTask } from "../assets/js/task-api"
-import QuizQuestion from '../components/QuizQuestion.vue';
+import QuizEditorQuestion from '../components/editor/QuizEditorQuestion.vue';
 import ModalWindow from '../components/ModalWindow.vue'
 
 const taskTitle = ref("Unnamed"), taskDescription = ref("");
@@ -18,16 +18,6 @@ addQuestion();
 
 const shareTask = () => {
 
-};
-
-const submitTask = () => {
-    const task = {
-        title: toRaw(taskTitle.value),
-        description: toRaw(taskDescription.value),
-        questions: toRaw(questions.value)
-    };
-
-    saveTask(task);
 };
 
 const updateQuestion = (question) => {
@@ -62,11 +52,89 @@ const removeQuestion = (number, text) => {
     removeCancel.value = closeModal;
 };
 
+const errorMessage = ref("");
 
+const closeError = ()=>{
+    errorMessage.value = "";
+};
+
+const validateData = (task)=>{
+    errorMessage.value = "";
+
+    if(task.title.length == 0){
+        errorMessage.value = "Title is empty!";
+        return false;
+    }
+    for(let i in task.questions){
+        const question = task.questions[i];
+
+        if(question.description.length == 0){
+            errorMessage.value = `Question ${parseInt(i)+1} description is empty!`;
+            return false;
+        }
+
+        let isCorrect = false;
+
+        for(let j in question.answers){
+            const answer = question.answers[j];
+
+            if(answer.option.length == 0){
+                errorMessage.value = `Answer ${parseInt(i)+1} option in question '${question.description}'' is empty!`;
+                return false;
+            }
+            isCorrect ||= answer.correct;
+        }
+
+        if (!isCorrect){
+            errorMessage.value = `There must be at least one correct answer in question '${question.description}''!`;
+            return false;
+        }
+    }
+
+    return true;
+}
+
+const extractTask = ()=>{
+    const questionsValue = toRaw(questions.value);
+
+    for(let i in questionsValue){
+        questionsValue[i].description = questionsValue[i].description.trim();
+        if(questionsValue[i].type == "TEXT"){
+            questionsValue[i].answers = [];
+        }
+        for (let j in questionsValue[i].answers){
+            questionsValue[i].answers[j].option = questionsValue[i].answers[j].option.trim();
+        }
+    }
+
+    const task = {
+        title: toRaw(taskTitle.value).trim(),
+        description: toRaw(taskDescription.value).trim(),
+        questions: questionsValue
+    };
+
+    return task;
+}
+
+const submitTask = () => {
+    
+    const task = extractTask();
+    if(!validateData(task)) return;
+
+    saveTask(task)
+    .then(res=>{
+        console.log(res);
+    })
+    .catch(err=>{
+        console.log(err);
+        errorMessage.value = err.message;
+    });
+};
 </script>
 <template>
     <section class="book_section">
         <ModalWindow :question="removeText" :submit="removeSubmit" :cancel="removeCancel"></ModalWindow>
+        <ModalWindow :question="errorMessage" :cancel="closeError"></ModalWindow>
         <div class="container">
             <div class="row">
                 <div class="col">
@@ -74,7 +142,7 @@ const removeQuestion = (number, text) => {
                         <div>
                             <h4 class="form-row">
                                 <div class="form-group col-lg-2">
-                                    <label>Quiz title</label>
+                                    <label>Quiz title*</label>
                                 </div>
                                 <div class="form-group col-lg-6">
                                     <input type="text" class="form-control" placeholder="Quiz name" v-model="taskTitle"
@@ -101,9 +169,9 @@ const removeQuestion = (number, text) => {
                 </div>
             </div>
             <div class="move-container">
-                <QuizQuestion class="move-block" v-for="(data, index) in questions" :key="data.id" :data="data"
+                <QuizEditorQuestion class="move-block" v-for="(data, index) in questions" :key="data.id" :data="data"
                     :number="index" :remove-self="removeQuestion" :update-self="updateQuestion">
-                </QuizQuestion>
+                </QuizEditorQuestion>
             </div>
 
 

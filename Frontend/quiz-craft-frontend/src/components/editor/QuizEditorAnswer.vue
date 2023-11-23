@@ -2,10 +2,6 @@
 import { ref, toRaw } from 'vue';
 
 const props = defineProps({
-    question: {
-        type: Number,
-        required: true
-    },
     number: {
         type: Number,
         required: true
@@ -46,7 +42,7 @@ props.updateSelf(toRaw(formData));
                 <input class="form-control" v-model="formData.option" placeholder="Option" type="text">
             </div>
             <div class="form-group col-3">
-                <input class="form-control" style="height: 50%;" type="checkbox" id="flexSwitchCheckChecked" v-model="formData.correct">
+                <input class="form-control" style="height: 50%;" type="checkbox" v-model="formData.correct">
             </div>
         </div>
     </main>
