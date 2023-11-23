@@ -15,4 +15,4 @@ class QuestionResponse(models.Model):
     task_response = models.ForeignKey(TaskResponse, on_delete=models.CASCADE, related_name='question_responses')
     question = models.ForeignKey(Question, on_delete=models.CASCADE)
     answer = models.ForeignKey(Answer, on_delete=models.CASCADE, null=True, blank=True)
-    text_answer = models.TextField(blank=True)
+    text_answer = models.CharField(max_length=300, blank=True)
