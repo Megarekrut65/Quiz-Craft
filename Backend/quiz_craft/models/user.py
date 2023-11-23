@@ -10,3 +10,4 @@ class UserProfile(models.Model):
 
     user = models.OneToOneField(User, on_delete=models.CASCADE)
     role = models.CharField(max_length=10, choices=USER_ROLES)
+    fullname = models.CharField(max_length=255, default="Maria")

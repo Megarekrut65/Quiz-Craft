@@ -1,6 +1,6 @@
 from django.contrib.auth import authenticate, login, logout
-from django.contrib.auth.models import User
-from rest_framework import generics, status
+from django.db import IntegrityError
+from rest_framework import generics, status, serializers
 from rest_framework.authtoken.models import Token
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.views import APIView
@@ -23,11 +23,17 @@ class UserRegistrationView(APIView):
                             status=status.HTTP_400_BAD_REQUEST)
 
         serializer = UserRegistrationSerializer(data=request.data)
-        if serializer.is_valid():
+        try:
+            serializer.is_valid(raise_exception=True)
             user = serializer.save()
-            user_serializer = UserSerializer(user)
-            return Response(user_serializer.data, status=status.HTTP_201_CREATED)
-        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+        except serializers.ValidationError as validation_error:
+            return Response({'error': str(validation_error)}, status=status.HTTP_400_BAD_REQUEST)
+        except IntegrityError as integrity_error:
+            if 'auth_user_username_key' in str(integrity_error):
+                return Response({'error': 'Username is already taken.'}, status=status.HTTP_400_BAD_REQUEST)
+
+        user_serializer = UserSerializer(user)
+        return Response(user_serializer.data, status=status.HTTP_201_CREATED)
 
 
 class UserLoginView(APIView):
