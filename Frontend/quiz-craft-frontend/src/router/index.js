@@ -12,11 +12,22 @@ const router = createRouter({
       path: '/',
       name: 'home',
       component: () => import('../views/HomeView.vue')
+    }
+    ,
+    {
+      path: '/quizzes',
+      name: 'quizzes',
+      component: () => import('../views/QuizzesView.vue')
     },
     {
       path: '/quiz/editor',
       name: 'quiz-editor',
       component: () => import('../views/QuizEditorView.vue')
+    },
+    {
+      path: '/quiz',
+      name: 'quiz-taker',
+      component: () => import('../views/QuizTakerView.vue')
     },
     {
       path: '/about',

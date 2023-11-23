@@ -1,7 +1,7 @@
 <script setup>
 import { RouterLink } from 'vue-router';
 import { ref } from 'vue';
-import { login } from '../assets/js/login';
+import { login } from '../assets/js/user-api';
 import LoadingWindow from '../components/LoadingWindow.vue';
 
 const email = ref(""), password = ref("");

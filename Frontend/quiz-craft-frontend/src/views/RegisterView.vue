@@ -1,18 +1,23 @@
 <script setup>
 import { RouterLink } from 'vue-router';
 import { ref } from 'vue'
-import { register } from '../assets/js/register'
+import { login, register } from '../assets/js/user-api'
 import LoadingWindow from '../components/LoadingWindow.vue';
 
-const email = ref(""), password = ref(""), name = ref(""), role = ref("STUDENT");
+const username = ref(""), email = ref(""), password = ref(""), name = ref(""), role = ref("STUDENT");
 
 const error = ref("");
 const isLoading = ref(false);
 
 const submit = () => {
     isLoading.value = true;
-    register(name.value, email.value, password.value)
-        .then(() => isLoading.value = false)
+    register(username.value, email.value, name.value, password.value, role.value)
+        .then(() => login(username.value, password.value)
+        .then(()=>isLoading.value = false)
+        .catch(err=>{
+            error.value = err;
+            isLoading.value = false;
+        }))
         .catch(err => {
             error.value = err;
             isLoading.value = false;
@@ -37,9 +42,14 @@ const submit = () => {
                                 <p class="text-center">Teach and learn</p>
                                 <form @submit="submit" action="#" onsubmit="return false;">
                                     <div class="mb-3">
-                                        <label for="display-name" class="form-label">Name</label>
+                                        <label for="display-name" class="form-label">Fullname</label>
                                         <input v-model="name" type="text" class="form-control" name="display-name" required
                                             maxlength="200">
+                                    </div>
+                                    <div class="mb-4">
+                                        <label for="username" class="form-label">Username</label>
+                                        <input v-model="username" type="text" class="form-control" name="username" required
+                                            minlength="5" maxlength="200">
                                     </div>
                                     <div class="mb-4">
                                         <label for="name" class="form-label">Email</label>

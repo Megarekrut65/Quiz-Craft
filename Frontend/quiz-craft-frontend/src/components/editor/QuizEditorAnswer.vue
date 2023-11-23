@@ -2,10 +2,6 @@
 import { ref, toRaw } from 'vue';
 
 const props = defineProps({
-    question: {
-        type: Number,
-        required: true
-    },
     number: {
         type: Number,
         required: true
@@ -20,6 +16,10 @@ const props = defineProps({
     },
     updateSelf: {
         type: Function,
+        required: true
+    },
+    readOnly:{
+        type: Boolean,
         required: true
     }
 }
@@ -40,13 +40,13 @@ props.updateSelf(toRaw(formData));
     <main>
         <div class="form-row mt-2" style="position: relative;"  @change="updateSelf(toRaw(formData))">
             <div class="answer-number">
-                <div><i class="fa fa-close" @click="removeSelf(number,  data.option)"></i></div>
+                <div v-if="!readOnly"><i class="fa fa-close" @click="removeSelf(number,  data.option)"></i></div>
             </div>
             <div class="form-group col-9">
-                <input class="form-control" v-model="formData.option" placeholder="Option" type="text">
+                <input v-bind:readonly="readOnly" class="form-control" v-model="formData.option" placeholder="Option" type="text">
             </div>
             <div class="form-group col-3">
-                <input class="form-control" style="height: 50%;" type="checkbox" id="flexSwitchCheckChecked" v-model="formData.correct">
+                <input v-bind:disabled="readOnly" class="form-control" style="height: 50%;" type="checkbox" v-model="formData.correct">
             </div>
         </div>
     </main>

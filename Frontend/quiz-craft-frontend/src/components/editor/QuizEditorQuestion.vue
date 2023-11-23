@@ -1,7 +1,7 @@
 <script setup>
 import { ref, toRaw } from 'vue';
-import QuizAnswer from './QuizAnswer.vue';
-import ModalWindow from './ModalWindow.vue';
+import QuizEditorAnswer from './QuizEditorAnswer.vue';
+import ModalWindow from '../ModalWindow.vue';
 
 const props = defineProps({
     number: {
@@ -18,6 +18,10 @@ const props = defineProps({
     },
     updateSelf: {
         type: Function,
+        required: true
+    },
+    readOnly:{
+        type: Boolean,
         required: true
     }
 }
@@ -45,7 +49,7 @@ if (data.answers.length == 0) addAnswer();
 
 
 const updateAnswer = (answer) => {
-    const index = formData.value.answers.findIndex(item=>item.id == answer.id);
+    const index = formData.value.answers.findIndex(item => item.id == answer.id);
     if (index != -1)
         formData.value.answers[index] = answer;
 };
@@ -81,41 +85,44 @@ const removeAnswer = (number, text) => {
             <div class="col">
                 <form @change="updateSelf(toRaw(formData))">
                     <div class="form-row ">
-                        <div class="close"><i class="fa fa-close" @click="removeSelf(number, formData.description)"></i>
+                        <div v-if="!readOnly" class="close"><i class="fa fa-close" @click="removeSelf(number, formData.description)"></i>
                         </div>
                         <div class="question-number">
                             <h4>{{ number + 1 }}</h4>
                         </div>
                         <div class="form-group col-12 mt-4">
-                            <input class="form-control" v-model="formData.description" placeholder="Description"
+                            <input v-bind:readonly="readOnly" class="form-control" v-model="formData.description" placeholder="Description"
                                 type="text">
                         </div>
                         <div class="form-group col-12 col-md-6">
                             <label>Max grade</label>
-                            <input class="form-control" v-model="formData.maxGrade" placeholder="Description" type="number">
+                            <input v-bind:readonly="readOnly" class="form-control" v-model="formData.maxGrade" placeholder="Description" type="number">
                         </div>
                         <div class="form-group col-12 col-md-6">
                             <label>Question type</label>
-                            <select class="form-control wide" v-model="formData.type">
+                            <select v-bind:disabled="readOnly" class="form-control wide" v-model="formData.type">
                                 <option value="SINGLE">1 answer</option>
                                 <option value="MULTI">Multi answers</option>
                                 <option value="TEXT">Full answer</option>
                             </select>
                         </div>
                     </div>
-                    <div class="form-row" style="display: flex; align-items: center; flex-direction: row;">
-                        Answers <span class="plus ml-1"><i class="fa fa-plus" @click="addAnswer"></i></span>
-                    </div>
-                    <div class="form-row mt-2">
-                        <div class="form-group col-9">
-                            <label>Option</label>
+                    <div v-if="formData.type != 'TEXT'">
+                        <div class="form-row" style="display: flex; align-items: center; flex-direction: row;">
+                            Answers <span class="plus ml-1" v-if="!readOnly" ><i class="fa fa-plus" @click="addAnswer"></i></span>
                         </div>
-                        <div class="form-group col-3 text-center">
-                            <label>Is correct?</label>
+                        <div class="form-row mt-2">
+                            <div class="form-group col-9">
+                                <label>Option</label>
+                            </div>
+                            <div class="form-group col-3 text-center">
+                                <label>Is correct?</label>
+                            </div>
                         </div>
+                        <QuizEditorAnswer v-for="(data, index) in formData.answers" :key="data.id" :data="data"
+                            :number="index" :remove-self="removeAnswer" :update-self="updateAnswer" :read-only="readOnly"></QuizEditorAnswer>
                     </div>
-                    <QuizAnswer v-for="(data, index) in formData.answers" :key="data.id" :question="formData.id"
-                        :data="data" :number="index" :remove-self="removeAnswer" :update-self="updateAnswer"></QuizAnswer>
+
                 </form>
             </div>
         </div>
