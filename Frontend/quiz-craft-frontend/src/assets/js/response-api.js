@@ -13,7 +13,7 @@ export const sendResponse = (response)=>{
     return sendAsync(`${SERVER_URL}api/task-responses/create/`, request);
 };
 
-export const getResponse = (uid)=>{
+export const getResponseByUid = (uid)=>{
     const request = {
         method: "GET",
         headers: {
@@ -22,4 +22,25 @@ export const getResponse = (uid)=>{
         }
     };
     return sendAsync(`${SERVER_URL}api/task-responses/${uid}/`, request);
+};
+export const getResponseById = (id)=>{
+    const request = {
+        method: "GET",
+        headers: {
+            "Content-Type": "application/json",
+            Authorization: `Token ${getToken()}`
+        }
+    };
+    return sendAsync(`${SERVER_URL}api/tasks/response/${id}/`, request);
+};
+
+export const getResponses = (taskId)=>{
+    const request = {
+        method: "GET",
+        headers: {
+            "Content-Type": "application/json",
+            Authorization: `Token ${getToken()}`
+        }
+    };
+    return sendAsync(`${SERVER_URL}api/tasks/responses/${taskId}/`, request);
 };

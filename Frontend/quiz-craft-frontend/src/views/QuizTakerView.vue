@@ -2,7 +2,7 @@
 import { ref } from 'vue';
 import QuizTakerQuestion from '../components/taker/QuizTakerQuestion.vue';
 import ModalWindow from '../components/ModalWindow.vue';
-import {getResponse, sendResponse} from "../assets/js/response-api";
+import {getResponseByUid, sendResponse} from "../assets/js/response-api";
 import { useRoute } from 'vue-router';
 import { getUsername } from '../assets/js/user-api';
 import { getTaskByUid } from '../assets/js/task-api';
@@ -74,7 +74,7 @@ getTaskByUid(uid).then(res=>{
     });
 
 
-    getResponse(uid).then(resp=>{
+    getResponseByUid(uid).then(resp=>{
         updateTaskAnswers(questions.value, resp);
         console.log(questions)
         taken.value = true;

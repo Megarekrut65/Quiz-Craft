@@ -32,8 +32,7 @@ getTasks().then(res => {
             <div class="row">
                 <div class="col-12" v-if="tasks.length > 0">
                     <h2>Your quizzes</h2>
-                    <div class="table-responsive mt-4"
-                        @click="(event) => event.target.classList.contains('ti-x') ? () => { } : remove()">
+                    <div class="table-responsive mt-4">
                         <table class="table text-nowrap mb-0 align-middle">
                             <thead class="text-dark fs-4">
                                 <tr>

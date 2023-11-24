@@ -40,6 +40,16 @@ const router = createRouter({
       component: () => import('../views/QuizSubmittedView.vue')
     },
     {
+      path: '/quiz/answers/:taskId',
+      name: 'quiz-answers',
+      component: () => import('../views/QuizAnswersView.vue')
+    },
+    {
+      path: '/quiz/answers/detail/:taskId/:responseId',
+      name: 'quiz-answers-detail',
+      component: () => import('../views/QuizAnswerDetailView.vue')
+    },
+    {
       path: '/about',
       name: 'about',
       component: () => import('../views/AboutView.vue')

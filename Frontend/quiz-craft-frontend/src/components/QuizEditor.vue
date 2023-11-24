@@ -73,7 +73,7 @@ const errorLog = (err)=>{
     console.log(err);
 
     errorMessage.value = parseError(err);
-}
+};
 
 const validateData = (task) => {
     errorMessage.value = "";
@@ -184,6 +184,10 @@ if(readOnly.value){
         loaded.value = true;
     }).catch(errorLog);
 }
+
+const showAnswers = ()=>{
+    window.location = `/quiz/answers/${props.paramId}`;
+};
 </script>
 <template>
     <section class="book_section mb-4">
@@ -209,7 +213,10 @@ if(readOnly.value){
                                 <div>
                                     <button v-if="!readOnly" type="button" class="btn btn-success mr-4"
                                         @click="submitTask">Save</button>
-                                    <button v-else type="button" class="btn btn-warning" @click="shareTask">Share</button>
+                                    <div v-else>
+                                        <button type="button" class="btn btn-success mr-3" @click="showAnswers">Answers</button>
+                                        <button type="button" class="btn btn-warning" @click="shareTask">Share</button>
+                                    </div>
                                 </div>
                             </div>
 
