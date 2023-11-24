@@ -4,8 +4,7 @@ import QuizEditor from '../components/QuizEditor.vue';
 
 let {paramId} = useRoute().params;
 
-console.log(paramId)
-paramId = paramId?parseInt(paramId):-1
+paramId = paramId?parseInt(paramId):-1;
 
 </script>
 <template>

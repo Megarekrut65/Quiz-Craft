@@ -5,6 +5,7 @@ import { getTaskById, saveTask } from "../assets/js/task-api"
 import QuizEditorQuestion from '../components/editor/QuizEditorQuestion.vue';
 import ModalWindow from '../components/ModalWindow.vue'
 import ShareWindow from '../components/ShareWindow.vue';
+import { parseError } from '../assets/js/utilities';
 
 const props = defineProps({
     paramId:{
@@ -70,11 +71,9 @@ const closeError = () => {
 const errorLog = (err)=>{
     active.value = false;
     console.log(err);
-    const obj = JSON.parse(err.message);
-    const message = obj.detail?obj.detail:obj;
 
-    errorMessage.value = JSON.stringify(message);
-}
+    errorMessage.value = parseError(err);
+};
 
 const validateData = (task) => {
     errorMessage.value = "";
@@ -160,8 +159,8 @@ const submitTask = () => {
     modalSubmit.value = () => {
         saveTask(task)
             .then(res => {
-                console.log(res);
                 readOnly.value = true;
+                //window.location = `/quiz/editor/${res.id}`;
             })
             .catch(errorLog);
             closeModal();
@@ -185,6 +184,10 @@ if(readOnly.value){
         loaded.value = true;
     }).catch(errorLog);
 }
+
+const showAnswers = ()=>{
+    window.location = `/quiz/answers/${props.paramId}`;
+};
 </script>
 <template>
     <section class="book_section mb-4">
@@ -210,7 +213,10 @@ if(readOnly.value){
                                 <div>
                                     <button v-if="!readOnly" type="button" class="btn btn-success mr-4"
                                         @click="submitTask">Save</button>
-                                    <button v-else type="button" class="btn btn-warning" @click="shareTask">Share</button>
+                                    <div v-else>
+                                        <button type="button" class="btn btn-success mr-3" @click="showAnswers">Answers</button>
+                                        <button type="button" class="btn btn-warning" @click="shareTask">Share</button>
+                                    </div>
                                 </div>
                             </div>
 

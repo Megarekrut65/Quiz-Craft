@@ -2,30 +2,42 @@
 import { getTasks } from '../assets/js/task-api';
 import { ref } from "vue";
 import QuizListItem from '../components/QuizListItem.vue';
+import ModalWindow from '../components/ModalWindow.vue';
+import {parseError} from "../assets/js/utilities";
 
-const tasks = ref([{ "title": "hello", "description": "dwwwd" , "id":12}]);
+const errorMessage = ref("");
+
+const closeError = () => {
+    errorMessage.value = "";
+};
+
+const errorLog = (err)=>{
+    console.log(err);
+
+    errorMessage.value = parseError(err);
+}
+
+const tasks = ref([]);
 
 getTasks().then(res => {
     tasks.value = res;
-    console.log(res);
-}).catch(err => {
-    console.log(err);
-})
+}).catch(errorLog);
+
 </script>
 
 <template>
     <main>
+        <ModalWindow :question="errorMessage" :cancel="closeError"></ModalWindow>
         <div class="container">
             <div class="row">
-                <div class="col-12">
+                <div class="col-12" v-if="tasks.length > 0">
                     <h2>Your quizzes</h2>
-                    <div class="table-responsive mt-4"
-                        @click="(event) => event.target.classList.contains('ti-x') ? () => { } : remove()">
+                    <div class="table-responsive mt-4">
                         <table class="table text-nowrap mb-0 align-middle">
                             <thead class="text-dark fs-4">
                                 <tr>
                                     <th class="border-bottom-0">
-                                        <h6 class="fw-semibold mb-0"><i class="ti ti-list-numbers"></i></h6>
+                                        <h6 class="fw-semibold mb-0"><i class="fa fa-hashtag"></i></h6>
                                     </th>
                                     <th class="border-bottom-0">
                                         <h6 class="fw-semibold mb-0">Title</h6>
@@ -44,6 +56,9 @@ getTasks().then(res => {
                         </table>
                     </div>
 
+                </div>
+                <div class="col-12" v-else>
+                    <h5>There no quizzes yet! Create one? <RouterLink to="quiz/editor/new">Create</RouterLink></h5>
                 </div>
             </div>
         </div>

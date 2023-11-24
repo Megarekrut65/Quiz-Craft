@@ -24,7 +24,7 @@ defineProps({
             <h6 class="fw-semibold mb-1" style="overflow-x: hidden;">{{ data.description }}</h6>
         </td>
         <td class="border-bottom-0">
-            <h6 class="fw-semibold mb-1" style="overflow-x: hidden;"><RouterLink :to="{ name: 'quiz-editor', params: { paramId: data.id } }">Go</RouterLink></h6>
+            <h6 class="fw-semibold mb-1" style="overflow-x: hidden;"><RouterLink :to="{ name: 'quiz-editor', params: { paramId: data.id } }">View</RouterLink></h6>
         </td>
     </tr>
 </template>

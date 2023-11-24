@@ -11,7 +11,7 @@ const changeState = (logged)=>{
 
 const logoutUser = ()=>{
   logout().then(()=>{
-
+    window.location = "/login";
   }).catch(err=>{
     console.log(err);
   });
@@ -40,11 +40,11 @@ subscribeUserChangeState(changeState);
                   <li class="nav-item active">
                     <RouterLink class="nav-link" to="/">Home</RouterLink>
                   </li>
-                  <li class="nav-item">
+                  <li class="nav-item" v-if="isLogged">
                     <RouterLink class="nav-link" to="/quizzes">My Quizzes</RouterLink>
                   </li>
-                  <li class="nav-item">
-                    <RouterLink class="nav-link" to="/quiz/editor-new">Create Quiz</RouterLink>
+                  <li class="nav-item" v-if="isLogged">
+                    <RouterLink class="nav-link" to="/quiz/editor/new">Create Quiz</RouterLink>
                   </li>
                   <li class="nav-item">
                     <RouterLink class="nav-link" to="/about">About</RouterLink>
