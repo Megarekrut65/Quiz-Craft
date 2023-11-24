@@ -3,6 +3,7 @@ import { RouterLink } from 'vue-router';
 import { ref } from 'vue';
 import { login } from '../assets/js/user-api';
 import LoadingWindow from '../components/LoadingWindow.vue';
+import { parseError } from '../assets/js/utilities';
 
 const username = ref(""), password = ref("");
 const error = ref("");
@@ -16,7 +17,7 @@ const submit = () => {
             window.location = "/";
         })
     .catch(err => {
-        error.value = err;
+        error.value = parseError(err);
         isLoading.value = false;
     });
 

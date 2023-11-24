@@ -194,7 +194,7 @@ const showAnswers = () => {
         <ModalWindow :question="modalText" :submit="modalSubmit" :cancel="modalCancel"></ModalWindow>
         <ModalWindow :question="errorMessage" :cancel="closeError"></ModalWindow>
         <ShareWindow :active="active" :task-id="paramId" :close="closeSharing" :error-log="errorLog"></ShareWindow>
-        <form id="task-form" @submit.prevent="submitTask" onsubmit="return false;">
+        <form id="task-form" @submit.prevent="submitTask" onsubmit="return false;" style="background: none; box-shadow: none;">
             <div class="container" v-if="loaded">
                 <div class="row">
                     <div class="col">

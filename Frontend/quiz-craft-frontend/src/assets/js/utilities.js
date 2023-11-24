@@ -21,6 +21,9 @@ export const parseError = (err) => {
     try {
         const obj = JSON.parse(err.message);
         const message = obj.detail ? obj.detail : obj.error ? obj.error : JSON.stringify(obj);
+        if (typeof message !== "string"){
+            return message.message?message.message:JSON.stringify(message);
+        } 
 
         return message;
     } catch (error) {

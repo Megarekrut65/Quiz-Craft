@@ -36,7 +36,7 @@ if (type === "SINGLE") {
             <div class="col">
                 <form @change="updateSelf(data.id, type, toRaw(answerValue))">
                     <div class="form-row ">
-                        <div class="grade">Score: {{ data.maxGrade }}</div>
+                        <div class="grade">Max score: {{ data.maxGrade }}</div>
                         <div class="question-number">
                             <h4>{{ number + 1 }}</h4>
                         </div>
