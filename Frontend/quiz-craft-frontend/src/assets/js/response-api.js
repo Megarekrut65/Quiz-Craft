@@ -1,5 +1,6 @@
 import { SERVER_URL } from "./data";
-import { getToken, sendAsync } from "./utilities";
+import { sendAsync } from "./utilities";
+import {getToken} from "./user-api";
 
 export const sendResponse = (response)=>{
     const request = {

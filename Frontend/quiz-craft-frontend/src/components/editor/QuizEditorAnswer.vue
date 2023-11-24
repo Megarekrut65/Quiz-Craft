@@ -43,7 +43,7 @@ props.updateSelf(toRaw(formData));
                 <div v-if="!readOnly"><i class="fa fa-close" @click="removeSelf(number,  data.option)"></i></div>
             </div>
             <div class="form-group col-9">
-                <input v-bind:readonly="readOnly" class="form-control" v-model="formData.option" placeholder="Option" type="text">
+                <input v-bind:readonly="readOnly" class="form-control" v-model="formData.option" placeholder="Option..." type="text" maxlength="100" required form="task-form">
             </div>
             <div class="form-group col-3">
                 <input v-bind:disabled="readOnly" class="form-control" style="height: 50%;" type="checkbox" v-model="formData.correct">

@@ -91,19 +91,19 @@ const removeAnswer = (number, text) => {
                             <h4>{{ number + 1 }}</h4>
                         </div>
                         <div class="form-group col-12 mt-4">
-                            <input v-bind:readonly="readOnly" class="form-control" v-model="formData.description" placeholder="Description"
-                                type="text">
+                            <input v-bind:readonly="readOnly" class="form-control" v-model="formData.description" placeholder="Question..."
+                                type="text" maxlength="200" required form="task-form">
                         </div>
                         <div class="form-group col-12 col-md-6">
                             <label>Max grade</label>
-                            <input v-bind:readonly="readOnly" min="0" max="32000" class="form-control" v-model="formData.maxGrade" placeholder="Description" type="number">
+                            <input v-bind:readonly="readOnly" min="0" max="32000" class="form-control" v-model="formData.maxGrade" form="task-form" required type="number">
                         </div>
                         <div class="form-group col-12 col-md-6">
                             <label>Question type</label>
-                            <select v-bind:disabled="readOnly" class="form-control wide" v-model="formData.type">
-                                <option value="SINGLE">1 answer</option>
+                            <select v-bind:disabled="readOnly" class="form-control wide" v-model="formData.type" required form="task-form">
+                                <option value="SINGLE">Single answer</option>
                                 <option value="MULTI">Multi answers</option>
-                                <option value="TEXT">Full answer</option>
+                                <option value="TEXT">Text answer</option>
                             </select>
                         </div>
                     </div>

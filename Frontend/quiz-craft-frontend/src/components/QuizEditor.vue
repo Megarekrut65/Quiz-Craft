@@ -1,5 +1,5 @@
 <script setup>
-import { ref, toRaw  } from 'vue';
+import { ref, toRaw } from 'vue';
 
 import { getTaskById, saveTask } from "../assets/js/task-api"
 import QuizEditorQuestion from '../components/editor/QuizEditorQuestion.vue';
@@ -8,14 +8,14 @@ import ShareWindow from '../components/ShareWindow.vue';
 import { parseError } from '../assets/js/utilities';
 
 const props = defineProps({
-    paramId:{
+    paramId: {
         type: Number,
         required: false,
         default: -1
     }
 });
 
-const readOnly = ref(props.paramId !=-1 ?true:false);
+const readOnly = ref(props.paramId != -1 ? true : false);
 
 const taskTitle = ref("Unnamed"), taskDescription = ref("");
 
@@ -28,7 +28,7 @@ const addQuestion = () => {
     questions.value.push({ id: id++, description: "", maxGrade: 1.0, type: "SINGLE", answers: [] });
 };
 
-if(!readOnly.value) addQuestion();
+if (!readOnly.value) addQuestion();
 
 const updateQuestion = (question) => {
     const index = questions.value.findIndex(item => item.id == question.id);
@@ -68,7 +68,7 @@ const closeError = () => {
     errorMessage.value = "";
 };
 
-const errorLog = (err)=>{
+const errorLog = (err) => {
     active.value = false;
     console.log(err);
 
@@ -142,11 +142,11 @@ const extractTask = () => {
 
 const active = ref(false);
 
-const shareTask = ()=>{
+const shareTask = () => {
     active.value = true;
 };
 
-const closeSharing = ()=>{
+const closeSharing = () => {
     active.value = false;
 };
 
@@ -163,19 +163,19 @@ const submitTask = () => {
                 //window.location = `/quiz/editor/${res.id}`;
             })
             .catch(errorLog);
-            closeModal();
+        closeModal();
     };
 
     modalCancel.value = closeModal;
 };
 
-if(readOnly.value){
-    getTaskById(props.paramId).then(res=>{
+if (readOnly.value) {
+    getTaskById(props.paramId).then(res => {
 
         taskTitle.value = res.title;
         taskDescription.value = res.description;
 
-        questions.value = res.questions.map(item=>{
+        questions.value = res.questions.map(item => {
             const newItem = JSON.parse(JSON.stringify(item));
             newItem.maxGrade = item["max_grade"];
             return newItem;
@@ -185,7 +185,7 @@ if(readOnly.value){
     }).catch(errorLog);
 }
 
-const showAnswers = ()=>{
+const showAnswers = () => {
     window.location = `/quiz/answers/${props.paramId}`;
 };
 </script>
@@ -194,56 +194,61 @@ const showAnswers = ()=>{
         <ModalWindow :question="modalText" :submit="modalSubmit" :cancel="modalCancel"></ModalWindow>
         <ModalWindow :question="errorMessage" :cancel="closeError"></ModalWindow>
         <ShareWindow :active="active" :task-id="paramId" :close="closeSharing" :error-log="errorLog"></ShareWindow>
-        <div class="container" v-if="loaded">
-            <div class="row">
-                <div class="col">
-                    <form>
-                        <div>
-                            <h4 class="form-row">
-                                <div class="form-group col-lg-2">
-                                    <label>Quiz title*</label>
-                                </div>
-                                <div class="form-group col-lg-6">
-                                    <input type="text" class="form-control" placeholder="Quiz name" v-model="taskTitle"
-                                        required v-bind:readonly="readOnly">
+        <form id="task-form" @submit.prevent="submitTask" onsubmit="return false;">
+            <div class="container" v-if="loaded">
+                <div class="row">
+                    <div class="col">
 
-                                </div>
-                            </h4>
-                            <div class="share">
-                                <div>
-                                    <button v-if="!readOnly" type="button" class="btn btn-success mr-4"
-                                        @click="submitTask">Save</button>
-                                    <div v-else>
-                                        <button type="button" class="btn btn-success mr-3" @click="showAnswers">Answers</button>
-                                        <button type="button" class="btn btn-warning" @click="shareTask">Share</button>
+                        <form onsubmit="return false;">
+                            <div>
+                                <h4 class="form-row">
+                                    <div class="form-group col-lg-2">
+                                        <label>Quiz title*</label>
+                                    </div>
+                                    <div class="form-group col-lg-6">
+                                        <input type="text" class="form-control" placeholder="Quiz title..."
+                                            v-model="taskTitle" required v-bind:readonly="readOnly" form="task-form">
+
+                                    </div>
+                                </h4>
+                                <div class="share">
+                                    <div>
+                                        <button v-if="!readOnly" type="submit" class="btn btn-success mr-4"
+                                            form="task-form">Save</button>
+                                        <div v-else>
+                                            <button type="button" class="btn btn-success mr-3"
+                                                @click="showAnswers">Answers</button>
+                                            <button type="button" class="btn btn-warning" @click="shareTask" >Share</button>
+                                        </div>
                                     </div>
                                 </div>
+
                             </div>
 
-                        </div>
-
-                        <div class="form-row">
-                            <div class="form-group col-12">
-                                <input v-bind:readonly="readOnly" type="text" class="form-control" placeholder="Description"
-                                    v-model="taskDescription">
+                            <div class="form-row">
+                                <div class="form-group col-12">
+                                    <input v-bind:readonly="readOnly" type="text" class="form-control"
+                                        placeholder="Description..." v-model="taskDescription" required form="task-form">
+                                </div>
                             </div>
+
+                        </form>
+                    </div>
+                </div>
+                <div class="move-container">
+                    <QuizEditorQuestion class="move-block" v-for="(data, index) in questions" :key="data.id" :data="data"
+                        :number="index" :remove-self="removeQuestion" :update-self="updateQuestion" :read-only="readOnly">
+                    </QuizEditorQuestion>
+                </div>
+
+
+                <div class="row m-4" v-if="!readOnly">
+                    <div class="col">
+                        <div class="plus"><img src="../assets/images/plus.png" style="height: 70px;" @click="addQuestion">
                         </div>
-
-                    </form>
+                    </div>
                 </div>
             </div>
-            <div class="move-container">
-                <QuizEditorQuestion class="move-block" v-for="(data, index) in questions" :key="data.id" :data="data"
-                    :number="index" :remove-self="removeQuestion" :update-self="updateQuestion" :read-only="readOnly">
-                </QuizEditorQuestion>
-            </div>
-
-
-            <div class="row m-4" v-if="!readOnly">
-                <div class="col">
-                    <div class="plus"><img src="../assets/images/plus.png" style="height: 70px;" @click="addQuestion"></div>
-                </div>
-            </div>
-        </div>
+        </form>
     </section>
 </template>

@@ -1,5 +1,6 @@
 import { SERVER_URL } from "./data";
-import { sendAsync, getToken } from "./utilities";
+import { sendAsync } from "./utilities";
+import {getToken} from "./user-api";
 
 export const saveTask = async(task)=>{
     const request = {
