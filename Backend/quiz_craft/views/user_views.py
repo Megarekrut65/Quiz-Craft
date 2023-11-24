@@ -19,7 +19,7 @@ class UserProfileListView(generics.ListAPIView):
 class UserRegistrationView(APIView):
     def post(self, request, *args, **kwargs):
         if request.user.is_authenticated:
-            return Response({'message': 'Registration not allowed for authenticated users.'},
+            return Response({'detail': 'Registration not allowed for authenticated users.'},
                             status=status.HTTP_400_BAD_REQUEST)
 
         serializer = UserRegistrationSerializer(data=request.data)
@@ -27,10 +27,10 @@ class UserRegistrationView(APIView):
             serializer.is_valid(raise_exception=True)
             user = serializer.save()
         except serializers.ValidationError as validation_error:
-            return Response({'error': str(validation_error)}, status=status.HTTP_400_BAD_REQUEST)
+            return Response({'detail': str(validation_error)}, status=status.HTTP_400_BAD_REQUEST)
         except IntegrityError as integrity_error:
             if 'auth_user_username_key' in str(integrity_error):
-                return Response({'error': 'Username is already taken.'}, status=status.HTTP_400_BAD_REQUEST)
+                return Response({'detail': 'Username is already taken.'}, status=status.HTTP_400_BAD_REQUEST)
 
         user_serializer = UserSerializer(user)
         return Response(user_serializer.data, status=status.HTTP_201_CREATED)
@@ -51,7 +51,7 @@ class UserLoginView(APIView):
 
                 return Response({'token': token.key, 'message': 'Login successful.'}, status=status.HTTP_200_OK)
 
-            return Response({'message': 'Invalid credentials.'}, status=status.HTTP_401_UNAUTHORIZED)
+            return Response({'detail': 'Invalid credentials.'}, status=status.HTTP_401_UNAUTHORIZED)
 
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 

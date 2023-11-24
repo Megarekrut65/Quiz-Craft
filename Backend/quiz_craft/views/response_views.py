@@ -23,7 +23,7 @@ class TaskResponseCreateView(generics.CreateAPIView):
             task_uid = TaskUID.objects.get(uid=uid)
             task = task_uid.task
         except Task.DoesNotExist:
-            return Response({"error": "Task UID not found."}, status=status.HTTP_404_NOT_FOUND)
+            return Response({"detail": "Task UID not found."}, status=status.HTTP_404_NOT_FOUND)
 
         task_response = TaskResponse(profile=request.user.userprofile, task=task)
 
@@ -36,7 +36,7 @@ class TaskResponseCreateView(generics.CreateAPIView):
             try:
                 question = Question.objects.get(id=question_id, task=task)
             except Question.DoesNotExist:
-                return Response({"error": f"Question with id {question_id} not found for the given task."},
+                return Response({"detail": f"Question with id {question_id} not found for the given task."},
                                 status=status.HTTP_404_NOT_FOUND)
 
             if question.type == 'TEXT':
@@ -49,7 +49,7 @@ class TaskResponseCreateView(generics.CreateAPIView):
                 try:
                     answer = Answer.objects.get(id=answer_id, question=question)
                 except Answer.DoesNotExist:
-                    return Response({"error": f"Answer with id {answer_id} not found for the given question."},
+                    return Response({"detail": f"Answer with id {answer_id} not found for the given question."},
                                     status=status.HTTP_404_NOT_FOUND)
 
                 question_response = QuestionResponse(
@@ -63,7 +63,7 @@ class TaskResponseCreateView(generics.CreateAPIView):
         try:
             task_response.save(force_insert=True)
         except IntegrityError:
-            return Response({"error": "You have already responded to this task."},
+            return Response({"detail": "You have already responded to this task."},
                             status=status.HTTP_400_BAD_REQUEST)
 
         for question_response in question_responses:
@@ -93,7 +93,7 @@ class TaskResponseRetrieveView(generics.RetrieveAPIView):
     def retrieve(self, request, *args, **kwargs):
         queryset = self.get_queryset()
         if not queryset.exists():
-            return Response({"error": "No response found for the given task and user, or owner closed the task."},
+            return Response({"detail": "No response found for the given task and user, or owner closed the task."},
                             status=status.HTTP_404_NOT_FOUND)
 
         instance = queryset.first()
