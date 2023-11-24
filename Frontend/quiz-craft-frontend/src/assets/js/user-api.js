@@ -1,5 +1,5 @@
 import { SERVER_URL } from "./data";
-import { sendAsync, getToken } from "./utilities";
+import { sendAsync } from "./utilities";
 
 
 
@@ -65,3 +65,13 @@ export const userIsLogged = ()=>{
 }
 
 export const getUsername = ()=>localStorage.getItem("username");
+export const getToken = () => localStorage.getItem("token");
+export const getRole = () => localStorage.getItem("role");
+
+export const isLoggedAs = (to, from, next, role) =>{
+    if(userIsLogged() && (role === getRole()||true)){
+        next();
+        return;
+    }
+    next({ name: "unauthorized" });
+};

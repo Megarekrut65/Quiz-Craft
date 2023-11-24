@@ -1,33 +1,40 @@
 import { createRouter, createWebHistory } from 'vue-router'
+import { isLoggedAs } from "../assets/js/user-api";
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
   routes: [
-    { 
-      path: '/:pathMatch(.*)*', 
+    {
+      path: '/:pathMatch(.*)*',
       name: '404',
-      component: () => import('../views/NotFoundView.vue')
+      component: () => import('../views/errors/NotFoundView.vue')
+    },{
+      path: '/unauthorized',
+      name: 'unauthorized',
+      component: () => import('../views/errors/UnauthorizedView.vue')
     },
     {
       path: '/',
       name: 'home',
-      component: () => import('../views/HomeView.vue')
-    }
-    ,
+      component: () => import('../views/static/HomeView.vue')
+    },
     {
       path: '/quizzes',
       name: 'quizzes',
-      component: () => import('../views/QuizzesView.vue')
+      component: () => import('../views/QuizzesView.vue'),
+      beforeEnter: (to, from, next) => isLoggedAs(to, from, next, "TEACHER")
     },
     {
       path: '/quiz/editor/new',
       name: 'quiz-editor-new',
-      component: () => import('../views/QuizEditorNewView.vue')
+      component: () => import('../views/QuizEditorNewView.vue'),
+      beforeEnter: (to, from, next) => isLoggedAs(to, from, next, "TEACHER")
     },
     {
       path: '/quiz/editor/:paramId',
       name: 'quiz-editor',
-      component: () => import('../views/QuizEditorView.vue')
+      component: () => import('../views/QuizEditorView.vue'),
+      beforeEnter: (to, from, next) => isLoggedAs(to, from, next, "TEACHER")
     },
     {
       path: '/quiz/:uid',
@@ -42,22 +49,24 @@ const router = createRouter({
     {
       path: '/quiz/answers/:taskId',
       name: 'quiz-answers',
-      component: () => import('../views/QuizAnswersView.vue')
+      component: () => import('../views/QuizAnswersView.vue'),
+      beforeEnter: (to, from, next) => isLoggedAs(to, from, next, "TEACHER")
     },
     {
       path: '/quiz/answers/detail/:taskId/:responseId',
       name: 'quiz-answers-detail',
-      component: () => import('../views/QuizAnswerDetailView.vue')
+      component: () => import('../views/QuizAnswerDetailView.vue'),
+      beforeEnter: (to, from, next) => isLoggedAs(to, from, next, "TEACHER")
     },
     {
       path: '/about',
       name: 'about',
-      component: () => import('../views/AboutView.vue')
+      component: () => import('../views/static/AboutView.vue')
     },
     {
       path: '/contacts',
       name: 'contacts',
-      component: () => import('../views/ContactsView.vue')
+      component: () => import('../views/static/ContactsView.vue')
     },
     {
       path: '/login',
@@ -72,7 +81,7 @@ const router = createRouter({
     {
       path: '/privacy',
       name: 'privacy',
-      component: () => import('../views/PrivacyView.vue')
+      component: () => import('../views/static/PrivacyView.vue')
     }
   ]
 })

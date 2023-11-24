@@ -81,7 +81,7 @@ getResponses(taskId).then(res => {
                                         <h6 class="fw-semibold mb-0">Title</h6>
                                     </th>
                                     <th class="border-bottom-0">
-                                        <h6 class="fw-semibold mb-0">Description</h6>
+                                        <h6 class="fw-semibold mb-0">Submitting date</h6>
                                     </th>
                                     <th class="border-bottom-0">
 

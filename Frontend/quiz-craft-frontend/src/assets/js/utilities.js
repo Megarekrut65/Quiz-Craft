@@ -16,7 +16,6 @@ export const sendAsync = async (endpoint, request) => {
     return response.json();
 };
 
-export const getToken = () => localStorage.getItem("token");
 
 export const parseError = (err) => {
     try {
