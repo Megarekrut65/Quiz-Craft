@@ -51,10 +51,10 @@ class TaskUIDCreateView(generics.CreateAPIView):
         try:
             task = Task.objects.get(id=task_id, created_by=request.user.userprofile)
         except Task.DoesNotExist:
-            return Response({"error": "Task not found or you are not the creator."}, status=status.HTTP_404_NOT_FOUND)
+            return Response({"detail": "Task not found or you are not the creator."}, status=status.HTTP_404_NOT_FOUND)
 
         if TaskUID.objects.filter(task_id=task_id).exists():
-            return Response({'error': 'UID already exists for task ID {}'.format(task_id)},
+            return Response({'detail': 'UID already exists for task ID {}'.format(task_id)},
                             status=status.HTTP_400_BAD_REQUEST)
 
         uid = generate_unique_uid()
@@ -76,7 +76,7 @@ class TaskUIDRetrieveDestroyView(generics.RetrieveDestroyAPIView):
     def retrieve(self, request, *args, **kwargs):
         queryset = self.get_queryset()
         if not queryset.exists():
-            return Response({"error": "TaskUID not found for the specified Task ID or you are not the creator."},
+            return Response({"detail": "TaskUID not found for the specified Task ID or you are not the creator."},
                             status=status.HTTP_404_NOT_FOUND)
 
         instance = queryset.first()
@@ -86,7 +86,7 @@ class TaskUIDRetrieveDestroyView(generics.RetrieveDestroyAPIView):
     def destroy(self, request, *args, **kwargs):
         queryset = self.get_queryset()
         if not queryset.exists():
-            return Response({"error": "TaskUID not found for the specified Task ID or you are not the creator."},
+            return Response({"detail": "TaskUID not found for the specified Task ID or you are not the creator."},
                             status=status.HTTP_404_NOT_FOUND)
 
         instance = queryset.first()
@@ -105,7 +105,7 @@ class TaskRetrieveByUIDView(generics.RetrieveAPIView):
     def retrieve(self, request, *args, **kwargs):
         queryset = self.get_queryset()
         if not queryset.exists():
-            return Response({"error": "Task not found for the specified UID."},
+            return Response({"detail": "Task not found for the specified UID."},
                             status=status.HTTP_404_NOT_FOUND)
 
         instance = queryset.first()
