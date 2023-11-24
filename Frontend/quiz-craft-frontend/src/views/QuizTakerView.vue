@@ -2,11 +2,12 @@
 import { ref } from 'vue';
 import QuizTakerQuestion from '../components/taker/QuizTakerQuestion.vue';
 import ModalWindow from '../components/ModalWindow.vue';
-import {sendResponse} from "../assets/js/response-api";
+import {getResponse, sendResponse} from "../assets/js/response-api";
 import { useRoute } from 'vue-router';
 import { getUsername } from '../assets/js/user-api';
 import { getTaskByUid } from '../assets/js/task-api';
-import { parseError } from '../assets/js/utilities';
+import { parseError, updateTaskAnswers } from '../assets/js/utilities';
+import QuizTakenQuestion from '../components/taker/QuizTakenQuestion.vue';
 
 let {uid} = useRoute().params;
 
@@ -56,10 +57,11 @@ const submitAnswers = ()=>{
     const response = {"uid":uid, "question_responses":list};
 
     sendResponse(response).then(()=>{
-        window.location = "/quiz/submitted";
+        window.location = `/quiz/submitted/${uid}`;
     }).catch(errorLog)
 };
 
+const taken = ref(false);
 
 getTaskByUid(uid).then(res=>{
     taskTitle.value = res.title;
@@ -71,8 +73,16 @@ getTaskByUid(uid).then(res=>{
         return newItem;
     });
 
+
+    getResponse(uid).then(resp=>{
+        updateTaskAnswers(questions.value, resp);
+        console.log(questions)
+        taken.value = true;
+    });
+
     loaded.value = true;
-}).catch(errorLog)
+}).catch(errorLog);
+
 
 </script>
 <template>
@@ -89,6 +99,7 @@ getTaskByUid(uid).then(res=>{
                                 </div>
                                 <div class="form-group col-12 col-md-6 text-md-right text-left">
                                     <p>You are signed as {{ username }}</p>
+                                    <h6 v-if="taken">You already have submitted this quiz</h6>
                                 </div>
                             </div>
                         </div>
@@ -102,13 +113,18 @@ getTaskByUid(uid).then(res=>{
                     </form>
                 </div>
             </div>
-            <QuizTakerQuestion v-for="(data, index) in questions" :key="index" :data="data" :number="index" :update-self="updateAnswer">
-            </QuizTakerQuestion>
-
-            <div class="row mb-4">
+            <div v-if="taken">
+                <QuizTakenQuestion v-for="(data, index) in questions" :key="index" :data="data" :number="index">
+                </QuizTakenQuestion>
+            </div>
+            <div v-else>
+                <QuizTakerQuestion v-for="(data, index) in questions" :key="index" :data="data" :number="index" :update-self="updateAnswer">
+                </QuizTakerQuestion>
+                <div class="row mb-4">
                 <div class="col text-right">
                     <input type="button" value="Submit" class="btn btn-success" @click="submitAnswers">
                 </div>
+            </div>
             </div>
         </div>
     </section>

@@ -35,7 +35,7 @@ const router = createRouter({
       component: () => import('../views/QuizTakerView.vue')
     },
     {
-      path: '/quiz/submitted',
+      path: '/quiz/submitted/:uid',
       name: 'quiz-submitted',
       component: () => import('../views/QuizSubmittedView.vue')
     },
