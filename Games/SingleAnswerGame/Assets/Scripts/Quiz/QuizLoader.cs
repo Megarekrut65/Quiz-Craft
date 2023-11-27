@@ -17,13 +17,21 @@ namespace Quiz
         [SerializeField] private GameObject contentObj;
         [SerializeField] private Transform content;
         
-        [SerializeField] private Text text;
+        [SerializeField] private Text questionText;
+        [SerializeField] private Text gradeText;
 
         [SerializeField] private EntityController player;
         [SerializeField] private EntityController enemy;
 
+        [SerializeField] private GameOverController gameOverController;
+
         private TaskResponse _response;
         private Task _task;
+
+        private int _grade = 0;
+        private int _maxGrade = 0;
+        
+        private int _correct = 0;
 
         private void Start()
         {
@@ -39,7 +47,8 @@ namespace Quiz
             if(question == null) return;
             contentObj.SetActive(true);
 
-            text.text = question.Description;
+            questionText.text = question.Description;
+            gradeText.text = $"Grade: {question.MaxGrade}";
             LoadAnswers(index, question.Answers);
         }
         
@@ -65,7 +74,14 @@ namespace Quiz
             Question question = _task.Questions[questionIndex];
             _response.Responses[questionIndex] = new QuestionResponse { Question = question.Id, Answer = answer.Id };
 
-            if (answer.Correct) player.Attack();
+            _maxGrade += question.MaxGrade;
+            
+            if (answer.Correct)
+            {
+                player.Attack();
+                _grade += question.MaxGrade;
+                _correct++;
+            }
             else enemy.Attack();
             
             StartCoroutine(LoadNext(questionIndex + 1));
@@ -79,6 +95,30 @@ namespace Quiz
             {
                 LoadQuestion(next, _task.Questions[next]);
             }
+            else
+            {
+                StartCoroutine(GameOver());
+            }
+        }
+
+        private IEnumerator GameOver()
+        {
+            if (_grade >= _task.Questions.Length / 2)
+            {
+                player.Win();
+                enemy.Lose();
+            }
+            else
+            {
+                enemy.Win();
+                player.Lose();
+            }
+            yield return new WaitForSeconds(1f);
+            
+            gameOverController.GameOver(new Summary{
+                Grade=_grade, MaxGrade = _maxGrade, Correct = _correct, 
+                MaxCorrect = _task.Questions.Length, Title = _task.Title, MinWinGrade = _task.Questions.Length/2, 
+                Username="Name"});
         }
     }
 }
