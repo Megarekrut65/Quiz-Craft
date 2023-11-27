@@ -1,4 +1,5 @@
 ﻿
+using System;
 using System.Collections;
 using Global;
 using Global.Data;
@@ -40,6 +41,9 @@ namespace Quiz
             _response = new TaskResponse { Responses = new QuestionResponse[_task.Questions.Length] };
             
             if(_task.Questions.Length > 0) LoadQuestion(0, _task.Questions[0]);
+
+            player.LoadEntity("Username", 1);
+            enemy.LoadEntity(_task.Title[..Math.Min(15, _task.Title.Length)], 2);
         }
         
         private void LoadQuestion(int index, Question question)
@@ -47,7 +51,7 @@ namespace Quiz
             if(question == null) return;
             contentObj.SetActive(true);
 
-            questionText.text = question.Description;
+            questionText.text = $"{index+1}. {question.Description}";
             gradeText.text = $"Grade: {question.MaxGrade}";
             LoadAnswers(index, question.Answers);
         }
