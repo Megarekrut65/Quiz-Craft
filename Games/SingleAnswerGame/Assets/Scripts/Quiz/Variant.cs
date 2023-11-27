@@ -1,6 +1,6 @@
 ﻿using System;
 using Global.Localization;
-using Quiz.Data;
+using Global.Data;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -13,12 +13,11 @@ namespace Quiz
 
         [SerializeField] private Text text;
 
-        public void SetData(Answer answer, Action<string, string> click, Font font)
+        public void SetData(int index, Answer answer, Action<int, Answer> click)
         {
-            answerClick.Click = () => click(answer.nextFrameId, answer.action);
+            answerClick.Click = () => click(index, answer);
 
-            text.text = LocalizationManager.GetWordByKey(answer.textKey);
-            text.font = font;
+            text.text = answer.Option;
         } 
     }
 }

@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections;
 using Global;
-using Main.Data;
+using Global.Data;
 using Newtonsoft.Json;
 using UnityEngine;
 using UnityEngine.UI;
@@ -26,13 +26,13 @@ namespace Main
         {
             try
             {
-                string res = Fetcher.Get("tasks/uid/get-task/epyhiNP7RGtX54ft3XVDhYZZNKB9o5NL",
+                string res = Fetcher.Get("tasks/16",
                     "60c1d692c0b18734016efb12ef5ab9627bcf375c");
                 LocalStorage.SetValue("quiz", res);
                 Task task = JsonConvert.DeserializeObject<Task>(res);
                 titleText.text = task.Title;
                 descriptionText.text = task.Description;
-                questionText.text = $"{task.Questions.Count} questions";
+                questionText.text = $"{task.Questions.Length} questions";
 
             } catch (Exception e)
             {

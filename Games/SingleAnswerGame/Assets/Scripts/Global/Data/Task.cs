@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using Newtonsoft.Json;
 
-namespace Main.Data
+namespace Global.Data
 {
     public class Task
     {
@@ -11,7 +11,7 @@ namespace Main.Data
         
         [JsonProperty("created_by")]
         public int CreatedBy { get; set; }
-        public List<Question> Questions { get; set; }
+        public Question[] Questions { get; set; }
     }
 
 }

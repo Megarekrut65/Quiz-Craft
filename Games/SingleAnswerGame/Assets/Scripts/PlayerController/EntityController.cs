@@ -24,5 +24,10 @@ namespace PlayerController
         {
             animController.Win();
         }
+
+        public void Attack()
+        {
+            animController.Attack();
+        }
     }
 }

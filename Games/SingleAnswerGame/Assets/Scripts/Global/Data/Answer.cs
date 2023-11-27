@@ -1,4 +1,4 @@
-﻿namespace Main.Data
+﻿namespace Global.Data
 {
     public class Answer
     {

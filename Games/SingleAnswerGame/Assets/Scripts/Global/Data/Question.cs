@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using Newtonsoft.Json;
 
-namespace Main.Data
+namespace Global.Data
 {
     public class Question
     {
@@ -11,6 +11,6 @@ namespace Main.Data
         
         [JsonProperty("max_grade")]
         public int MaxGrade { get; set; }
-        public List<Answer> Answers { get; set; }
+        public Answer[] Answers { get; set; }
     }
 }
