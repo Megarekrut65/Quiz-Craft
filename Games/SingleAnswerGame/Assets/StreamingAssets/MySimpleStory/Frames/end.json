@@ -1,0 +1,14 @@
+{
+    "id": "end",
+    "background": "End",
+    "music": "None",
+    "images": {
+        "left": "None"
+    },
+    "answers": [
+        {
+            "textKey": "end",
+            "nextFrameId": "main"
+        }
+    ]
+}
