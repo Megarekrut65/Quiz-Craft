@@ -1,10 +1,10 @@
 ﻿using Global;
 using Global.Json;
 using Global.Localization;
-using Story.Data;
+using Quiz.Data;
 using UnityEngine;
 
-namespace Story
+namespace Quiz
 {
     public class StoryController
     {

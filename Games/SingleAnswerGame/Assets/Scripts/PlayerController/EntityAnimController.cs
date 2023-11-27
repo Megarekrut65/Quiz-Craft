@@ -18,6 +18,9 @@ namespace PlayerController
         [SerializeField]
         private int selectedWeapon = 0;
 
+        private static readonly int LoseTrigger = Animator.StringToHash("Lose");
+        private static readonly int WinTrigger = Animator.StringToHash("Win");
+
         public void SelectWeapon(int weapon)
         {
             selectedWeapon = weapon;
@@ -27,6 +30,16 @@ namespace PlayerController
         {
             animator.SetInteger(Weapon, selectedWeapon);
             animator.SetTrigger(AttackTrigger);
+        }
+
+        public void Lose()
+        {
+            animator.SetTrigger(LoseTrigger);
+        }
+
+        public void Win()
+        {
+            animator.SetTrigger(WinTrigger);
         }
 
         private void AttackAnim()

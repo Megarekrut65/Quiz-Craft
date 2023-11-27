@@ -1,10 +1,10 @@
 ﻿using System;
 using Global.Localization;
-using Story.Data;
+using Quiz.Data;
 using UnityEngine;
 using UnityEngine.UI;
 
-namespace Story
+namespace Quiz
 {
     public class Variant: MonoBehaviour
     {

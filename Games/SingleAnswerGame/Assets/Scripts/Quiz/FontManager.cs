@@ -2,7 +2,7 @@
 using JetBrains.Annotations;
 using UnityEngine;
 
-namespace Story
+namespace Quiz
 {
     public class FontManager: MonoBehaviour
     {

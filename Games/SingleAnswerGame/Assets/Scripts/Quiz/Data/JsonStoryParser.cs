@@ -1,10 +1,8 @@
 ﻿using System.Collections.Generic;
-using Global;
 using Global.Json;
 using JetBrains.Annotations;
-using UnityEngine;
 
-namespace Story.Data
+namespace Quiz.Data
 {
     public class JsonStoryParser
     {

@@ -1,15 +1,13 @@
-﻿using System;
-using System.Collections;
+﻿using System.Collections;
 using Global;
-using Global.Localization;
 using Global.Sound;
 using JetBrains.Annotations;
-using Story.Data;
+using Quiz.Data;
 using UnityEngine;
 using UnityEngine.Networking;
 using UnityEngine.UI;
 
-namespace Story
+namespace Quiz
 {
     public class StoryLoader : MonoBehaviour
     {

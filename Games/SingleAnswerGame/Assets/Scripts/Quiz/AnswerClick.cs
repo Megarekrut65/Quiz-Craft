@@ -1,7 +1,7 @@
 ﻿using System;
 using UnityEngine;
 
-namespace Story
+namespace Quiz
 {
     public class AnswerClick : MonoBehaviour
     {

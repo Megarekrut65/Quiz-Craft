@@ -1,7 +1,6 @@
 ﻿using System;
-using UnityEngine.Serialization;
 
-namespace Story.Data
+namespace Quiz.Data
 {
     [Serializable]
     public class Frame

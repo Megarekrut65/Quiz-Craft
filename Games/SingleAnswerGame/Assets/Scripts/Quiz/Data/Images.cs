@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Story.Data
+namespace Quiz.Data
 {
     [Serializable]
     public class Images

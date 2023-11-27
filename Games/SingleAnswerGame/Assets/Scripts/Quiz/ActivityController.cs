@@ -1,6 +1,6 @@
 ﻿using UnityEngine;
 
-namespace Story
+namespace Quiz
 {
     public class ActivityController : MonoBehaviour
     {
