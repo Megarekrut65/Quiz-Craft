@@ -1,4 +1,4 @@
-from django.contrib.auth import authenticate, login, logout
+from django.contrib.auth import authenticate, login, logout, get_user_model
 from django.db import IntegrityError
 from rest_framework import generics, status, serializers
 from rest_framework.authtoken.models import Token
@@ -46,10 +46,18 @@ class UserLoginView(APIView):
             user = authenticate(request, username=username, password=password)
 
             if user:
+                user_model = get_user_model()
+
+                try:
+                    user_obj = user_model.objects.get(username=username)
+                    role = user_obj.userprofile.role
+                except user_model.DoesNotExist:
+                    return Response({"detail": "User not found."}, status=status.HTTP_404_NOT_FOUND)
+
                 login(request, user)
                 token, created = Token.objects.get_or_create(user=user)
 
-                return Response({'token': token.key, 'message': 'Login successful.'}, status=status.HTTP_200_OK)
+                return Response({'token': token.key, 'role': role, 'message': 'Login successful.'}, status=status.HTTP_200_OK)
 
             return Response({'detail': 'Invalid credentials.'}, status=status.HTTP_401_UNAUTHORIZED)
 

@@ -5,7 +5,7 @@ from ..models.task import Task, Answer, Question, TaskUID
 class AnswerSerializer(serializers.ModelSerializer):
     class Meta:
         model = Answer
-        fields = ['option', 'correct']
+        fields = ['id', 'option', 'correct']
 
 
 class QuestionSerializer(serializers.ModelSerializer):
@@ -51,7 +51,7 @@ class QuestionListSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Question
-        fields = ['type', 'description', 'max_grade', 'answers']
+        fields = ['id', 'type', 'description', 'max_grade', 'answers']
 
 
 class TaskListSerializer(serializers.ModelSerializer):

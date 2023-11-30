@@ -22,7 +22,7 @@ class TaskResponseCreateView(generics.CreateAPIView):
         try:
             task_uid = TaskUID.objects.get(uid=uid)
             task = task_uid.task
-        except Task.DoesNotExist:
+        except TaskUID.DoesNotExist:
             return Response({"detail": "Task UID not found."}, status=status.HTTP_404_NOT_FOUND)
 
         task_response = TaskResponse(profile=request.user.userprofile, task=task)
