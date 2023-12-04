@@ -170,6 +170,11 @@ Backend/.idea/workspace.xml
 #
 # Get latest from https://github.com/github/gitignore/blob/main/Unity.gitignore
 #
+
+**/[Uu]ser[Ss]ettings/
+**/obj/
+**/.idea/
+**/[Ll]ibrary/
 /[Ll]ibrary/
 /[Tt]emp/
 /[Oo]bj/
