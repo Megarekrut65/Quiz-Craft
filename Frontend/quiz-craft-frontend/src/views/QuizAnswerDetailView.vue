@@ -5,7 +5,7 @@ import {getResponseById} from "../assets/js/response-api";
 import { useRoute } from 'vue-router';
 import { getTaskById } from '../assets/js/task-api';
 import { parseError, updateTaskAnswers } from '../assets/js/utilities';
-import QuizTakenQuestion from '../components/taker/QuizTakenQuestion.vue';
+import QuizGradeQuestion from '../components/grade/QuizGradeQuestion.vue';
 
 let {taskId, responseId} = useRoute().params;
 
@@ -29,11 +29,10 @@ const errorLog = (err)=>{
 }
 
 getTaskById(taskId).then(res=>{
-    console.log(res);
-
+    
     taskTitle.value = res.title;
     taskDescription.value = res.description;
-    username.value = res.fullname;
+    
 
     questions.value = res.questions.map(item=>{
         const newItem = JSON.parse(JSON.stringify(item));
@@ -43,15 +42,25 @@ getTaskById(taskId).then(res=>{
 
 
     getResponseById(responseId).then(resp=>{
-        console.log(resp);
-        
+        username.value = resp.fullname;
+
         updateTaskAnswers(questions.value, resp);
-        console.log(questions)
+        console.log(questions.value)
     });
 
     loaded.value = true;
 }).catch(errorLog);
 
+
+const updateGrade = (value)=>{
+    const item = questions.value.find((question) => question.responseId === value.id);
+
+    if(item) item.grade = value.grade;
+};
+
+const gradeResponse = ()=>{
+
+};
 
 </script>
 <template>
@@ -81,8 +90,16 @@ getTaskById(taskId).then(res=>{
                     </form>
                 </div>
             </div>
-            <QuizTakenQuestion v-for="(data, index) in questions" :key="index" :data="data" :number="index">
-            </QuizTakenQuestion>
+            <form onsubmit="return false;" @submit="gradeResponse" id="grade-form" style="background: none; box-shadow: none; padding: 0; margin: 0;">
+                <QuizGradeQuestion v-for="(data, index) in questions" :key="data.responseId" :data="data" :number="index" 
+                :update-self="updateGrade">
+                </QuizGradeQuestion>
+                <div class="row mb-4">
+                    <div class="col  text-right">
+                        <input type="submit" value="Grade" class="btn btn-success">
+                    </div>
+                </div>
+            </form>
             
         </div>
     </section>

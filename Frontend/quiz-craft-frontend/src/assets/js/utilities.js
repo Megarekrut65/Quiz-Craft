@@ -24,7 +24,9 @@ export const parseError = (err) => {
         if (typeof message !== "string"){
             return message.message?message.message:JSON.stringify(message);
         } 
-
+        if (message === "Invalid token."){
+            window.location.href = "/login";
+        }
         return message;
     } catch (error) {
         return err;
@@ -47,6 +49,39 @@ export const copyToBuffer = (text) => {
     document.body.removeChild(item);
 };
 
+
+const addGrade = (question, answers)=>{
+    question.grade = 0;
+    
+    if (question.type === "SINGLE") {
+        for (let i in answers) {
+            if (answers[i].selected) {
+                if(answers[i].correct){
+                    question.grade = question.maxGrade;
+                }
+                break;
+            }
+        }
+        return;
+    }
+    
+    if (question.type === "MULTI") {
+        let correct = 0, selected = 0;
+        for (let i in answers) {
+            if (answers[i].selected) {
+                
+                if(answers[i].correct){
+                    selected++;
+                }
+                correct++;
+            }
+        }
+        if(correct == selected){
+            question.grade = question.maxGrade;
+        }
+    }
+};
+
 export const updateTaskAnswers = (questions, response) => {
     for (const question of questions) {
         const questionResponse = response["question_responses"].find(
@@ -54,13 +89,21 @@ export const updateTaskAnswers = (questions, response) => {
         );
 
         if (questionResponse) {
+            question.responseId = questionResponse.id;
+
             if (question.type === "SINGLE" || question.type === "MULTI") {
                 for (const answer of question.answers) {
                     if(answer.id === questionResponse.answer){
+                        
                         answer.selected = answer.id;
                     }
                 }
-            } else if (question.type === "TEXT") {
+
+                addGrade(question, question.answers);
+                continue;
+            }
+
+            if (question.type === "TEXT") {
                 question.selected = questionResponse["text_answer"];
             }
         }
