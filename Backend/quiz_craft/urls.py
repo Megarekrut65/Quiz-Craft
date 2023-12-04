@@ -1,8 +1,9 @@
 from django.urls import path
 
-from .views.game_views import GameListView, GameDetailView, GameUIDCreateView, GameUIDRetrieveDestroyView
+from .views.game_views import GameListView, GameDetailView, GameUIDCreateView, GameUIDRetrieveDestroyView, \
+    GameRetrieveByUIDView
 from .views.response_views import TaskResponseCreateView, TaskResponseRetrieveView, TaskResponsesListView, \
-    TaskResponseDetailView
+    TaskResponseDetailView, QuestionResponseGradeUpdateView, GameResponseCreateView
 from .views.task_views import TaskCreateView, TaskListView, TaskDetailView, TaskUIDCreateView, \
     TaskUIDRetrieveDestroyView, TaskRetrieveByUIDView
 from .views.user_views import UserProfileListView, UserRegistrationView, UserLoginView, UserLogoutView
@@ -26,4 +27,7 @@ urlpatterns = [
     path('games/<int:pk>/', GameDetailView.as_view(), name='game-detail'),
     path('games/generate-uid/', GameUIDCreateView.as_view(), name='game-uid-create'),
     path('games/uid/<int:game_id>/', GameUIDRetrieveDestroyView.as_view(), name='game-uid-retrieve-destroy'),
+    path('games/uid/get-game/<str:uid>/', GameRetrieveByUIDView.as_view(), name='uid-get-game'),
+    path('question-responses/grade/<int:pk>/', QuestionResponseGradeUpdateView.as_view(), name='question-response-update-grade'),
+    path('game-responses/create/', GameResponseCreateView.as_view(), name='game_response_create'),
 ]

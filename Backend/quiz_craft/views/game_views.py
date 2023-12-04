@@ -1,9 +1,10 @@
 from rest_framework import generics
+from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
 from rest_framework import status
 from ..models.game import Game, GameUID
 from ..permissions import IsTeacher
-from ..serializers.game_serializer import GameSerializer, GameUIDSerializer
+from ..serializers.game_serializer import GameSerializer, GameUIDSerializer, GameByUIDSerializer
 from ..utils import generate_unique_game_uid
 
 
@@ -75,3 +76,22 @@ class GameUIDRetrieveDestroyView(generics.RetrieveDestroyAPIView):
         instance = queryset.first()
         instance.delete()
         return Response({"message": "GameUID deleted successfully."}, status=status.HTTP_204_NO_CONTENT)
+
+
+class GameRetrieveByUIDView(generics.RetrieveAPIView):
+    serializer_class = GameByUIDSerializer
+    permission_classes = [IsAuthenticated]
+
+    def get_queryset(self):
+        uid = self.kwargs.get('uid')
+        return Game.objects.filter(game_uid__uid=uid)
+
+    def retrieve(self, request, *args, **kwargs):
+        queryset = self.get_queryset()
+        if not queryset.exists():
+            return Response({"detail": "Game not found for the specified UID."},
+                            status=status.HTTP_404_NOT_FOUND)
+
+        instance = queryset.first()
+        serializer = self.get_serializer(instance)
+        return Response(serializer.data, status=status.HTTP_200_OK)
