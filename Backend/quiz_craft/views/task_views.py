@@ -6,7 +6,7 @@ from ..models.task import Task, TaskUID
 from ..permissions import IsTeacher
 from ..serializers.task_serializer import TaskCreateSerializer, TaskListSerializer, TaskUIDSerializer, \
     TaskByUIDSerializer
-from ..utils import generate_unique_uid
+from ..utils import generate_unique_task_uid
 
 
 class TaskCreateView(generics.CreateAPIView):
@@ -57,7 +57,7 @@ class TaskUIDCreateView(generics.CreateAPIView):
             return Response({'detail': 'UID already exists for task ID {}'.format(task_id)},
                             status=status.HTTP_400_BAD_REQUEST)
 
-        uid = generate_unique_uid()
+        uid = generate_unique_task_uid()
         task_uid = TaskUID.objects.create(uid=uid, task=task)
 
         serializer = self.get_serializer(task_uid)

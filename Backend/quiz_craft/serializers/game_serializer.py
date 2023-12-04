@@ -1,7 +1,7 @@
 from rest_framework import serializers
 
 from .task_serializer import TaskCreateSerializer
-from ..models.game import Game
+from ..models.game import Game, GameUID
 
 
 class GameSerializer(serializers.ModelSerializer):
@@ -22,3 +22,10 @@ class GameSerializer(serializers.ModelSerializer):
 
         game = Game.objects.create(task=task, **validated_data)
         return game
+
+
+class GameUIDSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = GameUID
+        fields = ['uid', 'game']
+        

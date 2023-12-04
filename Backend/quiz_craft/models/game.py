@@ -18,3 +18,8 @@ class Game(models.Model):
     player_weapon = models.CharField(max_length=20, choices=WEAPONS)
     enemy_weapon = models.CharField(max_length=20, choices=WEAPONS)
     task = models.ForeignKey(Task, on_delete=models.CASCADE)
+
+
+class GameUID(models.Model):
+    uid = models.CharField(max_length=32, unique=True)
+    game = models.OneToOneField(Game, on_delete=models.CASCADE, related_name='game_uid')

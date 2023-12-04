@@ -1,6 +1,6 @@
 from django.urls import path
 
-from .views.game_views import GameListView, GameDetailView
+from .views.game_views import GameListView, GameDetailView, GameUIDCreateView, GameUIDRetrieveDestroyView
 from .views.response_views import TaskResponseCreateView, TaskResponseRetrieveView, TaskResponsesListView, \
     TaskResponseDetailView
 from .views.task_views import TaskCreateView, TaskListView, TaskDetailView, TaskUIDCreateView, \
@@ -24,4 +24,6 @@ urlpatterns = [
     path('tasks/response/<int:pk>/', TaskResponseDetailView.as_view(), name='task-responses-list'),
     path('games/', GameListView.as_view(), name='game-list'),
     path('games/<int:pk>/', GameDetailView.as_view(), name='game-detail'),
+    path('games/generate-uid/', GameUIDCreateView.as_view(), name='game-uid-create'),
+    path('games/uid/<int:game_id>/', GameUIDRetrieveDestroyView.as_view(), name='game-uid-retrieve-destroy'),
 ]
