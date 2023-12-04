@@ -16,3 +16,4 @@ class QuestionResponse(models.Model):
     question = models.ForeignKey(Question, on_delete=models.CASCADE)
     answer = models.ForeignKey(Answer, on_delete=models.CASCADE, null=True, blank=True)
     text_answer = models.CharField(max_length=300, blank=True)
+    grade = models.IntegerField(null=True, blank=True)

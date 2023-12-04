@@ -5,7 +5,7 @@ from ..models.task import Task, Answer, Question, TaskUID
 class AnswerSerializer(serializers.ModelSerializer):
     class Meta:
         model = Answer
-        fields = ['option', 'correct']
+        fields = ['id', 'option', 'correct']
 
 
 class QuestionSerializer(serializers.ModelSerializer):
@@ -13,7 +13,7 @@ class QuestionSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Question
-        fields = ['type', 'description', 'max_grade', 'answers']
+        fields = ['id', 'type', 'description', 'max_grade', 'answers']
 
     def create(self, validated_data):
         answers_data = validated_data.pop('answers')
@@ -30,9 +30,14 @@ class TaskCreateSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Task
-        fields = ['id', 'title', 'description', 'questions']
+        fields = ['id', 'title', 'description', 'questions', 'created_by']
 
     def create(self, validated_data):
+        request = self.context.get('request')
+        user = request.user if request else None
+
+        validated_data['created_by'] = user.userprofile if user else None
+
         questions_data = validated_data.pop('questions')
         task = Task.objects.create(**validated_data)
 
@@ -51,7 +56,7 @@ class QuestionListSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Question
-        fields = ['type', 'description', 'max_grade', 'answers']
+        fields = ['id', 'type', 'description', 'max_grade', 'answers']
 
 
 class TaskListSerializer(serializers.ModelSerializer):

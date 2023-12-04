@@ -4,11 +4,12 @@ from rest_framework import generics, status
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
 
+from ..models.game import GameUID
 from ..models.response import TaskResponse, QuestionResponse
 from ..models.task import Task, Question, Answer, TaskUID
 from ..permissions import IsTeacher
 from ..serializers.response_serializer import TaskResponseSerializer, TaskResponseListSerializer, \
-    TaskResponseDetailSerializer
+    TaskResponseDetailSerializer, QuestionResponseSerializer
 
 
 class TaskResponseCreateView(generics.CreateAPIView):
@@ -22,7 +23,7 @@ class TaskResponseCreateView(generics.CreateAPIView):
         try:
             task_uid = TaskUID.objects.get(uid=uid)
             task = task_uid.task
-        except Task.DoesNotExist:
+        except TaskUID.DoesNotExist:
             return Response({"detail": "Task UID not found."}, status=status.HTTP_404_NOT_FOUND)
 
         task_response = TaskResponse(profile=request.user.userprofile, task=task)
@@ -130,3 +131,83 @@ class TaskResponseDetailView(generics.RetrieveAPIView):
         instance = self.get_object()
         serializer = self.get_serializer(instance)
         return Response(serializer.data, status=status.HTTP_200_OK)
+
+
+class QuestionResponseGradeUpdateView(generics.UpdateAPIView):
+    serializer_class = QuestionResponseSerializer
+    permission_classes = [IsTeacher]
+    queryset = QuestionResponse.objects.all()
+
+    def update(self, request, *args, **kwargs):
+        instance = self.get_object()
+        grade = request.data.get('grade')
+
+        if request.user.userprofile != instance.task_response.task.created_by:
+            return Response({"detail": "You don't have permission to update the grade for this question response."},
+                            status=status.HTTP_403_FORBIDDEN)
+
+        instance.grade = grade
+        instance.save()
+
+        serializer = self.get_serializer(instance)
+        return Response(serializer.data, status=status.HTTP_200_OK)
+
+
+class GameResponseCreateView(generics.CreateAPIView):
+    serializer_class = TaskResponseSerializer
+    permission_classes = [IsAuthenticated]
+
+    def post(self, request, *args, **kwargs):
+        uid = request.data.get('uid')
+        question_id = request.data.get('question_id')
+        answer_id = request.data.get('answer_id', None)
+
+        try:
+            game_uid = GameUID.objects.get(uid=uid)
+            task = game_uid.game.task
+        except GameUID.DoesNotExist:
+            return Response({"detail": "Game UID not found."}, status=status.HTTP_404_NOT_FOUND)
+
+        try:
+            question = Question.objects.get(id=question_id, task=task)
+        except Question.DoesNotExist:
+            return Response({"detail": f"Question with id {question_id} not found for the given task."},
+                            status=status.HTTP_404_NOT_FOUND)
+
+        if answer_id is None:
+            return Response({"detail": "Answer ID is required for this question type."},
+                            status=status.HTTP_400_BAD_REQUEST)
+
+        try:
+            answer = Answer.objects.get(id=answer_id, question=question)
+        except Answer.DoesNotExist:
+            return Response({"detail": f"Answer with id {answer_id} not found for the given question."},
+                            status=status.HTTP_404_NOT_FOUND)
+
+        task_response = TaskResponse.objects.filter(profile=request.user.userprofile, task=task).first()
+
+        if not task_response:
+            task_response = TaskResponse(profile=request.user.userprofile, task=task)
+            task_response.save(force_insert=True)
+
+        question_response = QuestionResponse.objects.filter(task_response=task_response, question=question)
+
+        if question_response:
+            return Response({"detail": "You have already responded to this question."},
+                            status=status.HTTP_400_BAD_REQUEST)
+
+        question_response = QuestionResponse(
+            task_response=task_response,
+            question=question,
+            answer=answer
+        )
+
+        question_response.save(force_insert=True)
+
+        task_response_serializer = TaskResponseSerializer(task_response)
+
+        response_data = {
+            'task_response': task_response_serializer.data
+        }
+
+        return Response(response_data, status=status.HTTP_201_CREATED)

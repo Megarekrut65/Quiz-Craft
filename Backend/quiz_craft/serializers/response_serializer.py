@@ -5,7 +5,7 @@ from ..models.response import TaskResponse, QuestionResponse
 class QuestionResponseSerializer(serializers.ModelSerializer):
     class Meta:
         model = QuestionResponse
-        fields = ['question', 'answer', 'text_answer']
+        fields = ['id', 'question', 'answer', 'text_answer', 'grade']
 
 
 class TaskResponseSerializer(serializers.ModelSerializer):
