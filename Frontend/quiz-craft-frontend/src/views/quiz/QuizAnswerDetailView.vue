@@ -1,12 +1,12 @@
 <script setup>
 import { ref } from 'vue';
-import ModalWindow from '../components/ModalWindow.vue';
-import {getResponseById, gradeResponse} from "../assets/js/response-api";
+import ModalWindow from '../../components/ModalWindow.vue';
+import {getResponseById, gradeResponse} from "../../assets/js/response-api";
 import { useRoute } from 'vue-router';
-import { getTaskById } from '../assets/js/task-api';
-import { parseError, updateTaskAnswers } from '../assets/js/utilities';
-import QuizGradeQuestion from '../components/grade/QuizGradeQuestion.vue';
-import LoadingWindow from "../components/LoadingWindow.vue";
+import { getTaskById } from '../../assets/js/task-api';
+import { parseError, updateTaskAnswers } from '../../assets/js/utilities';
+import QuizGradeQuestion from '../../components/grade/QuizGradeQuestion.vue';
+import LoadingWindow from "../../components/LoadingWindow.vue";
 
 const isActive = ref(true);
 

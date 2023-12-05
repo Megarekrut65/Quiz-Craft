@@ -88,7 +88,7 @@ subscribeUserChangeState(changeState);
     </div>
 
 
-    <section class="info_section">
+    <section class="info_section mt-4">
     <div class="container">
       <div class="info_bottom layout_padding2">
         <div class="row info_main_row">

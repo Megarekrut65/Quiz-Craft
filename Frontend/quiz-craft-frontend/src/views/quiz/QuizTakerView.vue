@@ -1,13 +1,13 @@
 <script setup>
 import { ref } from 'vue';
-import QuizTakerQuestion from '../components/taker/QuizTakerQuestion.vue';
-import ModalWindow from '../components/ModalWindow.vue';
-import {getResponseByUid, sendResponse} from "../assets/js/response-api";
+import QuizTakerQuestion from '../../components/taker/QuizTakerQuestion.vue';
+import ModalWindow from '../../components/ModalWindow.vue';
+import {getResponseByUid, sendResponse} from "../../assets/js/response-api";
 import { useRoute } from 'vue-router';
-import { getUsername } from '../assets/js/user-api';
-import { getTaskByUid } from '../assets/js/task-api';
-import { parseError, updateTaskAnswers } from '../assets/js/utilities';
-import QuizTakenQuestion from '../components/taker/QuizTakenQuestion.vue';
+import { getUsername } from '../../assets/js/user-api';
+import { getTaskByUid } from '../../assets/js/task-api';
+import { parseError, updateTaskAnswers } from '../../assets/js/utilities';
+import QuizTakenQuestion from '../../components/taker/QuizTakenQuestion.vue';
 
 let {uid} = useRoute().params;
 

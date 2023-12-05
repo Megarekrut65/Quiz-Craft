@@ -1,12 +1,12 @@
 <script setup>
 import { ref } from 'vue';
 
-import { getTaskById } from "../assets/js/task-api";
-import { getResponseById, getResponses } from "../assets/js/response-api";
-import { parseError, updateTaskAnswers } from '../assets/js/utilities';
+import { getTaskById } from "../../assets/js/task-api";
+import { getResponseById, getResponses } from "../../assets/js/response-api";
+import { parseError, updateTaskAnswers } from '../../assets/js/utilities';
 import { useRoute } from 'vue-router';
-import ModalWindow from '../components/ModalWindow.vue';
-import ResponseListItem from "../components/ResponseListItem.vue";
+import ModalWindow from '../../components/ModalWindow.vue';
+import ResponseListItem from "../../components/ResponseListItem.vue";
 
 let { taskId } = useRoute().params;
 

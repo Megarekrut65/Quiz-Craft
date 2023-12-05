@@ -1,6 +1,6 @@
 <script setup>
 import { useRoute } from 'vue-router';
-import QuizEditor from '../components/QuizEditor.vue';
+import GameEditor from '../components/GameEditor.vue';
 
 let {paramId} = useRoute().params;
 
@@ -8,5 +8,5 @@ paramId = paramId?parseInt(paramId):-1;
 
 </script>
 <template>
-    <QuizEditor :param-id="paramId"></QuizEditor>
+    <GameEditor :param-id="paramId"></GameEditor>
 </template>

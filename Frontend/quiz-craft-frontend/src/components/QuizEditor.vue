@@ -160,7 +160,7 @@ const submitTask = () => {
         saveTask(task)
             .then(res => {
                 readOnly.value = true;
-                //window.location = `/quiz/editor/${res.id}`;
+                window.location = `/quiz/editor/${res.id}`;
             })
             .catch(errorLog);
         closeModal();
