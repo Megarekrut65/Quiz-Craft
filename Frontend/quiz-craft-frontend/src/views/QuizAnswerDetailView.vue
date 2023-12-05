@@ -78,6 +78,7 @@ const submitGrade = ()=>{
     }
     Promise.all(promises).then(() => {
         isActive.value = false;
+        window.location.href = `/quiz/answers/${taskId}`;
     })
     .catch(errorLog);
 };

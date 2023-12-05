@@ -2,8 +2,8 @@
 import { ref } from 'vue';
 
 import { getTaskById } from "../assets/js/task-api";
-import { getResponses } from "../assets/js/response-api";
-import { parseError } from '../assets/js/utilities';
+import { getResponseById, getResponses } from "../assets/js/response-api";
+import { parseError, updateTaskAnswers } from '../assets/js/utilities';
 import { useRoute } from 'vue-router';
 import ModalWindow from '../components/ModalWindow.vue';
 import ResponseListItem from "../components/ResponseListItem.vue";
@@ -25,8 +25,15 @@ const errorLog = (err) => {
 };
 
 const taskTitle = ref(""), taskDescription = ref("");
+const questions = ref([]);
+let maxGrade = 0;
 
 getTaskById(taskId).then(res => {
+    questions.value = res.questions;
+    for(let question of res.questions){
+        maxGrade+= question["max_grade"];
+    }
+
     taskTitle.value = res.title;
     taskDescription.value = res.description;
 }).catch(errorLog);
@@ -34,8 +41,20 @@ getTaskById(taskId).then(res => {
 const responses = ref([]);
 
 getResponses(taskId).then(res => {
-    console.log(res);
-    responses.value = res;
+    const promises = [];
+    for(let i in res){
+        const promise = getResponseById(res[i].id).then(resp=>{
+            const gradeSum = updateTaskAnswers(questions.value, resp);
+            res[i].grade = gradeSum;
+            res[i].maxGrade = maxGrade;
+        }).catch(errorLog);
+
+        promises.push(promise);
+    }
+
+    Promise.all(promises).then(() => {
+        responses.value = res;
+    }).catch(errorLog);
 }).catch(errorLog);
 
 </script>
@@ -49,7 +68,7 @@ getResponses(taskId).then(res => {
                         <div>
                             <h4 class="form-row">
                                 <div class="form-group col-lg-2">
-                                    <label>Quiz title*</label>
+                                    <label>Quiz title</label>
                                 </div>
                                 <div class="form-group col-lg-6">
                                     <input type="text" class="form-control" placeholder="Quiz name" v-model="taskTitle"
@@ -80,6 +99,9 @@ getResponses(taskId).then(res => {
                                     </th>
                                     <th class="border-bottom-0">
                                         <h6 class="fw-semibold mb-0">Title</h6>
+                                    </th>
+                                    <th class="border-bottom-0">
+                                        <h6 class="fw-semibold mb-0">Grade</h6>
                                     </th>
                                     <th class="border-bottom-0">
                                         <h6 class="fw-semibold mb-0">Submitting date</h6>

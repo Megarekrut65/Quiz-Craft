@@ -79,7 +79,6 @@ getTaskByUid(uid).then(res=>{
         const gradeSum = updateTaskAnswers(questions.value, resp);
 
         grade.value = gradeSum;
-        console.log(resp);
 
         taken.value = true;
     });
