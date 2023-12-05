@@ -1,5 +1,6 @@
 from django.db import IntegrityError
 from django.shortcuts import get_object_or_404
+from django.utils import timezone
 from rest_framework import generics, status
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
@@ -184,11 +185,11 @@ class GameResponseCreateView(generics.CreateAPIView):
             return Response({"detail": f"Answer with id {answer_id} not found for the given question."},
                             status=status.HTTP_404_NOT_FOUND)
 
-        task_response = TaskResponse.objects.filter(profile=request.user.userprofile, task=task).first()
+        task_response, created = TaskResponse.objects.get_or_create(profile=request.user.userprofile, task=task)
 
-        if not task_response:
-            task_response = TaskResponse(profile=request.user.userprofile, task=task)
-            task_response.save(force_insert=True)
+        if not created:
+            task_response.created_at = timezone.now()
+            task_response.save()
 
         question_response = QuestionResponse.objects.filter(task_response=task_response, question=question)
 
