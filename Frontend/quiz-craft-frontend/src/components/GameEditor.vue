@@ -17,16 +17,17 @@ defineProps({
 
                     <form onsubmit="return false;">
                         <div>
-                            <h4 class="form-row">
+                            <h5 class="form-row">
                                 <div class="form-group col-lg-2">
-                                    <label>Quiz title*</label>
+                                    <h5>Game type</h5>
                                 </div>
                                 <div class="form-group col-lg-6">
-                                    <input type="text" class="form-control" placeholder="Quiz title..." v-model="taskTitle"
-                                        required v-bind:readonly="readOnly" form="task-form">
+                                    <select class="form-control" required  value="Single answer game">
+                                        <option option="SINGLEANSWER">Single answer game</option>
+                                    </select>
 
                                 </div>
-                            </h4>
+                            </h5>
                             <div class="share">
                                 <div>
                                     <button v-if="!readOnly" type="submit" class="btn btn-success mr-4"
