@@ -1,15 +1,19 @@
 <script setup>
 import { ref } from 'vue';
 import ModalWindow from '../components/ModalWindow.vue';
-import {getResponseById} from "../assets/js/response-api";
+import {getResponseById, gradeResponse} from "../assets/js/response-api";
 import { useRoute } from 'vue-router';
 import { getTaskById } from '../assets/js/task-api';
 import { parseError, updateTaskAnswers } from '../assets/js/utilities';
 import QuizGradeQuestion from '../components/grade/QuizGradeQuestion.vue';
+import LoadingWindow from "../components/LoadingWindow.vue";
+
+const isActive = ref(true);
 
 let {taskId, responseId} = useRoute().params;
 
 const taskTitle = ref(""), taskDescription = ref(""), username = ref("");
+const grade = ref(), maxGrade = ref(0);
 
 const questions = ref([]);
 
@@ -26,6 +30,7 @@ const errorLog = (err)=>{
     console.log(err);
 
     errorMessage.value = parseError(err);
+    isActive.value = false;
 }
 
 getTaskById(taskId).then(res=>{
@@ -37,6 +42,8 @@ getTaskById(taskId).then(res=>{
     questions.value = res.questions.map(item=>{
         const newItem = JSON.parse(JSON.stringify(item));
         newItem.maxGrade = item["max_grade"];
+        maxGrade.value += newItem.maxGrade;
+
         return newItem;
     });
 
@@ -44,8 +51,11 @@ getTaskById(taskId).then(res=>{
     getResponseById(responseId).then(resp=>{
         username.value = resp.fullname;
 
-        updateTaskAnswers(questions.value, resp);
-        console.log(questions.value)
+        const gradeSum = updateTaskAnswers(questions.value, resp);
+
+        if(gradeSum) grade.value = gradeSum;
+        
+        isActive.value = false;
     });
 
     loaded.value = true;
@@ -58,14 +68,25 @@ const updateGrade = (value)=>{
     if(item) item.grade = value.grade;
 };
 
-const gradeResponse = ()=>{
+const submitGrade = ()=>{
+    isActive.value = true;
 
+    const promises = [];
+
+    for (let question of questions.value){
+        promises.push(gradeResponse(question.responseId, question.grade));
+    }
+    Promise.all(promises).then(() => {
+        isActive.value = false;
+    })
+    .catch(errorLog);
 };
 
 </script>
 <template>
     <section class="book_section">
         <ModalWindow :question="errorMessage" :cancel="closeError"></ModalWindow>
+        <LoadingWindow :is-active="isActive"></LoadingWindow>
         <div class="container" v-if="loaded">
             <div class="row">
                 <div class="col">
@@ -77,6 +98,8 @@ const gradeResponse = ()=>{
                                 </div>
                                 <div class="form-group col-12 col-md-6 text-md-right text-left">
                                     <p>Submitted by {{ username }}</p>
+                                    <h5 v-if="grade">{{ grade }}/{{ maxGrade }}</h5>
+                                    <p v-else>Max grade: {{ maxGrade }}</p>
                                 </div>
                             </div>
                         </div>
@@ -90,7 +113,7 @@ const gradeResponse = ()=>{
                     </form>
                 </div>
             </div>
-            <form onsubmit="return false;" @submit="gradeResponse" id="grade-form" style="background: none; box-shadow: none; padding: 0; margin: 0;">
+            <form onsubmit="return false;" @submit="submitGrade" id="grade-form" style="background: none; box-shadow: none; padding: 0; margin: 0;">
                 <QuizGradeQuestion v-for="(data, index) in questions" :key="data.responseId" :data="data" :number="index" 
                 :update-self="updateGrade">
                 </QuizGradeQuestion>

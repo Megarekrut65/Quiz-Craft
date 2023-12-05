@@ -51,7 +51,6 @@ export const copyToBuffer = (text) => {
 
 
 const addGrade = (question, answers)=>{
-    question.grade = 0;
     
     if (question.type === "SINGLE") {
         for (let i in answers) {
@@ -66,32 +65,41 @@ const addGrade = (question, answers)=>{
     }
     
     if (question.type === "MULTI") {
-        let correct = 0, selected = 0;
+        let correct = 0, selectedCorrect = 0, selected=0;
         for (let i in answers) {
             if (answers[i].selected) {
-                
+                selected++;
+
                 if(answers[i].correct){
-                    selected++;
+                    selectedCorrect++;
                 }
+            }
+            if(answers[i].correct){
                 correct++;
             }
         }
-        if(correct == selected){
-            question.grade = question.maxGrade;
-        }
+        question.grade = Math.max(parseInt((selectedCorrect/correct  - (selected-selectedCorrect)/correct)* question.maxGrade), 0);
     }
 };
 
 export const updateTaskAnswers = (questions, response) => {
-    for (const question of questions) {
-        const questionResponse = response["question_responses"].find(
-            (questionResponse) => questionResponse.question === question.id
-        );
+    let sumGrade = 0, isGrade = false;
+
+    for (const questionResponse of response["question_responses"]) {
+        const question = questions.find((question) => question.id === questionResponse.question);
 
         if (questionResponse) {
             question.responseId = questionResponse.id;
+            
+            
+            if(questionResponse.grade != null && questionResponse.grade != undefined){
+                sumGrade += questionResponse.grade;
+                question.grade = questionResponse.grade;
+                isGrade = true;
+            }
 
             if (question.type === "SINGLE" || question.type === "MULTI") {
+
                 for (const answer of question.answers) {
                     if(answer.id === questionResponse.answer){
                         
@@ -99,13 +107,17 @@ export const updateTaskAnswers = (questions, response) => {
                     }
                 }
 
-                addGrade(question, question.answers);
+                if(questionResponse.grade == null || questionResponse.grade == undefined) addGrade(question, question.answers);
                 continue;
             }
 
             if (question.type === "TEXT") {
                 question.selected = questionResponse["text_answer"];
+                if (question.maxGrade == 0) question.grade = 0;
+                if(questionResponse.grade == null || questionResponse.grade == undefined) question.grade = 0;
             }
         }
     }
+
+    return isGrade?sumGrade:undefined;
 };

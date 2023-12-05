@@ -11,7 +11,7 @@ import QuizTakenQuestion from '../components/taker/QuizTakenQuestion.vue';
 
 let {uid} = useRoute().params;
 
-const taskTitle = ref(""), taskDescription = ref(""), username = ref(getUsername());
+const taskTitle = ref(""), taskDescription = ref(""), username = ref(getUsername()), grade=ref(), maxGrade = ref(0);
 
 const questions = ref([]);
 
@@ -70,13 +70,17 @@ getTaskByUid(uid).then(res=>{
     questions.value = res.questions.map(item=>{
         const newItem = JSON.parse(JSON.stringify(item));
         newItem.maxGrade = item["max_grade"];
+        maxGrade.value += newItem.maxGrade;
         return newItem;
     });
 
 
     getResponseByUid(uid).then(resp=>{
-        updateTaskAnswers(questions.value, resp);
-        console.log(questions)
+        const gradeSum = updateTaskAnswers(questions.value, resp);
+
+        grade.value = gradeSum;
+        console.log(resp);
+
         taken.value = true;
     });
 
@@ -100,6 +104,8 @@ getTaskByUid(uid).then(res=>{
                                 <div class="form-group col-12 col-md-6 text-md-right text-left">
                                     <p>You are signed as {{ username }}</p>
                                     <h6 v-if="taken">You already have submitted this quiz</h6>
+                                    <h5 v-if="grade">{{ grade }}/{{ maxGrade }}</h5>
+                                    <p v-else>Max grade: {{ maxGrade }}</p>
                                 </div>
                             </div>
                         </div>
@@ -114,7 +120,7 @@ getTaskByUid(uid).then(res=>{
                 </div>
             </div>
             <div v-if="taken">
-                <QuizTakenQuestion v-for="(data, index) in questions" :key="index" :data="data" :number="index">
+                <QuizTakenQuestion v-for="(data, index) in questions" :key="data.responseId" :data="data" :number="index">
                 </QuizTakenQuestion>
             </div>
             <div v-else>

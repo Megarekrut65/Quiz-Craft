@@ -34,6 +34,7 @@ getTaskById(taskId).then(res => {
 const responses = ref([]);
 
 getResponses(taskId).then(res => {
+    console.log(res);
     responses.value = res;
 }).catch(errorLog);
 
