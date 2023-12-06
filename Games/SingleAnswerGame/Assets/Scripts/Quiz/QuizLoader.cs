@@ -3,6 +3,7 @@ using System;
 using System.Collections;
 using Global;
 using Global.Data;
+using Global.Localization;
 using JetBrains.Annotations;
 using Newtonsoft.Json;
 using PlayerController;
@@ -27,7 +28,6 @@ namespace Quiz
         [SerializeField] private GameOverController gameOverController;
 
         private ResponseSender _sender;
-        private TaskResponse _response;
         private Game _game;
         private Task _task;
         private string _username;
@@ -36,6 +36,7 @@ namespace Quiz
         private int _maxGrade = 0;
         
         private int _correct = 0;
+        private int _answered = 0;
 
         private void Start()
         {
@@ -49,9 +50,7 @@ namespace Quiz
 
             _game = JsonConvert.DeserializeObject<Game>(json);
             _task = _game.Task;
-            
-            _response = new TaskResponse { Responses = new QuestionResponse[_task.Questions.Length] };
-            
+
             if(_task.Questions.Length > 0) LoadQuestion(0, _task.Questions[0]);
 
             player.LoadEntity(_username, 1);
@@ -64,7 +63,7 @@ namespace Quiz
             contentObj.SetActive(true);
 
             questionText.text = $"{index+1}. {question.Description}";
-            gradeText.text = $"Grade: {question.MaxGrade}";
+            gradeText.text = $"{LocalizationManager.GetWordByKey("grade")}: {question.MaxGrade}";
             LoadAnswers(index, question.Answers);
         }
         
@@ -88,8 +87,6 @@ namespace Quiz
             contentObj.SetActive(false);
             
             Question question = _task.Questions[questionIndex];
-            _response.Responses[questionIndex] = new QuestionResponse { Question = question.Id, Answer = answer.Id };
-
             _maxGrade += question.MaxGrade;
             
             if (answer.Correct)
@@ -105,8 +102,17 @@ namespace Quiz
 
         private IEnumerator SendAnswer(int questionIndex, int question, int answer)
         {
-            _sender.Send(question, answer);
+            try
+            {
+                _sender.Send(question, answer);
+                _answered++;
+            }
+            catch (Exception e)
+            {
+                Debug.Log(e);
+            }
             yield return null;
+            
             StartCoroutine(LoadNext(questionIndex + 1));
         }
 
@@ -139,8 +145,9 @@ namespace Quiz
             yield return new WaitForSeconds(1f);
             
             gameOverController.GameOver(new Summary{
+                Answered = _answered,
                 Grade=_grade, MaxGrade = _maxGrade, Correct = _correct, 
-                MaxCorrect = _task.Questions.Length, Title = _task.Title, MinWinGrade = _game.MinWinGrade, 
+                Questions = _task.Questions.Length, Title = _task.Title, MinWinGrade = _game.MinWinGrade, 
                 Username=_username});
         }
     }

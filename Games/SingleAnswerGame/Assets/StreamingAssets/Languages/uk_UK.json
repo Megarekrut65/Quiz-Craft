@@ -16,10 +16,31 @@
             "key": "grade", "value": "Оцінка"
         },
         {
-            "key": "correct", "value": "Відповіді"
+            "key": "correct", "value": "Правильні відповіді"
         },
         {
             "key": "saved", "value": "Результат збережено, ви можете закрити сторінку"
+        },
+        {
+            "key": "questions", "value": "запитань"
+        },
+        {
+            "key": "congratulations", "value": "Вітаю"
+        },
+        {
+            "key": "passed", "value": "ви здали тест"
+        },
+        {
+            "key": "sorry", "value": "Нажаль"
+        },
+        {
+            "key": "unpassed", "value": "ви не змогли здати тест"
+        },
+        {
+            "key": "notAll", "value": "Виникла помилка"
+        },
+        {
+            "key": "notAllDescription", "value": "Нажаль, відповіді на деякі запитання не збереглися, перезавантажте сторінку і пройдіть тест ще раз"
         }
     ]
 }

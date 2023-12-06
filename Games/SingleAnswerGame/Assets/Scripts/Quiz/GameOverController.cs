@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using Global.Localization;
+using UnityEngine;
 using UnityEngine.Serialization;
 using UnityEngine.UI;
 
@@ -15,17 +16,34 @@ namespace Quiz
         [SerializeField] private Text summaryText;
         [SerializeField] private Text titleText;
 
+        [SerializeField] private GameObject footer;
+
         public void GameOver(Summary summary)
         {
             question.SetActive(false);
             
             result.SetActive(true);
-            gradeText.text = $"Grade - {summary.Grade}/{summary.MaxGrade}";
-            correctText.text = $"Correct answers - {summary.Correct}/{summary.MaxCorrect}";
+
+            if (summary.Answered != summary.Questions)
+            {
+                titleText.text = LocalizationManager.GetWordByKey("notAll");
+                summaryText.text = LocalizationManager.GetWordByKey("notAllDescription");
+                
+                gradeText.text = "";
+                correctText.text = "";
+                footer.SetActive(false);
+                
+                return;
+            }
+            
+            gradeText.text = $"{LocalizationManager.GetWordByKey("grade")} - {summary.Grade}/{summary.MaxGrade}";
+            correctText.text = $"{LocalizationManager.GetWordByKey("correct")} - {summary.Correct}/{summary.Questions}";
 
             summaryText.text = summary.Grade >= summary.MinWinGrade
-                ? $"Congratulations, {summary.Username}, you have passed the test '{summary.Title}'"
-                : $"Sorry, {summary.Username}, you could not pass the test '{summary.Title}'";
+                ? $"{LocalizationManager.GetWordByKey("congratulations")}, {summary.Username}, " +
+                  $"{LocalizationManager.GetWordByKey("passed")} '{summary.Title}'"
+                : $"{LocalizationManager.GetWordByKey("sorry")}, {summary.Username}, " +
+                  $"{LocalizationManager.GetWordByKey("unpassed")} '{summary.Title}'";
 
             titleText.text = summary.Title;
         }

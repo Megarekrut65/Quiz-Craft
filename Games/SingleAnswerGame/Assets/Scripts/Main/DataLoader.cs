@@ -2,6 +2,7 @@
 using System.Collections;
 using Global;
 using Global.Data;
+using Global.Localization;
 using Newtonsoft.Json;
 using UnityEngine;
 using UnityEngine.UI;
@@ -66,7 +67,7 @@ namespace Main
                 Game game = JsonConvert.DeserializeObject<Game>(res);
                 titleText.text = game.Task.Title;
                 descriptionText.text = game.Task.Description;
-                questionText.text = $"{game.Task.Questions.Length} questions";
+                questionText.text = $"{game.Task.Questions.Length} {LocalizationManager.GetWordByKey("questions")}";
 
             } catch (Exception e)
             {
