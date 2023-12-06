@@ -6,6 +6,7 @@ import QuizEditorQuestion from '../components/editor/QuizEditorQuestion.vue';
 import ModalWindow from '../components/ModalWindow.vue'
 import ShareWindow from '../components/ShareWindow.vue';
 import { parseError } from '../assets/js/utilities';
+import {getTaskUid, shareTask, closeTask} from "../assets/js/task-api";
 
 const props = defineProps({
     paramId: {
@@ -142,7 +143,7 @@ const extractTask = () => {
 
 const active = ref(false);
 
-const shareTask = () => {
+const shareTaskBtn = () => {
     active.value = true;
 };
 
@@ -193,7 +194,10 @@ const showAnswers = () => {
     <section class="book_section mb-4">
         <ModalWindow :question="modalText" :submit="modalSubmit" :cancel="modalCancel"></ModalWindow>
         <ModalWindow :question="errorMessage" :cancel="closeError"></ModalWindow>
-        <ShareWindow :active="active" :task-id="paramId" :close="closeSharing" :error-log="errorLog"></ShareWindow>
+
+        <ShareWindow :active="active" :obj-id="paramId" :close="closeSharing" :error-log="errorLog"
+        :get-obj="getTaskUid" :share-obj="shareTask" :close-obj="closeTask" name="quiz"></ShareWindow>
+
         <form id="task-form" @submit.prevent="submitTask" onsubmit="return false;" style="background: none; box-shadow: none;">
             <div class="container" v-if="loaded">
                 <div class="row">
@@ -218,7 +222,7 @@ const showAnswers = () => {
                                         <div v-else>
                                             <button type="button" class="btn btn-success mr-3"
                                                 @click="showAnswers">Answers</button>
-                                            <button type="button" class="btn btn-warning" @click="shareTask" >Share</button>
+                                            <button type="button" class="btn btn-warning" @click="shareTaskBtn" >Share</button>
                                         </div>
                                     </div>
                                 </div>
