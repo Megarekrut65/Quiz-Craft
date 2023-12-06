@@ -9,18 +9,22 @@ from ..utils import generate_unique_game_uid
 
 
 class GameListView(generics.ListCreateAPIView):
-    queryset = Game.objects.all()
     serializer_class = GameSerializer
     permission_classes = [IsTeacher]
+
+    def get_queryset(self):
+        return Game.objects.filter(task__created_by=self.request.user.userprofile)
 
     def perform_create(self, serializer):
         serializer.save()
 
 
 class GameDetailView(generics.RetrieveAPIView):
-    queryset = Game.objects.all()
     serializer_class = GameSerializer
     permission_classes = [IsTeacher]
+
+    def get_queryset(self):
+        return Game.objects.filter(task__created_by=self.request.user.userprofile)
 
 
 class GameUIDCreateView(generics.CreateAPIView):

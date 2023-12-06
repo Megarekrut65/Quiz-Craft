@@ -1,4 +1,6 @@
 from django.db import models
+from django.utils import timezone
+
 from .user import UserProfile
 from .task import Task, Question, Answer
 
@@ -6,6 +8,7 @@ from .task import Task, Question, Answer
 class TaskResponse(models.Model):
     profile = models.ForeignKey(UserProfile, on_delete=models.CASCADE)
     task = models.ForeignKey(Task, on_delete=models.CASCADE)
+    created_at = models.DateTimeField(default=timezone.now)
 
     class Meta:
         unique_together = ['profile', 'task']
