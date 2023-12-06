@@ -5,7 +5,7 @@ from ..models.response import TaskResponse, QuestionResponse
 class QuestionResponseSerializer(serializers.ModelSerializer):
     class Meta:
         model = QuestionResponse
-        fields = ['question', 'answer', 'text_answer']
+        fields = ['id', 'question', 'answer', 'text_answer', 'grade']
 
 
 class TaskResponseSerializer(serializers.ModelSerializer):
@@ -13,7 +13,7 @@ class TaskResponseSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = TaskResponse
-        fields = ['profile', 'task', 'question_responses']
+        fields = ['profile', 'task', 'question_responses', 'created_at']
 
 
 class TaskResponseListSerializer(serializers.ModelSerializer):
@@ -22,7 +22,7 @@ class TaskResponseListSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = TaskResponse
-        fields = ['id', 'profile_id', 'fullname']
+        fields = ['id', 'profile_id', 'fullname', 'created_at']
 
 
 class TaskResponseDetailSerializer(serializers.ModelSerializer):
@@ -33,4 +33,4 @@ class TaskResponseDetailSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = TaskResponse
-        fields = ['id', 'profile_id', 'fullname', 'email', 'task', 'question_responses']
+        fields = ['id', 'profile_id', 'fullname', 'email', 'task', 'question_responses', 'created_at']

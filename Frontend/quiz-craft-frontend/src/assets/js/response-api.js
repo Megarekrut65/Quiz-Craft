@@ -45,3 +45,15 @@ export const getResponses = (taskId)=>{
     };
     return sendAsync(`${SERVER_URL}api/tasks/responses/${taskId}/`, request);
 };
+
+export const gradeResponse = (responseId, grade)=>{
+    const request = {
+        method: "PATCH",
+        headers: {
+            "Content-Type": "application/json",
+            Authorization: `Token ${getToken()}`
+        },
+        body: JSON.stringify({"grade":grade})
+    };
+    return sendAsync(`${SERVER_URL}api/question-responses/grade/${responseId}/`, request);
+}

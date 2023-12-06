@@ -12,6 +12,8 @@
 
     right: 5%;
     top:5%;
+
+    z-index: 2;
 }
 .close{
     color: black;
@@ -82,4 +84,10 @@
     display: flex;
     justify-content: space-between;
     align-items: center;
+}
+
+.weapon-img{
+    height: 150px;
+    border: 1px solid #00c6a9;
+    ;
 }

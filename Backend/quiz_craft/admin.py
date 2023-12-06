@@ -1,5 +1,6 @@
 from django.contrib import admin
 
+from .models.game import Game, GameUID
 from .models.response import TaskResponse, QuestionResponse
 from .models.user import UserProfile
 from .models.task import Task, Question, Answer, TaskUID
@@ -14,3 +15,5 @@ admin.site.register(Answer)
 admin.site.register(TaskResponse)
 admin.site.register(QuestionResponse)
 admin.site.register(TaskUID)
+admin.site.register(Game)
+admin.site.register(GameUID)

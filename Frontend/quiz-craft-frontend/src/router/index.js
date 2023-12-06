@@ -21,41 +21,59 @@ const router = createRouter({
     {
       path: '/quizzes',
       name: 'quizzes',
-      component: () => import('../views/QuizzesView.vue'),
+      component: () => import('../views/quiz/QuizzesView.vue'),
+      beforeEnter: (to, from, next) => isLoggedAs(to, from, next, "TEACHER")
+    },
+    {
+      path: '/games',
+      name: 'games',
+      component: () => import('../views/game/GamesView.vue'),
       beforeEnter: (to, from, next) => isLoggedAs(to, from, next, "TEACHER")
     },
     {
       path: '/quiz/editor/new',
       name: 'quiz-editor-new',
-      component: () => import('../views/QuizEditorNewView.vue'),
+      component: () => import('../views/quiz/QuizEditorNewView.vue'),
+      beforeEnter: (to, from, next) => isLoggedAs(to, from, next, "TEACHER")
+    },
+    {
+      path: '/game/editor/new',
+      name: 'game-editor-new',
+      component: () => import('../views/game/GameEditorNewView.vue'),
+      beforeEnter: (to, from, next) => isLoggedAs(to, from, next, "TEACHER")
+    },
+    {
+      path: '/game/editor/:paramId',
+      name: 'game-editor',
+      component: () => import('../views/game/GameEditorView.vue'),
       beforeEnter: (to, from, next) => isLoggedAs(to, from, next, "TEACHER")
     },
     {
       path: '/quiz/editor/:paramId',
       name: 'quiz-editor',
-      component: () => import('../views/QuizEditorView.vue'),
+      component: () => import('../views/quiz/QuizEditorView.vue'),
       beforeEnter: (to, from, next) => isLoggedAs(to, from, next, "TEACHER")
     },
     {
       path: '/quiz/:uid',
       name: 'quiz-taker',
-      component: () => import('../views/QuizTakerView.vue')
+      component: () => import('../views/quiz/QuizTakerView.vue')
     },
     {
       path: '/quiz/submitted/:uid',
       name: 'quiz-submitted',
-      component: () => import('../views/QuizSubmittedView.vue')
+      component: () => import('../views/quiz/QuizSubmittedView.vue')
     },
     {
       path: '/quiz/answers/:taskId',
       name: 'quiz-answers',
-      component: () => import('../views/QuizAnswersView.vue'),
+      component: () => import('../views/quiz/QuizAnswersView.vue'),
       beforeEnter: (to, from, next) => isLoggedAs(to, from, next, "TEACHER")
     },
     {
       path: '/quiz/answers/detail/:taskId/:responseId',
       name: 'quiz-answers-detail',
-      component: () => import('../views/QuizAnswerDetailView.vue'),
+      component: () => import('../views/quiz/QuizAnswerDetailView.vue'),
       beforeEnter: (to, from, next) => isLoggedAs(to, from, next, "TEACHER")
     },
     {
