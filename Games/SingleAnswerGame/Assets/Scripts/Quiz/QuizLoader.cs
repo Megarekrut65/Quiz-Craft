@@ -53,8 +53,8 @@ namespace Quiz
 
             if(_task.Questions.Length > 0) LoadQuestion(0, _task.Questions[0]);
 
-            player.LoadEntity(_username, 1);
-            enemy.LoadEntity(_task.Title[..Math.Min(15, _task.Title.Length)], 2);
+            player.LoadEntity(_username, WeaponConverter.Convert(_game.PlayerWeapon));
+            enemy.LoadEntity(_task.Title[..Math.Min(15, _task.Title.Length)], WeaponConverter.Convert(_game.EnemyWeapon));
         }
         
         private void LoadQuestion(int index, Question question)
