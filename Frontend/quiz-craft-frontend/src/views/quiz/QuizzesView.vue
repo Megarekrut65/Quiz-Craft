@@ -31,7 +31,7 @@ getTasks().then(res => {
         <div class="container mb-4">
             <div class="row">
                 <div class="col-12" v-if="tasks.length > 0">
-                    <h2>Your quizzes</h2>
+                    <h2>Your quizzes<RouterLink to="/quiz/editor/new"><i class="fa fa-plus"></i></RouterLink></h2>
                     <div class="table-responsive mt-4">
                         <table class="table text-nowrap mb-0 align-middle">
                             <thead class="text-dark fs-4">

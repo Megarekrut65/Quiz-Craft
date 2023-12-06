@@ -27,7 +27,7 @@ const router = createRouter({
     {
       path: '/games',
       name: 'games',
-      component: () => import('../views/GamesView.vue'),
+      component: () => import('../views/game/GamesView.vue'),
       beforeEnter: (to, from, next) => isLoggedAs(to, from, next, "TEACHER")
     },
     {
@@ -39,13 +39,13 @@ const router = createRouter({
     {
       path: '/game/editor/new',
       name: 'game-editor-new',
-      component: () => import('../views/GameEditorNewView.vue'),
+      component: () => import('../views/game/GameEditorNewView.vue'),
       beforeEnter: (to, from, next) => isLoggedAs(to, from, next, "TEACHER")
     },
     {
       path: '/game/editor/:paramId',
       name: 'game-editor',
-      component: () => import('../views/GameEditorView.vue'),
+      component: () => import('../views/game/GameEditorView.vue'),
       beforeEnter: (to, from, next) => isLoggedAs(to, from, next, "TEACHER")
     },
     {

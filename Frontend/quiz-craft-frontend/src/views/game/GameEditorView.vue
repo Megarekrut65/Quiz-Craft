@@ -1,6 +1,6 @@
 <script setup>
 import { useRoute } from 'vue-router';
-import GameEditor from '../components/GameEditor.vue';
+import GameEditor from '../../components/GameEditor.vue';
 
 let {paramId} = useRoute().params;
 
