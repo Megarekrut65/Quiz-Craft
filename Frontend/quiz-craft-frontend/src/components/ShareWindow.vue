@@ -1,5 +1,4 @@
 <script setup>
-import {getTaskUid, shareTask, closeTask} from "../assets/js/task-api";
 import {copyToBuffer} from "../assets/js/utilities";
 import {ref} from "vue";
 
@@ -8,7 +7,7 @@ const props = defineProps({
         type: Boolean,
         required: true
     },
-    taskId:{
+    objId:{
         type:Number,
         required: true
     },
@@ -19,26 +18,42 @@ const props = defineProps({
     errorLog:{
         type: Function,
         required: true
+    },
+    getObj:{
+        type: Function,
+        required: true
+    },
+    shareObj:{
+        type: Function,
+        required: true
+    },
+    closeObj:{
+        type: Function,
+        required: true
+    },
+    name:{
+        type: String,
+        required: true
     }
 });
 
 const uidUrl = ref("");
 
-if (props.taskId != -1){
-    getTaskUid(props.taskId).then(res=>{
+if (props.objId != -1){
+    props.getObj(props.objId).then(res=>{
         uidUrl.value = `${window.location.origin}/quiz/${res.uid}`;
     });
 }
 
 
 const share = ()=>{
-    shareTask(props.taskId).then(res=>{
+    props.shareObj(props.objId).then(res=>{
         uidUrl.value = `${window.location.origin}/quiz/${res.uid}`;
     }).catch(props.errorLog);
 };
 
 const deleteSharing = ()=>{
-    closeTask(props.taskId).then(()=>{
+    props.closeObj(props.objId).then(()=>{
         uidUrl.value = "";
     }).catch(props.errorLog);
 };
@@ -61,7 +76,7 @@ const copy = ()=>{
                     <div class="card-body text-center">
                         <div class="close"><i class="fa fa-close" @click="close"></i>
                         </div>
-                        <h5>You can share your quiz to students</h5>
+                        <h5>You can share your {{ name }} to students</h5>
                         <div v-if="uidUrl == ''">
 
                             <input type="button" class="btn btn-warning py-8 fs-4 mb-1 rounded-2" value="Share"
@@ -75,7 +90,7 @@ const copy = ()=>{
                             </div>
                             <div>{{ message }}</div>
                             
-                            <input type="button" class="btn btn-danger py-8 fs-4 mb-1 mt-4 rounded-2" value="Close quiz"
+                            <input type="button" class="btn btn-danger py-8 fs-4 mb-1 mt-4 rounded-2" :value="`Close ${name}`"
                                     @click="deleteSharing">
                         </div>
                     </div>

@@ -25,6 +25,9 @@ defineProps({
             <h6 class="fw-semibold mb-1" style="overflow-x: hidden;">{{ data.fullname }}</h6>
         </td>
         <td class="border-bottom-0">
+            <h6 class="fw-semibold mb-1" style="overflow-x: hidden;">{{ data.grade?`${data.grade}/${data.maxGrade}`:"N/A" }}</h6>
+        </td>
+        <td class="border-bottom-0">
             <h6 class="fw-semibold mb-1" style="overflow-x: hidden;">There will be date</h6>
         </td>
         <td class="border-bottom-0">

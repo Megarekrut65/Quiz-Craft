@@ -23,6 +23,11 @@ const props = defineProps({
     readOnly:{
         type: Boolean,
         required: true
+    },
+    allowedAnswers:{
+        type: Array,
+        required: false,
+        default: ()=>["SINGLE", "MULTI", "TEXT"]
     }
 }
 );
@@ -101,9 +106,9 @@ const removeAnswer = (number, text) => {
                         <div class="form-group col-12 col-md-6">
                             <label>Question type</label>
                             <select v-bind:disabled="readOnly" class="form-control wide" v-model="formData.type" required form="task-form">
-                                <option value="SINGLE">Single answer</option>
-                                <option value="MULTI">Multi answers</option>
-                                <option value="TEXT">Text answer</option>
+                                <option v-if="allowedAnswers.includes('SINGLE')" value="SINGLE">Single answer</option>
+                                <option v-if="allowedAnswers.includes('MULTI')" value="MULTI">Multi answers</option>
+                                <option v-if="allowedAnswers.includes('TEXT')" value="TEXT">Text answer</option>
                             </select>
                         </div>
                     </div>
