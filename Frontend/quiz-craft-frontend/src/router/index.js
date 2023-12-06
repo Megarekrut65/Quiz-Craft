@@ -25,6 +25,12 @@ const router = createRouter({
       beforeEnter: (to, from, next) => isLoggedAs(to, from, next, "TEACHER")
     },
     {
+      path: '/games',
+      name: 'games',
+      component: () => import('../views/GamesView.vue'),
+      beforeEnter: (to, from, next) => isLoggedAs(to, from, next, "TEACHER")
+    },
+    {
       path: '/quiz/editor/new',
       name: 'quiz-editor-new',
       component: () => import('../views/quiz/QuizEditorNewView.vue'),
