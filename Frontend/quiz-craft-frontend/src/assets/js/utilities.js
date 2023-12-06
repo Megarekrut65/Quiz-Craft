@@ -88,7 +88,7 @@ export const updateTaskAnswers = (questions, response) => {
     for (const questionResponse of response["question_responses"]) {
         const question = questions.find((question) => question.id === questionResponse.question);
 
-        if (questionResponse) {
+        if (question) {
             question.responseId = questionResponse.id;
             
             

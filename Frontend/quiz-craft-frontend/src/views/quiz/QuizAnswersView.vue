@@ -7,12 +7,13 @@ import { parseError, updateTaskAnswers } from '../../assets/js/utilities';
 import { useRoute } from 'vue-router';
 import ModalWindow from '../../components/ModalWindow.vue';
 import ResponseListItem from "../../components/ResponseListItem.vue";
+import LoadingWindow from '../../components/LoadingWindow.vue';
 
 let { taskId } = useRoute().params;
 
 taskId = parseInt(taskId);
 
-const errorMessage = ref("");
+const errorMessage = ref(""), isActive = ref(true);
 
 const closeError = () => {
     errorMessage.value = "";
@@ -20,6 +21,7 @@ const closeError = () => {
 
 const errorLog = (err) => {
     console.log(err);
+    isActive.value = false;
 
     errorMessage.value = parseError(err);
 };
@@ -54,12 +56,15 @@ getResponses(taskId).then(res => {
 
     Promise.all(promises).then(() => {
         responses.value = res;
+        isActive.value = false;
+
     }).catch(errorLog);
 }).catch(errorLog);
 
 </script>
 <template>
     <section class="book_section mb-4">
+        <LoadingWindow :is-active="isActive"></LoadingWindow>
         <ModalWindow :question="errorMessage" :cancel="closeError"></ModalWindow>
         <div class="container">
             <div class="row">
@@ -98,7 +103,7 @@ getResponses(taskId).then(res => {
                                         <h6 class="fw-semibold mb-0"><i class="fa fa-hashtag"></i></h6>
                                     </th>
                                     <th class="border-bottom-0">
-                                        <h6 class="fw-semibold mb-0">Title</h6>
+                                        <h6 class="fw-semibold mb-0">Fullname</h6>
                                     </th>
                                     <th class="border-bottom-0">
                                         <h6 class="fw-semibold mb-0">Grade</h6>

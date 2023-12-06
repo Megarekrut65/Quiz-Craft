@@ -4,8 +4,9 @@ import { ref } from "vue";
 import QuizListItem from '../../components/QuizListItem.vue';
 import ModalWindow from '../../components/ModalWindow.vue';
 import { parseError } from "../../assets/js/utilities";
+import LoadingWindow from '../../components/LoadingWindow.vue';
 
-const errorMessage = ref("");
+const errorMessage = ref(""), isActive = ref(true);
 
 const closeError = () => {
     errorMessage.value = "";
@@ -13,6 +14,7 @@ const closeError = () => {
 
 const errorLog = (err) => {
     console.log(err);
+    isActive.value = false;
 
     errorMessage.value = parseError(err);
 }
@@ -21,12 +23,14 @@ const tasks = ref([]);
 
 getTasks().then(res => {
     tasks.value = res;
+    isActive.value = false;
 }).catch(errorLog);
 
 </script>
 
 <template>
     <main>
+        <LoadingWindow :is-active="isActive"></LoadingWindow>
         <ModalWindow :question="errorMessage" :cancel="closeError"></ModalWindow>
         <div class="container mb-4">
             <div class="row">

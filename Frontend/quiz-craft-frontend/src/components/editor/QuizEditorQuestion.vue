@@ -46,6 +46,8 @@ props.updateSelf(toRaw(formData));
 
 let id = 0;
 
+const maxAnswers = 25;
+
 const addAnswer = () => {
     formData.value.answers.push({ id: id++, option: "", correct: false });
 };
@@ -114,7 +116,7 @@ const removeAnswer = (number, text) => {
                     </div>
                     <div v-if="formData.type != 'TEXT'">
                         <div class="form-row" style="display: flex; align-items: center; flex-direction: row;">
-                            Answers <span class="plus ml-1" v-if="!readOnly" ><i class="fa fa-plus" @click="addAnswer"></i></span>
+                            Answers <span class="plus ml-1" v-if="!readOnly&&formData.answers.length < maxAnswers" ><i class="fa fa-plus" @click="addAnswer"></i></span>
                         </div>
                         <div class="form-row mt-2">
                             <div class="form-group col-9">
