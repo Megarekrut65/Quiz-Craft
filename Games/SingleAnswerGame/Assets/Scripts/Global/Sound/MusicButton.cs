@@ -6,14 +6,10 @@ namespace Global.Sound
     {
         protected override void TurnOn()
         {
-            float volume = LocalStorage.GetValue("saveMusic", 0.5f);
-            MusicManager.VolumeSound(volume);
+            MusicManager.VolumeSound(0.3f);
         } 
         protected override void TurnOff()
         {
-            float volume = LocalStorage.GetValue("music", 0.5f);
-            LocalStorage.SetValue("saveMusic", volume);
-
             MusicManager.VolumeSound(0);
         } 
     }

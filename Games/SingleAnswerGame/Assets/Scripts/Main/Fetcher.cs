@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Threading.Tasks;
+using UnityEngine;
 using UnityEngine.Networking;
 
 namespace Main
@@ -26,6 +27,14 @@ namespace Main
         {
             UnityWebRequest request = UnityWebRequest.Get($"{ServerUrl}api/{endpoint}/");
             request.SetRequestHeader("Content-Type", "application/json");
+            request.SetRequestHeader("Authorization", $"Token {token}");
+
+            return SendAsync(request);
+        }
+
+        public static string Post(string endpoint, string token, WWWForm form)
+        {
+            UnityWebRequest request = UnityWebRequest.Post($"{ServerUrl}api/{endpoint}/", form);
             request.SetRequestHeader("Authorization", $"Token {token}");
 
             return SendAsync(request);

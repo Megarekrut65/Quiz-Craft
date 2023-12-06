@@ -26,8 +26,11 @@ namespace Quiz
 
         [SerializeField] private GameOverController gameOverController;
 
+        private ResponseSender _sender;
         private TaskResponse _response;
+        private Game _game;
         private Task _task;
+        private string _username;
 
         private int _grade = 0;
         private int _maxGrade = 0;
@@ -36,13 +39,22 @@ namespace Quiz
 
         private void Start()
         {
+            string token = LocalStorage.GetValue("token", "");
+            string uid = LocalStorage.GetValue("uid", "");
+
+            _sender = new ResponseSender(uid, token);
+                
+            _username = LocalStorage.GetValue("username", "unknown");
             string json = LocalStorage.GetValue("quiz", "");
-            _task = JsonConvert.DeserializeObject<Task>(json);
+
+            _game = JsonConvert.DeserializeObject<Game>(json);
+            _task = _game.Task;
+            
             _response = new TaskResponse { Responses = new QuestionResponse[_task.Questions.Length] };
             
             if(_task.Questions.Length > 0) LoadQuestion(0, _task.Questions[0]);
 
-            player.LoadEntity("Username", 1);
+            player.LoadEntity(_username, 1);
             enemy.LoadEntity(_task.Title[..Math.Min(15, _task.Title.Length)], 2);
         }
         
@@ -87,13 +99,20 @@ namespace Quiz
                 _correct++;
             }
             else enemy.Attack();
-            
+
+            StartCoroutine(SendAnswer(questionIndex, question.Id, answer.Id));
+        }
+
+        private IEnumerator SendAnswer(int questionIndex, int question, int answer)
+        {
+            _sender.Send(question, answer);
+            yield return null;
             StartCoroutine(LoadNext(questionIndex + 1));
         }
 
         private IEnumerator LoadNext(int next)
         {
-            yield return new WaitForSeconds(5f);
+            yield return new WaitForSeconds(4.8f);
             
             if (next < _task.Questions.Length)
             {
@@ -107,7 +126,7 @@ namespace Quiz
 
         private IEnumerator GameOver()
         {
-            if (_grade >= _task.Questions.Length / 2)
+            if (_grade >= _game.MinWinGrade)
             {
                 player.Win();
                 enemy.Lose();
@@ -121,8 +140,8 @@ namespace Quiz
             
             gameOverController.GameOver(new Summary{
                 Grade=_grade, MaxGrade = _maxGrade, Correct = _correct, 
-                MaxCorrect = _task.Questions.Length, Title = _task.Title, MinWinGrade = _task.Questions.Length/2, 
-                Username="Name"});
+                MaxCorrect = _task.Questions.Length, Title = _task.Title, MinWinGrade = _game.MinWinGrade, 
+                Username=_username});
         }
     }
 }

@@ -1,7 +1,25 @@
 {
     "items": [
         {
-            "key": "gameName", "value": "The simple interactive story"
+            "key": "gameName", "value": "One answer game"
+        },
+        {
+            "key": "loading", "value": "Loading..."
+        },
+        {
+            "key": "start", "value": "Start test"
+        },
+        {
+            "key": "already", "value": "You have already answered some questions from the test. You can play again, but the questions you answered will be skipped"
+        },
+        {
+            "key": "grade", "value": "Evaluation"
+        },
+        {
+            "key": "correct", "value": "Answers"
+        },
+        {
+            "key": "saved", "value": "The result is saved, you can close the page"
         }
     ]
 }

@@ -22,6 +22,8 @@ namespace Global.Sound
             DontDestroyOnLoad(gameObject);
         }
         public void Volume(float value) {
+            LocalStorage.SetValue("sound", value);
+            
             foreach (var source in sources) {
                 source.Volume = value;
             }
