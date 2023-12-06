@@ -25,7 +25,7 @@ subscribeUserChangeState(changeState);
     <div class="header_bottom">
       <div class="container-fluid">
         <nav class="navbar navbar-expand-lg custom_nav-container ">
-          <RouterLink class="navbar-brand" to="/" style="padding: 0;">
+          <RouterLink class="navbar-brand" to="/" style="padding: 0; background-color: rgba(0, 0, 0, 0);">
             <img src="./assets/images/logo.png" alt="Logo" style="width: 40px;">
           </RouterLink>
 
@@ -52,7 +52,7 @@ subscribeUserChangeState(changeState);
                       <RouterLink class="dropdown-item" to="/games">My Games</RouterLink>
                     </div>
                   </div>
-                  
+
                 </li>
                 <li class="nav-item" v-if="isLogged">
                   <div class="dropdown">
@@ -65,16 +65,13 @@ subscribeUserChangeState(changeState);
                       <RouterLink class="dropdown-item" to="/game/editor/new">Game</RouterLink>
                     </div>
                   </div>
-                  
+
                 </li>
                 <li class="nav-item">
                   <RouterLink class="nav-link" to="/about">About</RouterLink>
                 </li>
                 <li class="nav-item">
                   <RouterLink class="nav-link" to="/contacts">Contact Us</RouterLink>
-                </li>
-                <li class="nav-item">
-                  <RouterLink class="nav-link" to="/privacy">Privacy policy</RouterLink>
                 </li>
               </ul>
             </div>
@@ -115,7 +112,7 @@ subscribeUserChangeState(changeState);
         <div class="row info_main_row">
           <div class="col-md-6 col-lg-3 info_top">
             <div class="info_logo">
-              <a href="">
+              <a href="/" style="background-color: rgba(0, 0, 0, 0);">
                 <img src="./assets/images/logo.png" alt="">
               </a>
             </div>
@@ -128,7 +125,7 @@ subscribeUserChangeState(changeState);
               <a href="">
                 <i class="fa fa-envelope"></i>
                 <span>
-                  example@gmail.com
+                  quizcraft@gmail.com
                 </span>
               </a>
             </div>
@@ -158,6 +155,33 @@ subscribeUserChangeState(changeState);
                 </RouterLink>
                 <RouterLink to="/about">
                   About
+                </RouterLink>
+                <RouterLink to="/privacy">
+                  Privacy Policy
+                </RouterLink>
+                <RouterLink to="/contacts">
+                  Contact Us
+                </RouterLink>
+              </div>
+            </div>
+          </div>
+          <div class="col-md-6 col-lg-3">
+            <div class="info_links">
+              <h5>
+                Content
+              </h5>
+              <div class="info_links_menu">
+                <RouterLink to="/quizzes">
+                  Quizzes
+                </RouterLink>
+                <RouterLink to="/games">
+                  Games
+                </RouterLink>
+                <RouterLink to="/quiz/editor/new">
+                  Create Quiz
+                </RouterLink>
+                <RouterLink to="/game/editor/new">
+                  Create Game
                 </RouterLink>
               </div>
             </div>

@@ -927,8 +927,11 @@ a:focus {
   padding: 20px 35px;
 }
 
-.info_section .info_top .info_logo a img {
+.info_section .info_top{
   width: 55px;
+}
+.info_logo a img {
+  height: 100%;
 }
 
 .info_section .info_form {
