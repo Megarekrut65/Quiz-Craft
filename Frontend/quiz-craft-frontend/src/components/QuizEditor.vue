@@ -20,7 +20,7 @@ const readOnly = ref(props.paramId != -1 ? true : false);
 
 const taskTitle = ref("Unnamed"), taskDescription = ref("");
 
-const questions = ref([]);
+const questions = ref([]), maxQuestions = 100;
 const loaded = ref(!readOnly.value);
 
 let id = 0;
@@ -246,7 +246,7 @@ const showAnswers = () => {
                 </div>
 
 
-                <div class="row m-4" v-if="!readOnly">
+                <div class="row m-4" v-if="!readOnly && questions.length < maxQuestions">
                     <div class="col">
                         <div class="plus"><img src="../assets/images/plus.png" style="height: 70px;" @click="addQuestion">
                         </div>

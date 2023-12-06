@@ -5,7 +5,7 @@ import QuizListItem from '../../components/QuizListItem.vue';
 import ModalWindow from '../../components/ModalWindow.vue';
 import {parseError} from "../../assets/js/utilities";
 
-const errorMessage = ref("");
+const errorMessage = ref(""), isActive = ref(true);
 
 const closeError = () => {
     errorMessage.value = "";
@@ -13,6 +13,7 @@ const closeError = () => {
 
 const errorLog = (err)=>{
     console.log(err);
+    isActive.value = false;
 
     errorMessage.value = parseError(err);
 }
@@ -23,12 +24,15 @@ getGames().then(res => {
     games.value = res.map(game=>{
         return {id:game.id, title: game.task.title, description: game.task.description, type: game.type};
     });
+
+    isActive.value = false;
 }).catch(errorLog);
 
 </script>
 
 <template>
     <main>
+        <LoadingWindow :is-active="isActive"></LoadingWindow>
         <ModalWindow :question="errorMessage" :cancel="closeError"></ModalWindow>
         <div class="container mb-4">
             <div class="row">
