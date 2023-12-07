@@ -63,9 +63,9 @@
         frameworkUrl: buildUrl + "/WebBuild.framework.js",
         codeUrl: buildUrl + "/WebBuild.wasm",
         streamingAssetsUrl: "StreamingAssets",
-        companyName: "DefaultCompany",
+        companyName: "BOAGames",
         productName: "SingleAnswerGame",
-        productVersion: "1.0",
+        productVersion: "1.1",
         showBanner: unityShowBanner,
       };
 
@@ -98,6 +98,7 @@
         canvas.style.height = "600px";
       }
 
+      canvas.style.background = "url('" + buildUrl + "/WebBuild.jpg') center / cover";
       loadingBar.style.display = "block";
 
       var script = document.createElement("script");

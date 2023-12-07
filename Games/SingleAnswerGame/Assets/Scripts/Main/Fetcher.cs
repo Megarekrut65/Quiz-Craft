@@ -8,7 +8,7 @@ namespace Main
 {
     public static class Fetcher
     {
-        private const string ServerUrl = "https://127.0.0.1:8181/";
+        private const string ServerUrl = "https://quizcraft-8wkv.onrender.com/";
         
         private static IEnumerator GetNumerator(string endpoint, string token, Action<Error, string> callback)
         {
