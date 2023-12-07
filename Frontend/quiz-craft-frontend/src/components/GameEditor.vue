@@ -6,6 +6,7 @@ import QuizEditorQuestion from '../components/editor/QuizEditorQuestion.vue';
 import ModalWindow from '../components/ModalWindow.vue'
 import ShareWindow from '../components/ShareWindow.vue';
 import { parseError } from '../assets/js/utilities';
+import LoadingWindow from './LoadingWindow.vue';
 
 const props = defineProps({
     paramId: {
@@ -204,6 +205,8 @@ const showAnswers = () => {
     <section class="book_section mb-4">
         <ModalWindow :question="modalText" :submit="modalSubmit" :cancel="modalCancel"></ModalWindow>
         <ModalWindow :question="errorMessage" :cancel="closeError"></ModalWindow>
+
+        <LoadingWindow :is-active="!loaded"></LoadingWindow>
 
         <ShareWindow :active="active" :obj-id="paramId" :close="closeSharing" :error-log="errorLog"
         :get-obj="getGameUid" :share-obj="shareGame" :close-obj="closeGame" name="game"></ShareWindow>

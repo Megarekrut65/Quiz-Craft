@@ -1,4 +1,5 @@
 <script setup>
+
 import { onMounted } from "vue";
 
 const loadGame = () => {
@@ -33,13 +34,13 @@ const loadGame = () => {
         updateBannerVisibility();
     }
 
-    var buildUrl = "../../src/assets/unity/Build";
-    var loaderUrl = buildUrl + "/WebBuild.loader.js";
+    var buildUrl = "/assets";
+    var loaderUrl = buildUrl + "/WebBuild.loader-75083a32.js";
     var config = {
-        dataUrl: buildUrl + "/WebBuild.data.br",
-        frameworkUrl: buildUrl + "/WebBuild.framework.js.br",
-        codeUrl: buildUrl + "/WebBuild.wasm.br",
-        streamingAssetsUrl: "../../src/assets/unity/StreamingAssets",
+        dataUrl: buildUrl + "/WebBuild.data-74ac06db.br",
+        frameworkUrl: buildUrl + "/WebBuild.framework.js-0d376867.br",
+        codeUrl: buildUrl + "/WebBuild.wasm-50c7eda0.br",
+        streamingAssetsUrl: "",
         companyName: "BOAGames",
         productName: "SingleAnswerGame",
         productVersion: "1.0",

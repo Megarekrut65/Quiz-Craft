@@ -8,10 +8,6 @@
     ],
     "rewrites": [
       {
-        "source": "game/**",
-        "destination": "/game.html"
-      },
-      {
         "source": "**",
         "destination": "/index.html"
       }
