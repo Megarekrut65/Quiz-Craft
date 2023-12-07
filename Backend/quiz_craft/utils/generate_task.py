@@ -1,8 +1,8 @@
 import json
 import re
 import openai
+from ...quiz_craft_backend.settings import GPT_API
 
-API = "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"
 JSON_FORMAT = """
 {
     "title": "Sample Task",
@@ -75,7 +75,7 @@ def generate_task(theme, questions, answers):
     request = f"Create test with {questions} questions with {answers} answers each on the topic '{theme}' " \
               f"in next JSON format:\n```json\n{json.dumps(json.loads(JSON_FORMAT))}\n```"
 
-    client = openai.Client(api_key=API)
+    client = openai.Client(api_key=GPT_API)
 
     response = client.chat.completions.create(
         model="gpt-3.5-turbo",
