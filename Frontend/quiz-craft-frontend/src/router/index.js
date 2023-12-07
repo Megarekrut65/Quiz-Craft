@@ -60,8 +60,8 @@ const router = createRouter({
       component: () => import('../views/quiz/QuizTakerView.vue')
     },
     {
-      path: '/game/:uid',
-      name: 'game-taker',
+      path: '/game/run/:uid',
+      name: 'game-taker-run',
       component: () => import('../views/game/GameTakerView.vue')
     },
     {

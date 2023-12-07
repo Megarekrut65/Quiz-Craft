@@ -21,7 +21,7 @@ subscribeUserChangeState(changeState);
 </script>
 
 <template>
-  <header v-if="!$route.name.includes('game')" class="header_section" style="position: fixed; width: 100vw; z-index: 10000;">
+  <header v-if="!$route.name?.includes('run')" class="header_section" style="position: fixed; width: 100vw; z-index: 10000;">
     <div class="header_bottom">
       <div class="container-fluid">
         <nav class="navbar navbar-expand-lg custom_nav-container ">
@@ -101,12 +101,12 @@ subscribeUserChangeState(changeState);
   </header>
 
 
-  <div class="container-fluid" v-bind:style="!$route.name.includes('game')?'min-height: 100vh; padding-top: 80px;':''">
+  <div class="container-fluid" v-bind:style="!$route.name?.includes('run')?'min-height: 100vh; padding-top: 80px;':''">
     <RouterView />
   </div>
 
 
-  <section v-if="!$route.name.includes('game')" class="info_section mt-4">
+  <section v-if="!$route.name?.includes('run')" class="info_section mt-4">
     <div class="container">
       <div class="info_bottom layout_padding2">
         <div class="row info_main_row">
