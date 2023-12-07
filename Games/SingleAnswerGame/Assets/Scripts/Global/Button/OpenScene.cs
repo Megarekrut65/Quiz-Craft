@@ -8,21 +8,22 @@ namespace Global.Button
     /// Class for button object that open scene by name
     /// </summary>
     public class OpenScene : MonoBehaviour,
-        IPointerDownHandler, IPointerUpHandler {
-        [SerializeField]
-        private string sceneName;
+        IPointerDownHandler, IPointerUpHandler
+    {
+        [SerializeField] private string sceneName;
 
-        [SerializeField] 
-        private bool openPrev = false;
+        [SerializeField] private bool openPrev;
 
-        public void OnPointerUp(PointerEventData eventData) {
-        }
         public void OnPointerDown(PointerEventData eventData)
         {
             string prev = LocalStorage.GetValue("prevScene", "main");
             LocalStorage.SetValue("prevScene", SceneManager.GetActiveScene().name);
-            
+
             SceneManager.LoadScene(openPrev ? prev : sceneName, LoadSceneMode.Single);
+        }
+
+        public void OnPointerUp(PointerEventData eventData)
+        {
         }
     }
 }

@@ -5,25 +5,37 @@ namespace Global.Sound
     /// <summary>
     /// Manage saving same music on different scenes. Also manages volume changing and saving. 
     /// </summary>
-    public class MusicManager : MonoBehaviour {
-        [SerializeField]
-        private AudioSource audioSource;
+    public class MusicManager : MonoBehaviour
+    {
+        [SerializeField] private AudioSource audioSource;
+
         public static MusicManager Instance { get; private set; }
 
-        private void Awake() {
-            if (Instance == null) {
+        private void Awake()
+        {
+            if (Instance == null)
+            {
                 Instance = this;
-            } else if (Instance != this) {
+            }
+            else if (Instance != this)
+            {
                 Destroy(gameObject);
             }
 
             LoadManager();
             DontDestroyOnLoad(gameObject);
         }
-        private void LoadManager() 
+
+        private void Start()
+        {
+            Play();
+        }
+
+        private void LoadManager()
         {
             Instance.Volume(LocalStorage.GetValue("music", 0.1f));
-            if (!Instance.audioSource.isPlaying) {
+            if (!Instance.audioSource.isPlaying)
+            {
                 Instance.audioSource.Play();
             }
         }
@@ -35,6 +47,7 @@ namespace Global.Sound
                 Instance.audioSource.Stop();
             }
         }
+
         public static void Play()
         {
             if (Instance != null && !Instance.audioSource.isPlaying)
@@ -45,8 +58,8 @@ namespace Global.Sound
 
         public void ChangeClip(AudioClip clip)
         {
-            if(audioSource.isPlaying && audioSource.clip.name == clip.name) return;
-            
+            if (audioSource.isPlaying && audioSource.clip.name == clip.name) return;
+
             audioSource.Stop();
             audioSource.clip = clip;
             audioSource.Play();
@@ -59,17 +72,17 @@ namespace Global.Sound
                 Instance.ChangeClip(clip);
             }
         }
-        private void Start()
+
+        public void Volume(float value)
         {
-            Play();
-        }
-        public void Volume(float value) {
             Instance.audioSource.volume = value;
             LocalStorage.SetValue("music", value);
         }
-        public static void VolumeSound(float value) {
-            if(Instance == null) return;
-            
+
+        public static void VolumeSound(float value)
+        {
+            if (Instance == null) return;
+
             Instance.Volume(value);
         }
     }

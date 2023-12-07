@@ -7,17 +7,35 @@ namespace Global.Json
     /// Reads from file localization data and puts it to dictionary.
     /// </summary>
     /// <typeparam name="TValueType"></typeparam>
-    public static class JsonListParser<TValueType> {
+    public static class JsonListParser<TValueType>
+    {
         public static SortedDictionary<string, TValueType> Parse(string path)
         {
             path += ".json";
             string jsonData = AllFileReader.Read(path);
 
             JsonList<TValueType> list = JsonUtility.FromJson<JsonList<TValueType>>(jsonData);
-            
+
             var map = new SortedDictionary<string, TValueType>();
-            if (list.items != null) {
-                foreach (var item in list.items) {
+            if (list.items != null)
+            {
+                foreach (var item in list.items)
+                {
+                    map.Add(item.key, item.value);
+                }
+            }
+
+            return map;
+        }
+        public static SortedDictionary<string, TValueType> ParseContent(string jsonData)
+        {
+            JsonList<TValueType> list = JsonUtility.FromJson<JsonList<TValueType>>(jsonData);
+
+            var map = new SortedDictionary<string, TValueType>();
+            if (list.items != null)
+            {
+                foreach (var item in list.items)
+                {
                     map.Add(item.key, item.value);
                 }
             }

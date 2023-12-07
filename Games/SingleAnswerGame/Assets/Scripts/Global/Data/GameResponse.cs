@@ -6,8 +6,7 @@ namespace Global.Data
     {
         public int Profile { get; set; }
         public int Task { get; set; }
-        
-        [JsonProperty("question_responses")]
-        public QuestionResponse[] Responses { get; set; }
+
+        [JsonProperty("question_responses")] public QuestionResponse[] Responses { get; set; }
     }
 }

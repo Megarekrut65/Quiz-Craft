@@ -5,43 +5,56 @@ namespace Global.Sound
     /// <summary>
     /// Manages sound volume changing and saving.
     /// </summary>
-    public class SoundManager : MonoBehaviour {
-        [SerializeField]
-        private SoundItem[] sources;
+    public class SoundManager : MonoBehaviour
+    {
+        [SerializeField] private SoundItem[] sources;
 
         public static SoundManager Instance { get; private set; }
 
-        private void Awake() {
-            if (Instance == null) {
+        private void Awake()
+        {
+            if (Instance == null)
+            {
                 Instance = this;
-            } else if (Instance != this) {
+            }
+            else if (Instance != this)
+            {
                 Destroy(gameObject);
             }
 
             Volume(LocalStorage.GetValue("sound", 0.5f));
             DontDestroyOnLoad(gameObject);
         }
-        public void Volume(float value) {
+
+        public void Volume(float value)
+        {
             LocalStorage.SetValue("sound", value);
-            
-            foreach (var source in sources) {
+
+            foreach (var source in sources)
+            {
                 source.Volume = value;
             }
         }
-        public void Play(int index) {
-            if (sources.Length > index && index >= 0) {
+
+        public void Play(int index)
+        {
+            if (sources.Length > index && index >= 0)
+            {
                 sources[index].Play();
             }
         }
-        public static void VolumeSound(float value) {
-            if(Instance == null) return;
-            
+
+        public static void VolumeSound(float value)
+        {
+            if (Instance == null) return;
+
             Instance.Volume(value);
         }
+
         public static void PlaySound(int index)
         {
-            if(Instance == null) return;
-            
+            if (Instance == null) return;
+
             Instance.Play(index);
         }
 
@@ -49,9 +62,11 @@ namespace Global.Sound
         {
             return Instance != null && Instance.IsPlaying(index);
         }
+
         public bool IsPlaying(int index)
         {
-            if (sources.Length > index && index >= 0) {
+            if (sources.Length > index && index >= 0)
+            {
                 return sources[index].IsPlaying;
             }
 

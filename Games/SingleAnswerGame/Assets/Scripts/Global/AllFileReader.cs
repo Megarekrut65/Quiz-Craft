@@ -4,39 +4,50 @@ using UnityEngine.Networking;
 
 namespace Global
 {
-    public static class AllFileReader {
-
+    public static class AllFileReader
+    {
         private static bool IsPhone()
         {
             return Application.platform == RuntimePlatform.Android
                    || Application.platform == RuntimePlatform.IPhonePlayer;
         }
-        public static string Read(string path) {
+
+        public static string Read(string path)
+        {
             string res;
-            if (IsPhone()) {
+            if (IsPhone())
+            {
                 UnityWebRequest www = UnityWebRequest.Get(path);
                 www.SendWebRequest();
-                while (!www.isDone) {
+                while (!www.isDone)
+                {
                 }
-                
+
                 res = www.downloadHandler.text;
-            } else {
+            }
+            else
+            {
                 res = File.ReadAllText(path);
             }
 
             return res;
         }
-        public static byte[] ReadBytes(string path) {
+
+        public static byte[] ReadBytes(string path)
+        {
             byte[] res;
-            
-            if (IsPhone()) {
+
+            if (IsPhone())
+            {
                 UnityWebRequest www = UnityWebRequest.Get(path);
                 www.SendWebRequest();
-                while (!www.isDone) {
+                while (!www.isDone)
+                {
                 }
 
                 res = www.downloadHandler.data;
-            } else
+            }
+            else
             {
                 res = File.ReadAllBytes(path);
             }

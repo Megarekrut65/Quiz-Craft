@@ -1,6 +1,5 @@
 ﻿using Global.Localization;
 using UnityEngine;
-using UnityEngine.Serialization;
 using UnityEngine.UI;
 
 namespace Quiz
@@ -21,21 +20,21 @@ namespace Quiz
         public void GameOver(Summary summary)
         {
             question.SetActive(false);
-            
+
             result.SetActive(true);
 
             if (summary.Answered != summary.Questions)
             {
                 titleText.text = LocalizationManager.GetWordByKey("notAll");
                 summaryText.text = LocalizationManager.GetWordByKey("notAllDescription");
-                
+
                 gradeText.text = "";
                 correctText.text = "";
                 footer.SetActive(false);
-                
+
                 return;
             }
-            
+
             gradeText.text = $"{LocalizationManager.GetWordByKey("grade")} - {summary.Grade}/{summary.MaxGrade}";
             correctText.text = $"{LocalizationManager.GetWordByKey("correct")} - {summary.Correct}/{summary.Questions}";
 

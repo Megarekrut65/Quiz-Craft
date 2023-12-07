@@ -6,29 +6,37 @@ namespace Global.Localization
     /// <summary>
     /// Loads translated word by key from Localisation manager.
     /// </summary>
-    public class LocalizationText : MonoBehaviour {
-        [SerializeField]
-        private string key;
+    public class LocalizationText : MonoBehaviour
+    {
+        [SerializeField] private string key;
+
         private Text _text;
 
-        private void Awake() {
-            if (_text == null) {
+        private void Awake()
+        {
+            if (_text == null)
+            {
                 _text = GetComponent<Text>();
             }
 
             LocalizationManager.Instance.OnLanguageChanged += UpdateText;
         }
-        private void Start() {
+
+        private void Start()
+        {
             UpdateText();
         }
 
-        private void OnDestroy() {
+        private void OnDestroy()
+        {
             LocalizationManager.Instance.OnLanguageChanged -= UpdateText;
         }
 
-        private void UpdateText() {
+        private void UpdateText()
+        {
             if (gameObject == null) return;
-            if (_text == null) {
+            if (_text == null)
+            {
                 _text = GetComponent<Text>();
             }
 

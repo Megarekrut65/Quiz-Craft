@@ -10,24 +10,9 @@ namespace Global.Button
     public class ButtonEffect
     {
         /// <summary>
-        /// Transform of button
-        /// </summary>
-        private readonly Transform _transform;
-
-        /// <summary>
-        /// Normal scale of button
-        /// </summary>
-        private readonly Vector3 _scale;
-
-        /// <summary>
         /// Event that be played after button down
         /// </summary>
         private readonly UnityEvent _downEvent;
-
-        /// <summary>
-        /// Event that be played after button up
-        /// </summary>
-        private readonly UnityEvent _upEvent;
 
         /// <summary>
         /// True if need play sound false else
@@ -35,9 +20,24 @@ namespace Global.Button
         private readonly bool _needSound;
 
         /// <summary>
+        /// Normal scale of button
+        /// </summary>
+        private readonly Vector3 _scale;
+
+        /// <summary>
         /// Index of sound in SoundManager
         /// </summary>
         private readonly int _soundIndex;
+
+        /// <summary>
+        /// Transform of button
+        /// </summary>
+        private readonly Transform _transform;
+
+        /// <summary>
+        /// Event that be played after button up
+        /// </summary>
+        private readonly UnityEvent _upEvent;
 
         /// <param name="transform">of button</param>
         /// <param name="downEvent">play when button down</param>
@@ -47,12 +47,12 @@ namespace Global.Button
         public ButtonEffect(Transform transform, UnityEvent downEvent = null, UnityEvent upEvent = null,
             bool needSound = false, int soundIndex = 0)
         {
-            this._transform = transform;
-            this._downEvent = downEvent;
-            this._upEvent = upEvent;
-            this._scale = transform.localScale;
-            this._needSound = needSound;
-            this._soundIndex = soundIndex;
+            _transform = transform;
+            _downEvent = downEvent;
+            _upEvent = upEvent;
+            _scale = transform.localScale;
+            _needSound = needSound;
+            _soundIndex = soundIndex;
         }
 
         /// <summary>

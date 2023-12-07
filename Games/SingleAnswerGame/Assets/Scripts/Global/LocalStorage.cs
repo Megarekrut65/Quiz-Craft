@@ -6,12 +6,13 @@ namespace Global
     /// <summary>
     /// Store data to local memory of device.
     /// </summary>
-    public static class LocalStorage {
-
+    public static class LocalStorage
+    {
         public static void Remove(string key)
         {
             PlayerPrefs.DeleteKey(key);
         }
+
         public static T GetValue<T>(string key, T def)
         {
             if (!PlayerPrefs.HasKey(key)) SetValue(key, def);
@@ -19,22 +20,23 @@ namespace Global
             {
                 int => (T)(object)PlayerPrefs.GetInt(key),
                 float => (T)(object)PlayerPrefs.GetFloat(key),
-                bool => (T)(object) bool.Parse(PlayerPrefs.GetString(key)),
+                bool => (T)(object)bool.Parse(PlayerPrefs.GetString(key)),
                 _ => (T)(object)PlayerPrefs.GetString(key)
             };
         }
+
         public static void SetValue<T>(string key, T value)
         {
             switch (value)
             {
                 case int:
-                    PlayerPrefs.SetInt(key,  Convert.ToInt32(value));
+                    PlayerPrefs.SetInt(key, Convert.ToInt32(value));
                     break;
                 case float:
-                    PlayerPrefs.SetFloat(key,  Convert.ToSingle(value));
+                    PlayerPrefs.SetFloat(key, Convert.ToSingle(value));
                     break;
                 case bool:
-                    PlayerPrefs.SetString(key,  Convert.ToBoolean(value).ToString());
+                    PlayerPrefs.SetString(key, Convert.ToBoolean(value).ToString());
                     break;
                 default:
                     PlayerPrefs.SetString(key, $"{value}");

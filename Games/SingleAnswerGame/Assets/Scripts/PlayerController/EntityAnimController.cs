@@ -1,25 +1,21 @@
-using UnityEditor.Animations;
 using UnityEngine;
-using UnityEngine.Serialization;
 
 namespace PlayerController
 {
     public class EntityAnimController : MonoBehaviour
     {
-        [SerializeField] private EntityAnimController enemy;
-        
-        [SerializeField] private GameObject[] weapons;
-        [SerializeField] private Animator animator;
-        
         private static readonly int Weapon = Animator.StringToHash("Weapon");
         private static readonly int AttackTrigger = Animator.StringToHash("Attack");
         private static readonly int Damage = Animator.StringToHash("TakeDamage");
 
-        [SerializeField]
-        private int selectedWeapon = 0;
-
         private static readonly int LoseTrigger = Animator.StringToHash("Lose");
         private static readonly int WinTrigger = Animator.StringToHash("Win");
+        [SerializeField] private EntityAnimController enemy;
+
+        [SerializeField] private GameObject[] weapons;
+        [SerializeField] private Animator animator;
+
+        [SerializeField] private int selectedWeapon;
 
         public void SelectWeapon(int weapon)
         {

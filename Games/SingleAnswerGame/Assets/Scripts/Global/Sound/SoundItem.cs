@@ -8,6 +8,7 @@ namespace Global.Sound
         [SerializeField] private float volumePercent = 1f;
 
         private float _volume;
+
         public float Volume
         {
             get => _volume;
@@ -19,6 +20,7 @@ namespace Global.Sound
         }
 
         public bool IsPlaying => source.isPlaying;
+
         public void Play()
         {
             source.Play();

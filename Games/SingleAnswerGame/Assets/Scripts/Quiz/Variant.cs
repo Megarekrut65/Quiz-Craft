@@ -1,15 +1,13 @@
 ﻿using System;
-using Global.Localization;
 using Global.Data;
 using UnityEngine;
 using UnityEngine.UI;
 
 namespace Quiz
 {
-    public class Variant: MonoBehaviour
+    public class Variant : MonoBehaviour
     {
-        [SerializeField]
-        private AnswerClick answerClick;
+        [SerializeField] private AnswerClick answerClick;
 
         [SerializeField] private Text text;
 
@@ -18,6 +16,6 @@ namespace Quiz
             answerClick.Click = () => click(index, answer);
 
             text.text = answer.Option;
-        } 
+        }
     }
 }

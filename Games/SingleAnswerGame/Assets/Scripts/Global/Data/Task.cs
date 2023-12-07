@@ -1,5 +1,4 @@
-﻿using System.Collections.Generic;
-using Newtonsoft.Json;
+﻿using Newtonsoft.Json;
 
 namespace Global.Data
 {
@@ -8,10 +7,9 @@ namespace Global.Data
         public int Id { get; set; }
         public string Title { get; set; }
         public string Description { get; set; }
-        
-        [JsonProperty("created_by")]
-        public int CreatedBy { get; set; }
+
+        [JsonProperty("created_by")] public int CreatedBy { get; set; }
+
         public Question[] Questions { get; set; }
     }
-
 }

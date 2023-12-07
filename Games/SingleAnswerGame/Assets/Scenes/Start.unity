@@ -152,6 +152,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7c608f66d8126424393bec58b5e89886, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  languages:
+  - code: uk_UK
+    asset: {fileID: 4900000, guid: ded90c67a0e0b8445a143f4886f63310, type: 3}
+  - code: en_US
+    asset: {fileID: 4900000, guid: 799039bc31676824b86943b4fde2016b, type: 3}
 --- !u!4 &55330336
 Transform:
   m_ObjectHideFlags: 0
@@ -821,6 +826,7 @@ GameObject:
   - component: {fileID: 1374476299}
   - component: {fileID: 1374476301}
   - component: {fileID: 1374476300}
+  - component: {fileID: 1374476302}
   m_Layer: 5
   m_Name: Logo
   m_TagString: Untagged
@@ -846,7 +852,7 @@ RectTransform:
   m_AnchorMin: {x: 0.305, y: 0.26018518}
   m_AnchorMax: {x: 0.69500005, y: 0.95370376}
   m_AnchoredPosition: {x: 0, y: 3.5}
-  m_SizeDelta: {x: -5.7800293, y: -6.7800293}
+  m_SizeDelta: {x: -5.7800293, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1374476300
 MonoBehaviour:
@@ -886,6 +892,20 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1374476298}
   m_CullTransparentMesh: 1
+--- !u!114 &1374476302
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1374476298}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 86710e43de46f6f4bac7c8e50813a599, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_AspectMode: 1
+  m_AspectRatio: 1.0010779
 --- !u!1 &1629420004
 GameObject:
   m_ObjectHideFlags: 0

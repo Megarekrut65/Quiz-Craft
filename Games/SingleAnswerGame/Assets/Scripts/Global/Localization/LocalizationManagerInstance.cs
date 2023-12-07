@@ -1,30 +1,24 @@
 ﻿using System.Collections.Generic;
 using Global.Json;
+using JetBrains.Annotations;
+using UnityEngine;
 
 namespace Global.Localization
 {
     public class LocalizationManagerInstance
     {
-        private readonly string _languagePath;
-        
+        [CanBeNull] private Language _current;
+
         private SortedDictionary<string, string> _wordMap = new SortedDictionary<string, string>();
-        private string _currentLanguage = "";
 
-        public LocalizationManagerInstance(string languagePath, string language="")
+        public void ChangeLanguage(Language language)
         {
-            _languagePath = languagePath;
-            ChangeLanguage(language);
-        }
-        
-        public void ChangeLanguage(string language) {
-            if (language == _currentLanguage) {
-                return;
-            }
+            if (_current != null && language.code == _current.code) return;
 
-            _currentLanguage = language;
-            _wordMap = JsonListParser<string>.Parse($"{_languagePath}/{language}");
+            _current = language;
+            _wordMap = JsonListParser<string>.ParseContent(language.asset.text);
         }
-        
+
         public string GetWord(string key)
         {
             return _wordMap.TryGetValue(key, out var value) ? value : key;

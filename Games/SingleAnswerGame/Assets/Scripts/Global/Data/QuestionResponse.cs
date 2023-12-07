@@ -6,8 +6,7 @@ namespace Global.Data
     {
         public int Question { get; set; }
         public int Answer { get; set; }
-        
-        [JsonProperty("text_answer")]
-        public string TextAnswer { get; set; }
+
+        [JsonProperty("text_answer")] public string TextAnswer { get; set; }
     }
 }

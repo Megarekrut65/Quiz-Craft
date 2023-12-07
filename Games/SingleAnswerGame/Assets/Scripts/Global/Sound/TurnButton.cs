@@ -1,5 +1,4 @@
-﻿using System;
-using UnityEngine;
+﻿using UnityEngine;
 using UnityEngine.UI;
 
 namespace Global.Sound
@@ -7,12 +6,18 @@ namespace Global.Sound
     public abstract class TurnButton : MonoBehaviour
     {
         [SerializeField] private Image img;
-        
+
         [SerializeField] private Sprite turnOn;
         [SerializeField] private Sprite turnOff;
 
         [SerializeField] private string key;
-        
+
+        private void Start()
+        {
+            bool state = LocalStorage.GetValue(key, true);
+            Change(state);
+        }
+
         public void Turn()
         {
             bool state = LocalStorage.GetValue(key, true);
@@ -25,17 +30,11 @@ namespace Global.Sound
         private void Change(bool state)
         {
             img.sprite = state ? turnOn : turnOff;
-            if(state) TurnOn();
+            if (state) TurnOn();
             else TurnOff();
         }
 
         protected abstract void TurnOn();
         protected abstract void TurnOff();
-
-        private void Start()
-        {
-            bool state = LocalStorage.GetValue(key, true);
-            Change(state);
-        }
     }
 }

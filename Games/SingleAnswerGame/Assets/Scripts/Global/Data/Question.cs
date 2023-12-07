@@ -1,5 +1,4 @@
-﻿using System.Collections.Generic;
-using Newtonsoft.Json;
+﻿using Newtonsoft.Json;
 
 namespace Global.Data
 {
@@ -8,9 +7,9 @@ namespace Global.Data
         public int Id { get; set; }
         public string Type { get; set; }
         public string Description { get; set; }
-        
-        [JsonProperty("max_grade")]
-        public int MaxGrade { get; set; }
+
+        [JsonProperty("max_grade")] public int MaxGrade { get; set; }
+
         public Answer[] Answers { get; set; }
     }
 }

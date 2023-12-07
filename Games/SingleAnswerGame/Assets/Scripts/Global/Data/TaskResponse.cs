@@ -4,7 +4,6 @@ namespace Global.Data
 {
     public class TaskResponse
     {
-        [JsonProperty("question_responses")]
-        public QuestionResponse[] Responses { get; set; }
+        [JsonProperty("question_responses")] public QuestionResponse[] Responses { get; set; }
     }
 }
