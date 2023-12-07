@@ -4,6 +4,7 @@ using Global;
 using Global.Data;
 using Global.Localization;
 using JetBrains.Annotations;
+using Main;
 using Newtonsoft.Json;
 using PlayerController;
 using UnityEngine;
@@ -25,10 +26,14 @@ namespace Quiz
         [SerializeField] private EntityController enemy;
 
         [SerializeField] private GameOverController gameOverController;
+
+        [SerializeField] private ErrorLogger logger;
+        
         private int _answered;
 
         private int _correct;
         private Game _game;
+        private GameResponse _response;
 
         private int _grade;
         private int _maxGrade;
@@ -45,21 +50,66 @@ namespace Quiz
             _sender = new ResponseSender(uid, token);
 
             _username = LocalStorage.GetValue("username", "unknown");
-            string json = LocalStorage.GetValue("quiz", "");
+            string gameJson = LocalStorage.GetValue("quiz", "");
 
-            _game = JsonConvert.DeserializeObject<Game>(json);
+            _game = JsonConvert.DeserializeObject<Game>(gameJson);
             _task = _game.Task;
 
-            if (_task.Questions.Length > 0) LoadQuestion(0, _task.Questions[0]);
+            string responseJson = LocalStorage.GetValue("response", "");
+            _response = JsonConvert.DeserializeObject<GameResponse>(responseJson);
+
+            contentObj.SetActive(false);
+            questionText.text = "";
+            gradeText.text = "";
+            
+            if (_task.Questions.Length > 0) LoadQuestion(0);
 
             player.LoadEntity(_username, WeaponConverter.Convert(_game.PlayerWeapon));
-            enemy.LoadEntity(_task.Title[..Math.Min(15, _task.Title.Length)],
+            enemy.LoadEntity(_task.Title[..Math.Min(25, _task.Title.Length)],
                 WeaponConverter.Convert(_game.EnemyWeapon));
         }
 
-        private void LoadQuestion(int index, Question question)
+        private bool AlreadyPassed(Question question)
         {
-            if (question == null) return;
+            if (question == null || _response?.Responses == null) return false;
+            
+            foreach (QuestionResponse response in _response.Responses)
+            {
+                if (response.Question != question.Id) continue;
+
+                _answered++;
+                if (response.Correct)
+                {
+                    _correct++;
+                    _grade += question.MaxGrade;
+                }
+
+                _maxGrade += question.MaxGrade;
+
+                return true;
+            }
+
+            return false;
+        }
+        
+        private void LoadQuestion(int index)
+        {
+            Question question = null;
+
+            do
+            {
+                question = _task.Questions[index];
+                index++;
+            } while (index < _task.Questions.Length && AlreadyPassed(question));
+
+            if (question == null || AlreadyPassed(question) && index >= _task.Questions.Length)
+            {
+                StartCoroutine(GameOver());
+                return;
+            }
+
+            index--;
+            
             contentObj.SetActive(true);
 
             questionText.text = $"{index + 1}. {question.Description}";
@@ -90,28 +140,37 @@ namespace Quiz
 
             Question question = _task.Questions[questionIndex];
             _maxGrade += question.MaxGrade;
+            
+            _sender.Send(this, question.Id, answer.Id, 
+                (error, json) => LoadResponse(error, questionIndex, json));
+        }
 
-            if (answer.Correct)
+        private void LoadResponse([CanBeNull] Error error, int questionIndex, string json)
+        {
+            if (error != null)
+            {
+                Debug.Log(error.Detail);
+                logger.ShowError(LocalizationManager.GetWordByKey("error"));
+                return;
+            }
+            
+            _answered++;
+            ResponseAnswer responseAnswer = JsonConvert.DeserializeObject<ResponseAnswer>(json);
+
+            if (responseAnswer == null)
+            {
+                logger.ShowError(LocalizationManager.GetWordByKey("error"));
+                return;
+            }
+            
+            if (responseAnswer.Correct)
             {
                 player.Attack();
-                _grade += question.MaxGrade;
+                _grade += _task.Questions[questionIndex].MaxGrade;
                 _correct++;
             }
             else enemy.Attack();
-
-            try
-            {
-                _sender.Send(this, question.Id, answer.Id, (json => LoadResponse(questionIndex, json)));
-                _answered++;
-            }
-            catch (Exception e)
-            {
-                Debug.Log(e);
-            }
-        }
-
-        private void LoadResponse(int questionIndex, string json)
-        {
+            
             StartCoroutine(LoadNext(questionIndex + 1));
         }
 
@@ -121,7 +180,7 @@ namespace Quiz
 
             if (next < _task.Questions.Length)
             {
-                LoadQuestion(next, _task.Questions[next]);
+                LoadQuestion(next);
             }
             else
             {

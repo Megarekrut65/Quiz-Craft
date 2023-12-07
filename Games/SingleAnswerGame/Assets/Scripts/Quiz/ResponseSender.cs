@@ -1,4 +1,5 @@
 ﻿using System;
+using Global.Data;
 using Main;
 using UnityEngine;
 
@@ -15,7 +16,7 @@ namespace Quiz
             _token = token;
         }
 
-        public void Send(MonoBehaviour behaviour, int question, int answer, Action<string> callback)
+        public void Send(MonoBehaviour behaviour, int question, int answer, Action<Error, string> callback)
         {
             WWWForm form = new WWWForm();
             form.AddField("uid", _uid);

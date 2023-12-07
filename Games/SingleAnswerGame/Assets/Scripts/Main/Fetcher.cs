@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections;
+using Global.Data;
 using UnityEngine;
 using UnityEngine.Networking;
 
@@ -9,7 +10,7 @@ namespace Main
     {
         private const string ServerUrl = "http://127.0.0.1:8000/";
         
-        private static IEnumerator GetNumerator(string endpoint, string token, Action<string> callback)
+        private static IEnumerator GetNumerator(string endpoint, string token, Action<Error, string> callback)
         {
             using (UnityWebRequest request = UnityWebRequest.Get($"{ServerUrl}api/{endpoint}/"))
             {
@@ -24,20 +25,22 @@ namespace Main
 
                 if (request.result is UnityWebRequest.Result.ConnectionError or UnityWebRequest.Result.ProtocolError)
                 {
-                    throw new Exception(request.downloadHandler.text);
+                   callback(Error.FromMessage(request.downloadHandler.text), "");
                 }
-                
-                string res = request.downloadHandler.text;
-                callback(res);
+                else
+                {
+                    string res = request.downloadHandler.text;
+                    callback(null, res); 
+                }
             }
         }
         
-        public static void Get(MonoBehaviour behaviour, string endpoint, string token, Action<string> callback)
+        public static void Get(MonoBehaviour behaviour, string endpoint, string token, Action<Error, string> callback)
         {
             behaviour.StartCoroutine(GetNumerator(endpoint, token, callback));
         }
         
-        private static IEnumerator PostNumerator(string endpoint, string token, WWWForm form, Action<string> callback)
+        private static IEnumerator PostNumerator(string endpoint, string token, WWWForm form, Action<Error, string> callback)
         {
             using (UnityWebRequest request = UnityWebRequest.Post($"{ServerUrl}api/{endpoint}/", form))
             {
@@ -51,15 +54,18 @@ namespace Main
 
                 if (request.result is UnityWebRequest.Result.ConnectionError or UnityWebRequest.Result.ProtocolError)
                 {
-                    throw new Exception(request.downloadHandler.text);
+                    callback(Error.FromMessage(request.downloadHandler.text), "");
                 }
-                
-                string res = request.downloadHandler.text;
-                callback(res);
+                else
+                {
+                    string res = request.downloadHandler.text;
+                    callback(null, res); 
+                }
             }
         }
         
-        public static void Post(MonoBehaviour behaviour, string endpoint, string token, WWWForm form, Action<string> callback)
+        public static void Post(MonoBehaviour behaviour, string endpoint, string token, WWWForm form, 
+            Action<Error, string> callback)
         {
             behaviour.StartCoroutine(PostNumerator(endpoint, token, form, callback));
         }

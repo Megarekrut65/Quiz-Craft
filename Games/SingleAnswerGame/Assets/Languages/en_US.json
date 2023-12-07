@@ -55,6 +55,18 @@
     {
       "key": "notAllDescription",
       "value": "Unfortunately, the answers to some questions have not been saved, please reload the page and take the test again"
+    },
+    {
+      "key": "auth",
+      "value": "You need to login to the QuizCraft platform first"
+    },
+    {
+      "key": "uid",
+      "value": "This game was not found. Check the link is correct"
+    },
+    {
+      "key": "error",
+      "value": "Sorry, an error occurred, please reload the page and try again"
     }
   ]
 }
