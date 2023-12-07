@@ -1,5 +1,5 @@
 fileFormatVersion: 2
-guid: a81d40ee176c65d4397523556d1ac18a
+guid: 8ae144b3e6c0d904db7391b8cafd897c
 TrueTypeFontImporter:
   externalObjects: {}
   serializedVersion: 4
@@ -9,7 +9,7 @@ TrueTypeFontImporter:
   characterPadding: 1
   includeFontData: 1
   fontNames:
-  - HyperSchlag
+  - InkVerse
   fallbackFontReferences: []
   customCharacters: 
   fontRenderingMode: 0

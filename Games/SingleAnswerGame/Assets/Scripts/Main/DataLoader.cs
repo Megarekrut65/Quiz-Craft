@@ -7,6 +7,7 @@ using Global.Localization;
 using JetBrains.Annotations;
 using Newtonsoft.Json;
 using UnityEngine;
+using UnityEngine.Networking;
 using UnityEngine.UI;
 
 namespace Main
@@ -21,9 +22,6 @@ namespace Main
         [CanBeNull]
         private static extern string UidFromUrl();
         
-        [DllImport("__Internal")]
-
-        private static extern string StringReturnValueFunction();
         
         
         [SerializeField] private Text titleText;
@@ -38,20 +36,19 @@ namespace Main
 
         private void Start()
         {
-            Debug.Log($"return: {StringReturnValueFunction()}");
             if (Application.isEditor)
             {
                 _token = "60c1d692c0b18734016efb12ef5ab9627bcf375c";
                 _uid = "0agjrJWFNj4WKRSMstkiTi81gfr9RFMr"; 
             }
             else{
-                _token = Token()??""; //"60c1d692c0b18734016efb12ef5ab9627bcf375c";
-                _uid = UidFromUrl()??"unknown"; //"0agjrJWFNj4WKRSMstkiTi81gfr9RFMr";
+                _token = "60c1d692c0b18734016efb12ef5ab9627bcf375c";//Token()??""; //
+                _uid = "fkwAq11PMOIviQALUNwTNcTZzCDJq4Nd";//UidFromUrl()??""; //
             }
 
             Debug.Log($"Token: {_token}");
             Debug.Log($"Uid: {_uid}");
-            return;
+
             LocalStorage.SetValue("token", _token);
             LocalStorage.SetValue("uid", _uid);
 
@@ -60,8 +57,34 @@ namespace Main
 
         private IEnumerator Download()
         {
+            yield return new WaitForSeconds(0.1f);
             //DownloadResponseData();
-            DownloadGameData();
+            using (UnityWebRequest request = UnityWebRequest.Get("http://127.0.0.1:8000/api/games/uid/get-game/"+_uid))
+            {
+                request.SetRequestHeader("Content-Type", "application/json; charset=UTF-8");
+                request.SetRequestHeader("Authorization", $"Token {_token}");
+
+                yield return request.SendWebRequest();
+                while (!request.isDone)
+                {
+                    yield return null;
+                }
+
+                if (request.result is UnityWebRequest.Result.ConnectionError or UnityWebRequest.Result.ProtocolError)
+                {
+                    Debug.Log(request.downloadHandler.text);
+                }
+
+                Debug.Log(request.downloadHandler.text);
+                string res = request.downloadHandler.text;
+
+                LocalStorage.SetValue("quiz", res);
+                Game game = JsonConvert.DeserializeObject<Game>(res);
+                titleText.text = game.Task.Title;
+                descriptionText.text = game.Task.Description;
+                questionText.text = $"{game.Task.Questions.Length} {LocalizationManager.GetWordByKey("questions")}";
+            }
+
             loading.SetActive(false);
             yield return null;
         }

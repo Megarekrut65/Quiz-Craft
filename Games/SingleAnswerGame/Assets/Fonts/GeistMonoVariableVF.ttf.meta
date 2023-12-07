@@ -1,15 +1,15 @@
 fileFormatVersion: 2
-guid: 61f215f6f454d004d83052ba52773916
+guid: 386793bc6fdfda8458abf70bccf3d94b
 TrueTypeFontImporter:
   externalObjects: {}
   serializedVersion: 4
-  fontSize: 16
+  fontSize: 50
   forceTextureCase: -2
   characterSpacing: 0
   characterPadding: 1
   includeFontData: 1
   fontNames:
-  - Lato
+  - Geist Mono Variable
   fallbackFontReferences: []
   customCharacters: 
   fontRenderingMode: 0

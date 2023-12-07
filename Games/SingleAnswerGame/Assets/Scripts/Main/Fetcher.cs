@@ -25,9 +25,13 @@ namespace Main
 
         public static string Get(string endpoint, string token)
         {
-            UnityWebRequest request = UnityWebRequest.Get($"{ServerUrl}api/{endpoint}/");
-            request.SetRequestHeader("Content-Type", "application/json");
+            UnityWebRequest request = new UnityWebRequest();
+            request.downloadHandler = new DownloadHandlerBuffer();
+            request.url = $"{ServerUrl}api/{endpoint}/";
+            request.SetRequestHeader("Content-Type" , "application/json; charset=UTF-8");
             request.SetRequestHeader("Authorization", $"Token {token}");
+            request.method = UnityWebRequest.kHttpVerbGET;
+            
 
             return SendAsync(request);
         }
