@@ -26,7 +26,8 @@ export const login = (username, password)=>{
     .then((res)=>{
         localStorage.setItem("token", res.token);
         localStorage.setItem("username", username);
-
+        localStorage.setItem("role", res.role);
+        
         changeState(true); 
         return res;
     });

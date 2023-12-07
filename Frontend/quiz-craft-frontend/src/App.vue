@@ -1,12 +1,13 @@
 <script setup>
 import { ref } from "vue";
-import { subscribeUserChangeState, userIsLogged, getUsername, logout } from "./assets/js/user-api";
+import { subscribeUserChangeState, userIsLogged, getUsername, logout, getRole } from "./assets/js/user-api";
 
-const isLogged = ref(userIsLogged()), username = ref(getUsername());
+const isLogged = ref(userIsLogged()), username = ref(getUsername()), role=ref(getRole());
 
 const changeState = (logged) => {
   isLogged.value = logged;
   username.value = getUsername();
+  role.value = getRole();
 };
 
 const logoutUser = () => {
@@ -21,7 +22,7 @@ subscribeUserChangeState(changeState);
 </script>
 
 <template>
-  <header class="header_section" style="position: fixed; width: 100vw; z-index: 10000;">
+  <header v-if="!$route.name?.includes('run')" class="header_section" style="position: fixed; width: 100vw; z-index: 10000;">
     <div class="header_bottom">
       <div class="container-fluid">
         <nav class="navbar navbar-expand-lg custom_nav-container ">
@@ -41,7 +42,7 @@ subscribeUserChangeState(changeState);
                 <li class="nav-item active">
                   <RouterLink class="nav-link" to="/">Home</RouterLink>
                 </li>
-                <li class="nav-item" v-if="isLogged">
+                <li class="nav-item" v-if="isLogged&&role==='TEACHER'">
                   <div class="dropdown">
                     <button class="btn dropdown-toggle nav-link" type="button" id="dropdownMenuButton"
                       data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
@@ -54,7 +55,7 @@ subscribeUserChangeState(changeState);
                   </div>
 
                 </li>
-                <li class="nav-item" v-if="isLogged">
+                <li class="nav-item" v-if="isLogged&&role==='TEACHER'">
                   <div class="dropdown">
                     <button class="btn dropdown-toggle nav-link" type="button" id="dropdownMenuButton"
                       data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
@@ -101,12 +102,12 @@ subscribeUserChangeState(changeState);
   </header>
 
 
-  <div class="container-fluid" style="min-height: 100vh; padding-top: 80px;">
+  <div class="container-fluid" v-bind:style="!$route.name?.includes('run')?'min-height: 100vh; padding-top: 80px;':''">
     <RouterView />
   </div>
 
 
-  <section class="info_section mt-4">
+  <section v-if="!$route.name?.includes('run')" class="info_section mt-4">
     <div class="container">
       <div class="info_bottom layout_padding2">
         <div class="row info_main_row">
