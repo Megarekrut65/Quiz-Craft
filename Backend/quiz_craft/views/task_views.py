@@ -6,7 +6,7 @@ from ..models.task import Task, TaskUID
 from ..permissions import IsTeacher
 from ..serializers.task_serializer import TaskCreateSerializer, TaskListSerializer, TaskUIDSerializer, \
     TaskByUIDSerializer
-from ..utils import generate_unique_task_uid
+from ..utils.utils import generate_unique_task_uid
 
 
 class TaskCreateView(generics.CreateAPIView):

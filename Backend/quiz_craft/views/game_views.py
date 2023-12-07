@@ -5,7 +5,7 @@ from rest_framework import status
 from ..models.game import Game, GameUID
 from ..permissions import IsTeacher
 from ..serializers.game_serializer import GameSerializer, GameUIDSerializer, GameByUIDSerializer
-from ..utils import generate_unique_game_uid
+from ..utils.utils import generate_unique_game_uid
 
 
 class GameListView(generics.ListCreateAPIView):
