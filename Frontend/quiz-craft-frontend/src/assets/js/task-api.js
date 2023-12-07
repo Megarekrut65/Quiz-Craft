@@ -98,5 +98,5 @@ export const generateTask = (data)=>{
         body: JSON.stringify(data)
     };
 
-    return sendAsync(`${SERVER_URL}api/tasks/generate-uid/`, request);
+    return sendAsync(`${SERVER_URL}api/generate-task/`, request);
 };

@@ -12,6 +12,11 @@ const props = defineProps({
     cancel: {
         type: Function,
         required: true
+    },
+    z_index:{
+        type:Number,
+        required: false,
+        default: ()=>9999
     }
 });
 
@@ -23,7 +28,7 @@ const close = (event)=>{
 
 <template>
     <main>
-        <div v-bind:class="question !== ''? 'modal-container' : 'modal-container hide'" @click="close">
+        <div v-bind:class="question !== ''? 'modal-container' : 'modal-container hide'" @click="close" :style="`z-index: ${z_index};`">
             <div class="modal-list" style="max-width: 500px; width: 100vh; height: auto;">
                 <div class="card" style="margin-top: 30vh;">
                     <div class="card-body text-center">

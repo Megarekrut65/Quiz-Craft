@@ -121,7 +121,7 @@ const validateData = (task) => {
 
 const extractTask = () => {
     const questionsValue = toRaw(questions.value);
-
+    
     for (let i in questionsValue) {
         questionsValue[i].description = questionsValue[i].description.trim();
         questionsValue[i]["max_grade"] = questionsValue[i].maxGrade;
@@ -160,6 +160,8 @@ const submitTask = () => {
     modalText.value = "After saving task you can't edit it anymore!";
 
     modalSubmit.value = () => {
+        loaded.value = false;
+        
         saveTask(task)
             .then(res => {
                 readOnly.value = true;
@@ -181,18 +183,19 @@ const loadTaskData = (res) => {
     questions.value = res.questions.map(item => {
         const newItem = JSON.parse(JSON.stringify(item));
         newItem.maxGrade = item["max_grade"];
+        if(!readOnly.value) newItem.id = id++;
+        
         return newItem;
     });
 
     generateActive.value = false;
+    loaded.value = true;
 };
 
 if (readOnly.value) {
     getTaskById(props.paramId).then(res => {
 
         loadTaskData(res);
-
-        loaded.value = true;
     }).catch(errorLog);
 }
 
@@ -214,12 +217,13 @@ const closeGenerate = ()=>{
     <section class="book_section mb-4">
         <ModalWindow :question="modalText" :submit="modalSubmit" :cancel="modalCancel"></ModalWindow>
         <ModalWindow :question="errorMessage" :cancel="closeError"></ModalWindow>
-        <LoadingWindow :is-active="!loaded"></LoadingWindow>
-
+        
         <GenerateWindow :load-task="loadTaskData" :active="generateActive" :close="closeGenerate"></GenerateWindow>
 
         <ShareWindow :active="active" :obj-id="paramId" :close="closeSharing" :error-log="errorLog" :get-obj="getTaskUid"
             :share-obj="shareTask" :close-obj="closeTask" name="quiz"></ShareWindow>
+        
+        <LoadingWindow :is-active="!loaded"></LoadingWindow>
 
         <form id="task-form" @submit.prevent="submitTask" onsubmit="return false;"
             style="background: none; box-shadow: none;">

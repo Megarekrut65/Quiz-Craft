@@ -1,1 +1,1 @@
-export const SERVER_URL = "https://127.0.0.1:8181/";
+export const SERVER_URL = "https://127.0.0.1:8181/";//"https://quizcraft-8wkv.onrender.com/";

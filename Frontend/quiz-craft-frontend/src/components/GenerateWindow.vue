@@ -2,6 +2,7 @@
 import { ref, toRaw } from "vue";
 import { generateTask } from "../assets/js/task-api";
 import LoadingWindow from './LoadingWindow.vue';
+import ModalWindow from "./ModalWindow.vue";
 import { parseError } from "../assets/js/utilities";
 
 const props = defineProps({
@@ -35,11 +36,12 @@ const data = ref({ theme: "", questions: 1, answers: 1 })
 
 const isActive = ref(false);
 
-const submitTask = () => {
+const generateQuiz = () => {
     isActive.value = true;
 
     const request = toRaw(data.value);
     generateTask(request).then(res => {
+        isActive.value = false;
         props.loadTask(res);
     }).catch(errorLog);
 };
@@ -49,7 +51,7 @@ const submitTask = () => {
 <template>
     <main>
         <LoadingWindow :is-active="isActive"></LoadingWindow>
-        <ModalWindow :question="errorMessage" :cancel="closeError"></ModalWindow>
+        <ModalWindow :question="errorMessage" :cancel="closeError" z_index="999999"></ModalWindow>
 
         <div v-bind:class="active ? 'modal-container' : 'modal-container hide'">
             <div class="modal-list" style="max-width: 700px; height: auto;">
@@ -57,7 +59,7 @@ const submitTask = () => {
                     <div class="card-body">
                         <div class="close"><i class="fa fa-close" @click="close"></i>
                         </div>
-                        <form @submit.prevent="submitTask" onsubmit="return false;"
+                        <form id="generate"  @submit.prevent="generateQuiz" onsubmit="return false;"
                             style="background: none; box-shadow: none;">
                             <div class="form-row">
                                 <div class="form-group col-12">
@@ -66,22 +68,22 @@ const submitTask = () => {
 
                                 <div class="form-group col-12">
                                     <input class="form-control" v-model="data.theme" placeholder="Theme..." type="text"
-                                        maxlength="200" minlength="10" required>
+                                        maxlength="200" minlength="10" required form="generate">
                                 </div>
                                 <div class="form-group col-12 col-md-6">
                                     <label>Questions count</label>
-                                    <input class="form-control" v-model="data.questions" type="number" min="1" max="50"
-                                        required>
+                                    <input class="form-control" v-model="data.questions" type="number" min="1" max="12"
+                                        required form="generate">
                                 </div>
                                 <div class="form-group col-12 col-md-6">
                                     <label>Answers in each question count</label>
-                                    <input class="form-control" v-model="data.answers" type="number" min="1" max="10"
-                                        required>
+                                    <input class="form-control" v-model="data.answers" type="number" min="1" max="4"
+                                        required form="generate">
                                 </div>
                             </div>
 
 
-                            <button type="submit" class="btn btn-primary mt-4" form="task-form">Generate</button>
+                            <button type="submit" class="btn btn-primary mt-4" form="generate">Generate</button>
                         </form>
                     </div>
                 </div>
