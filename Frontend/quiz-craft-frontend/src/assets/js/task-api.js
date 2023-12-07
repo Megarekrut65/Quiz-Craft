@@ -87,3 +87,16 @@ export const getTasks = ()=>{
 
     return sendAsync(`${SERVER_URL}api/tasks/`, request);
 };
+
+export const generateTask = (data)=>{
+    const request = {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json",
+            Authorization: `Token ${getToken()}`
+        },
+        body: JSON.stringify(data)
+    };
+
+    return sendAsync(`${SERVER_URL}api/tasks/generate-uid/`, request);
+};

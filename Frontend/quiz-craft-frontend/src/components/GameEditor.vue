@@ -220,7 +220,7 @@ const showAnswers = () => {
                                         <label>Game title</label>
                                     </div>
                                     <div class="form-group col-lg-6">
-                                        <input type="text" class="form-control" placeholder="Game title..."
+                                        <input type="text" class="form-control" placeholder="Game title..." maxlength="500"
                                             v-model="taskTitle" required v-bind:readonly="readOnly" form="task-form">
 
                                     </div>
@@ -279,7 +279,7 @@ const showAnswers = () => {
                                         v-model="game['min_win_grade']" required form="task-form">
                                 </div>
                                 <div class="form-group col-12">
-                                    <input v-bind:readonly="readOnly" type="text" class="form-control"
+                                    <input v-bind:readonly="readOnly" type="text" class="form-control" maxlength="1000"
                                         placeholder="Description..." v-model="taskDescription" required form="task-form">
                                 </div>
                             </div>
