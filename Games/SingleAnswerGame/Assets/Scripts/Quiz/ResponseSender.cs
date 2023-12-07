@@ -1,4 +1,5 @@
-﻿using Main;
+﻿using System;
+using Main;
 using UnityEngine;
 
 namespace Quiz
@@ -14,14 +15,14 @@ namespace Quiz
             _token = token;
         }
 
-        public void Send(int question, int answer)
+        public void Send(MonoBehaviour behaviour, int question, int answer, Action<string> callback)
         {
             WWWForm form = new WWWForm();
             form.AddField("uid", _uid);
             form.AddField("question_id", question);
             form.AddField("answer_id", answer);
 
-            Fetcher.Post("game-responses/create", _token, form);
+            Fetcher.Post(behaviour, "game-responses/create", _token, form, callback);
         }
     }
 }

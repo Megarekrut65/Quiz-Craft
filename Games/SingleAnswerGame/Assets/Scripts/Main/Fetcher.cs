@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections;
 using UnityEngine;
 using UnityEngine.Networking;
 
@@ -7,41 +8,60 @@ namespace Main
     public static class Fetcher
     {
         private const string ServerUrl = "http://127.0.0.1:8000/";
-
-        private static string SendAsync(UnityWebRequest request)
+        
+        private static IEnumerator GetNumerator(string endpoint, string token, Action<string> callback)
         {
-            request.SendWebRequest();
-            while (!request.isDone)
+            using (UnityWebRequest request = UnityWebRequest.Get($"{ServerUrl}api/{endpoint}/"))
             {
-            }
+                request.SetRequestHeader("Content-Type", "application/json; charset=UTF-8");
+                request.SetRequestHeader("Authorization", $"Token {token}");
 
-            if (request.result is UnityWebRequest.Result.ConnectionError or UnityWebRequest.Result.ProtocolError)
+                yield return request.SendWebRequest();
+                while (!request.isDone)
+                {
+                    yield return null;
+                }
+
+                if (request.result is UnityWebRequest.Result.ConnectionError or UnityWebRequest.Result.ProtocolError)
+                {
+                    throw new Exception(request.downloadHandler.text);
+                }
+                
+                string res = request.downloadHandler.text;
+                callback(res);
+            }
+        }
+        
+        public static void Get(MonoBehaviour behaviour, string endpoint, string token, Action<string> callback)
+        {
+            behaviour.StartCoroutine(GetNumerator(endpoint, token, callback));
+        }
+        
+        private static IEnumerator PostNumerator(string endpoint, string token, WWWForm form, Action<string> callback)
+        {
+            using (UnityWebRequest request = UnityWebRequest.Post($"{ServerUrl}api/{endpoint}/", form))
             {
-                throw new Exception(request.downloadHandler.text);
+                request.SetRequestHeader("Authorization", $"Token {token}");
+
+                yield return request.SendWebRequest();
+                while (!request.isDone)
+                {
+                    yield return null;
+                }
+
+                if (request.result is UnityWebRequest.Result.ConnectionError or UnityWebRequest.Result.ProtocolError)
+                {
+                    throw new Exception(request.downloadHandler.text);
+                }
+                
+                string res = request.downloadHandler.text;
+                callback(res);
             }
-
-            return request.downloadHandler.text;
         }
-
-        public static string Get(string endpoint, string token)
+        
+        public static void Post(MonoBehaviour behaviour, string endpoint, string token, WWWForm form, Action<string> callback)
         {
-            UnityWebRequest request = new UnityWebRequest();
-            request.downloadHandler = new DownloadHandlerBuffer();
-            request.url = $"{ServerUrl}api/{endpoint}/";
-            request.SetRequestHeader("Content-Type" , "application/json; charset=UTF-8");
-            request.SetRequestHeader("Authorization", $"Token {token}");
-            request.method = UnityWebRequest.kHttpVerbGET;
-            
-
-            return SendAsync(request);
-        }
-
-        public static string Post(string endpoint, string token, WWWForm form)
-        {
-            UnityWebRequest request = UnityWebRequest.Post($"{ServerUrl}api/{endpoint}/", form);
-            request.SetRequestHeader("Authorization", $"Token {token}");
-
-            return SendAsync(request);
+            behaviour.StartCoroutine(PostNumerator(endpoint, token, form, callback));
         }
     }
 }

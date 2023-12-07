@@ -52,71 +52,9 @@ namespace Main
             LocalStorage.SetValue("token", _token);
             LocalStorage.SetValue("uid", _uid);
 
-            StartCoroutine(Download());
-        }
-
-        private IEnumerator Download()
-        {
-            yield return new WaitForSeconds(0.1f);
-            //DownloadResponseData();
-            using (UnityWebRequest request = UnityWebRequest.Get("http://127.0.0.1:8000/api/games/uid/get-game/"+_uid))
-            {
-                request.SetRequestHeader("Content-Type", "application/json; charset=UTF-8");
-                request.SetRequestHeader("Authorization", $"Token {_token}");
-
-                yield return request.SendWebRequest();
-                while (!request.isDone)
-                {
-                    yield return null;
-                }
-
-                if (request.result is UnityWebRequest.Result.ConnectionError or UnityWebRequest.Result.ProtocolError)
-                {
-                    Debug.Log(request.downloadHandler.text);
-                }
-
-                Debug.Log(request.downloadHandler.text);
-                string res = request.downloadHandler.text;
-
-                LocalStorage.SetValue("quiz", res);
-                Game game = JsonConvert.DeserializeObject<Game>(res);
-                titleText.text = game.Task.Title;
-                descriptionText.text = game.Task.Description;
-                questionText.text = $"{game.Task.Questions.Length} {LocalizationManager.GetWordByKey("questions")}";
-            }
-
-            loading.SetActive(false);
-            yield return null;
-        }
-
-        private void DownloadResponseData()
-        {
             try
             {
-                string res = Fetcher.Get("task-responses/" + _uid, _token);
-
-                GameResponse response = JsonConvert.DeserializeObject<GameResponse>(res);
-                Debug.Log(res);
-            }
-            catch (Exception e)
-            {
-                Debug.Log(e);
-                Error err = JsonConvert.DeserializeObject<Error>(e.Message);
-                error.ShowError(err != null ? err.Detail : e.Message);
-            }
-        }
-
-        private void DownloadGameData()
-        {
-            try
-            {
-                string res = Fetcher.Get("games/uid/get-game/" + _uid, _token);
-
-                LocalStorage.SetValue("quiz", res);
-                Game game = JsonConvert.DeserializeObject<Game>(res);
-                titleText.text = game.Task.Title;
-                descriptionText.text = game.Task.Description;
-                questionText.text = $"{game.Task.Questions.Length} {LocalizationManager.GetWordByKey("questions")}";
+                Fetcher.Get(this, "games/uid/get-game/" + _uid, _token, LoadGame);
             }
             catch (Exception e)
             {
@@ -130,8 +68,18 @@ namespace Main
                 {
                     error.ShowError(e.Message);
                 }
-                
             }
+        }
+
+        private void LoadGame(string json)
+        {
+            LocalStorage.SetValue("quiz", json);
+            Game game = JsonConvert.DeserializeObject<Game>(json);
+            titleText.text = game.Task.Title;
+            descriptionText.text = game.Task.Description;
+            questionText.text = $"{game.Task.Questions.Length} {LocalizationManager.GetWordByKey("questions")}";
+            
+            loading.SetActive(false);
         }
     }
 }

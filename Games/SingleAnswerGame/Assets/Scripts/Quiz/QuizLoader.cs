@@ -99,23 +99,19 @@ namespace Quiz
             }
             else enemy.Attack();
 
-            StartCoroutine(SendAnswer(questionIndex, question.Id, answer.Id));
-        }
-
-        private IEnumerator SendAnswer(int questionIndex, int question, int answer)
-        {
             try
             {
-                _sender.Send(question, answer);
+                _sender.Send(this, question.Id, answer.Id, (json => LoadResponse(questionIndex, json)));
                 _answered++;
             }
             catch (Exception e)
             {
                 Debug.Log(e);
             }
+        }
 
-            yield return null;
-
+        private void LoadResponse(int questionIndex, string json)
+        {
             StartCoroutine(LoadNext(questionIndex + 1));
         }
 
