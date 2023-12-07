@@ -1,7 +1,7 @@
 import json
 import re
 import openai
-from Backend.quiz_craft_backend.settings import GPT_API
+from quiz_craft_backend.settings import GPT_API
 
 JSON_FORMAT = """
 {
