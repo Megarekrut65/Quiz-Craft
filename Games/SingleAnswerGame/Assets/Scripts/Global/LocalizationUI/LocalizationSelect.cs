@@ -24,7 +24,7 @@ namespace Global.LocalizationUI
         {
             if (items.Length == 0) return;
 
-            _selected = LocalStorage.GetValue("language", 0);
+            _selected = LocalStorage.GetValue("languageSelect", 0);
 
             icon.sprite = items[_selected].icon;
             languageLoader.SetActive(true);
@@ -47,7 +47,7 @@ namespace Global.LocalizationUI
                 _selected = 0;
             }
 
-            LocalStorage.SetValue("language", _selected);
+            LocalStorage.SetValue("languageSelect", _selected);
             icon.sprite = items[_selected].icon;
 
             languageLoader.SetActive(true);

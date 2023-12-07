@@ -1,4 +1,5 @@
-﻿using System.Runtime.InteropServices;
+﻿using System;
+using System.Runtime.InteropServices;
 using Global;
 using Global.Data;
 using Global.Localization;
@@ -34,6 +35,10 @@ namespace Main
         private string _token;
         private string _uid;
 
+
+        [CanBeNull] private GameResponse _response;
+        [CanBeNull] private Game _game;
+
         private void Start()
         {
             string username;
@@ -45,8 +50,8 @@ namespace Main
                 username = "Editor";
             }
             else{
-                _token = Token()??""; //
-                _uid = UidFromUrl()??""; //
+                _token = Token()??"";
+                _uid = UidFromUrl()??"";
                 username = Username()??"";
             }
 
@@ -77,18 +82,16 @@ namespace Main
             }
             
 
-            Game game = JsonConvert.DeserializeObject<Game>(json);
-            if (game == null)
+            _game = JsonConvert.DeserializeObject<Game>(json);
+            if (_game == null)
             {
                 logger.ShowError(LocalizationManager.GetWordByKey("error"));
                 return;
             }
             
             LocalStorage.SetValue("quiz", json);
-            
-            titleText.text = game.Task.Title;
-            descriptionText.text = game.Task.Description;
-            questionText.text = $"{game.Task.Questions.Length} {LocalizationManager.GetWordByKey("questions")}";
+
+            LoadGameText();
             
             Fetcher.Get(this, "game-responses/" + _uid, _token, LoadResponse);
         }
@@ -109,19 +112,45 @@ namespace Main
             
             LocalStorage.SetValue("response", json);
 
-            GameResponse game = JsonConvert.DeserializeObject<GameResponse>(json);
-            if (game?.Responses == null)
+            _response = JsonConvert.DeserializeObject<GameResponse>(json);
+            if (_response?.Responses == null)
             {
                 loading.SetActive(false);
                 return;
             }
+
+            LoadResponseText();
             
-            if (game.Responses.Length != 0)
+            loading.SetActive(false);
+        }
+
+        private void LoadGameText()
+        {
+            if(_game == null) return;
+            
+            titleText.text = _game.Task.Title;
+            descriptionText.text = _game.Task.Description;
+            questionText.text = $"{_game.Task.Questions.Length} {LocalizationManager.GetWordByKey("questions")}";
+        }
+
+        private void LoadResponseText()
+        {
+            if (_response?.Responses != null && _response.Responses.Length != 0)
             {
                 alreadyText.text = LocalizationManager.GetWordByKey("already");
             }
-            
-            loading.SetActive(false);
+        }
+
+        private void Awake()
+        {
+            LocalizationManager.Instance.OnLanguageChanged += LoadGameText;
+            LocalizationManager.Instance.OnLanguageChanged += LoadResponseText;
+        }
+
+        private void OnDestroy()
+        {
+            LocalizationManager.Instance.OnLanguageChanged -= LoadGameText;
+            LocalizationManager.Instance.OnLanguageChanged -= LoadResponseText; 
         }
     }
 }
