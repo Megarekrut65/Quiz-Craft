@@ -35,11 +35,11 @@ const loadGame = () => {
     }
 
     var buildUrl = "/assets";
-    var loaderUrl = buildUrl + "/WebBuild.loader-75083a32.js";
+    var loaderUrl = buildUrl + "/WebBuild.loader.js";
     var config = {
-        dataUrl: buildUrl + "/WebBuild.data-74ac06db.br",
-        frameworkUrl: buildUrl + "/WebBuild.framework.js-0d376867.br",
-        codeUrl: buildUrl + "/WebBuild.wasm-50c7eda0.br",
+        dataUrl: buildUrl + "/WebBuild.data",
+        frameworkUrl: buildUrl + "/WebBuild.framework.js",
+        codeUrl: buildUrl + "/WebBuild.wasm",
         streamingAssetsUrl: "",
         companyName: "BOAGames",
         productName: "SingleAnswerGame",
