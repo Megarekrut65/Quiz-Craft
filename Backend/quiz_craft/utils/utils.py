@@ -1,7 +1,7 @@
 from django.utils.crypto import get_random_string
 
-from .models.game import GameUID
-from .models.task import TaskUID
+from ..models.game import GameUID
+from ..models.task import TaskUID
 
 
 def generate_unique_task_uid():
