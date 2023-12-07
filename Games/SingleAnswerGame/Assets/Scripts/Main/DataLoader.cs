@@ -45,8 +45,8 @@ namespace Main
             
             if (Application.isEditor)
             {
-                _token = "60c1d692c0b18734016efb12ef5ab9627bcf375c";
-                _uid = "69ufQ2v4C1n1YAWxHzvTuZhNgN6yuIG3";
+                _token = "422e91d51775a99e39b979b1fdb6c7904c50bab3";
+                _uid = "RPvP1BVDe0G1YhWabXCy2UZuXKoYAQXx";
                 username = "Editor";
             }
             else{

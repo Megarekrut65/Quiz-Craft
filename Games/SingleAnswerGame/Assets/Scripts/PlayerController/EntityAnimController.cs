@@ -1,3 +1,4 @@
+using Global.Sound;
 using UnityEngine;
 
 namespace PlayerController
@@ -55,6 +56,7 @@ namespace PlayerController
 
         private void TakeDamage()
         {
+            SoundManager.PlaySound(2);
             animator.SetTrigger(Damage);
         }
 
