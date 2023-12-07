@@ -3,6 +3,7 @@ import { getGames } from '../../assets/js/game-api';
 import { ref } from "vue";
 import QuizListItem from '../../components/QuizListItem.vue';
 import ModalWindow from '../../components/ModalWindow.vue';
+import LoadingWindow from "../../components/LoadingWindow.vue";
 import {parseError} from "../../assets/js/utilities";
 
 const errorMessage = ref(""), isActive = ref(true);

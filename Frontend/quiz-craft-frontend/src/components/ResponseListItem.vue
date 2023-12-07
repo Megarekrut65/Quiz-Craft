@@ -33,7 +33,7 @@ defineProps({
             <p class="fw-semibold mb-1" style="overflow-x: hidden;">{{ data.grade?`${data.grade}/${data.maxGrade}`:"N/A" }}</p>
         </td>
         <td class="border-bottom-0">
-            <p class="fw-semibold mb-1" style="overflow-x: hidden;">There will be date</p>
+            <p class="fw-semibold mb-1" style="overflow-x: hidden;">{{new Date(data['created_at']).toLocaleString() }}</p>
         </td>
         <td class="border-bottom-0">
             <p class="fw-semibold mb-1" style="overflow-x: hidden;">

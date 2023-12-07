@@ -6,6 +6,7 @@ import QuizEditorQuestion from '../components/editor/QuizEditorQuestion.vue';
 import ModalWindow from '../components/ModalWindow.vue'
 import ShareWindow from '../components/ShareWindow.vue';
 import { parseError } from '../assets/js/utilities';
+import LoadingWindow from './LoadingWindow.vue';
 
 const props = defineProps({
     paramId: {
@@ -205,6 +206,8 @@ const showAnswers = () => {
         <ModalWindow :question="modalText" :submit="modalSubmit" :cancel="modalCancel"></ModalWindow>
         <ModalWindow :question="errorMessage" :cancel="closeError"></ModalWindow>
 
+        <LoadingWindow :is-active="!loaded"></LoadingWindow>
+
         <ShareWindow :active="active" :obj-id="paramId" :close="closeSharing" :error-log="errorLog"
         :get-obj="getGameUid" :share-obj="shareGame" :close-obj="closeGame" name="game"></ShareWindow>
 
@@ -220,7 +223,7 @@ const showAnswers = () => {
                                         <label>Game title</label>
                                     </div>
                                     <div class="form-group col-lg-6">
-                                        <input type="text" class="form-control" placeholder="Game title..."
+                                        <input type="text" class="form-control" placeholder="Game title..." maxlength="500"
                                             v-model="taskTitle" required v-bind:readonly="readOnly" form="task-form">
 
                                     </div>
@@ -279,7 +282,7 @@ const showAnswers = () => {
                                         v-model="game['min_win_grade']" required form="task-form">
                                 </div>
                                 <div class="form-group col-12">
-                                    <input v-bind:readonly="readOnly" type="text" class="form-control"
+                                    <input v-bind:readonly="readOnly" type="text" class="form-control" maxlength="1000"
                                         placeholder="Description..." v-model="taskDescription" required form="task-form">
                                 </div>
                             </div>

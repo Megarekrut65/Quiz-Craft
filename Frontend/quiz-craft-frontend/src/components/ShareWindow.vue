@@ -41,14 +41,14 @@ const uidUrl = ref("");
 
 if (props.objId != -1){
     props.getObj(props.objId).then(res=>{
-        uidUrl.value = `${window.location.origin}/${props.name.toLowerCase()}/${res.uid}`;
+        uidUrl.value = `${window.location.origin}/${props.name.toLowerCase()}/${props.name.toLowerCase() == "game"?"run/":""}${res.uid}`;
     });
 }
 
 
 const share = ()=>{
     props.shareObj(props.objId).then(res=>{
-        uidUrl.value = `${window.location.origin}/${props.name.toLowerCase()}/${res.uid}`;
+        uidUrl.value = `${window.location.origin}/${props.name.toLowerCase()}/${props.name.toLowerCase() == "game"?"run/":""}${res.uid}`;
     }).catch(props.errorLog);
 };
 

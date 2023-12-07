@@ -6,7 +6,9 @@ import QuizEditorQuestion from '../components/editor/QuizEditorQuestion.vue';
 import ModalWindow from '../components/ModalWindow.vue'
 import ShareWindow from '../components/ShareWindow.vue';
 import { parseError } from '../assets/js/utilities';
-import {getTaskUid, shareTask, closeTask} from "../assets/js/task-api";
+import { getTaskUid, shareTask, closeTask } from "../assets/js/task-api";
+import LoadingWindow from './LoadingWindow.vue';
+import GenerateWindow from './GenerateWindow.vue';
 
 const props = defineProps({
     paramId: {
@@ -119,7 +121,7 @@ const validateData = (task) => {
 
 const extractTask = () => {
     const questionsValue = toRaw(questions.value);
-
+    
     for (let i in questionsValue) {
         questionsValue[i].description = questionsValue[i].description.trim();
         questionsValue[i]["max_grade"] = questionsValue[i].maxGrade;
@@ -158,6 +160,8 @@ const submitTask = () => {
     modalText.value = "After saving task you can't edit it anymore!";
 
     modalSubmit.value = () => {
+        loaded.value = false;
+        
         saveTask(task)
             .then(res => {
                 readOnly.value = true;
@@ -170,35 +174,59 @@ const submitTask = () => {
     modalCancel.value = closeModal;
 };
 
+const generateActive = ref(false);
+
+const loadTaskData = (res) => {
+    taskTitle.value = res.title;
+    taskDescription.value = res.description;
+
+    questions.value = res.questions.map(item => {
+        const newItem = JSON.parse(JSON.stringify(item));
+        newItem.maxGrade = item["max_grade"];
+        if(!readOnly.value) newItem.id = id++;
+        
+        return newItem;
+    });
+
+    generateActive.value = false;
+    loaded.value = true;
+};
+
 if (readOnly.value) {
     getTaskById(props.paramId).then(res => {
 
-        taskTitle.value = res.title;
-        taskDescription.value = res.description;
-
-        questions.value = res.questions.map(item => {
-            const newItem = JSON.parse(JSON.stringify(item));
-            newItem.maxGrade = item["max_grade"];
-            return newItem;
-        });
-
-        loaded.value = true;
+        loadTaskData(res);
     }).catch(errorLog);
 }
 
 const showAnswers = () => {
     window.location = `/quiz/answers/${props.paramId}`;
 };
+
+
+const openGenerate = ()=>{
+    generateActive.value = true;
+}
+
+const closeGenerate = ()=>{
+    generateActive.value = false;
+};
+
 </script>
 <template>
     <section class="book_section mb-4">
         <ModalWindow :question="modalText" :submit="modalSubmit" :cancel="modalCancel"></ModalWindow>
         <ModalWindow :question="errorMessage" :cancel="closeError"></ModalWindow>
+        
+        <GenerateWindow :load-task="loadTaskData" :active="generateActive" :close="closeGenerate"></GenerateWindow>
 
-        <ShareWindow :active="active" :obj-id="paramId" :close="closeSharing" :error-log="errorLog"
-        :get-obj="getTaskUid" :share-obj="shareTask" :close-obj="closeTask" name="quiz"></ShareWindow>
+        <ShareWindow :active="active" :obj-id="paramId" :close="closeSharing" :error-log="errorLog" :get-obj="getTaskUid"
+            :share-obj="shareTask" :close-obj="closeTask" name="quiz"></ShareWindow>
+        
+        <LoadingWindow :is-active="!loaded"></LoadingWindow>
 
-        <form id="task-form" @submit.prevent="submitTask" onsubmit="return false;" style="background: none; box-shadow: none;">
+        <form id="task-form" @submit.prevent="submitTask" onsubmit="return false;"
+            style="background: none; box-shadow: none;">
             <div class="container" v-if="loaded">
                 <div class="row">
                     <div class="col">
@@ -210,19 +238,25 @@ const showAnswers = () => {
                                         <label>Quiz title*</label>
                                     </div>
                                     <div class="form-group col-lg-6">
-                                        <input type="text" class="form-control" placeholder="Quiz title..."
+                                        <input type="text" class="form-control" placeholder="Quiz title..." maxlength="500"
                                             v-model="taskTitle" required v-bind:readonly="readOnly" form="task-form">
 
                                     </div>
                                 </h4>
                                 <div class="share">
                                     <div>
-                                        <button v-if="!readOnly" type="submit" class="btn btn-success mr-4"
-                                            form="task-form">Save</button>
+                                        <div v-if="!readOnly">
+                                            <button type="button" class="btn btn-primary mr-4" form="task-form" @click="openGenerate">BETA
+                                                Generate</button>
+
+                                            <button type="submit" class="btn btn-success mr-4"
+                                                form="task-form">Save</button>
+                                        </div>
                                         <div v-else>
                                             <button type="button" class="btn btn-success mr-3"
                                                 @click="showAnswers">Answers</button>
-                                            <button type="button" class="btn btn-warning" @click="shareTaskBtn" >Share</button>
+                                            <button type="button" class="btn btn-warning"
+                                                @click="shareTaskBtn">Share</button>
                                         </div>
                                     </div>
                                 </div>
@@ -231,7 +265,7 @@ const showAnswers = () => {
 
                             <div class="form-row">
                                 <div class="form-group col-12">
-                                    <input v-bind:readonly="readOnly" type="text" class="form-control"
+                                    <input v-bind:readonly="readOnly" type="text" class="form-control" maxlength="1000"
                                         placeholder="Description..." v-model="taskDescription" required form="task-form">
                                 </div>
                             </div>

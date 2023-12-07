@@ -39,12 +39,18 @@ const formData = ref({
     description: data.description,
     maxGrade: data.maxGrade,
     type: data.type,
-    answers: data.answers
+    answers: data.answers?data.answers:[]
 });
 
-props.updateSelf(toRaw(formData));
+
 
 let id = 0;
+
+for (let i in formData.value.answers){
+    if(!formData.value.answers[i].id) formData.value.answers[i].id = id++;
+}
+
+props.updateSelf(toRaw(formData));
 
 const maxAnswers = 25;
 
@@ -52,7 +58,7 @@ const addAnswer = () => {
     formData.value.answers.push({ id: id++, option: "", correct: false });
 };
 
-if (data.answers.length == 0) addAnswer();
+if (formData.value.answers.length == 0) addAnswer();
 
 
 const updateAnswer = (answer) => {

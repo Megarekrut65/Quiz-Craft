@@ -39,7 +39,7 @@ const gradeValue = ref({ "grade": props.data.grade, "id": props.data.responseId 
                         <div class="question-number col-12 mb-4">
                             <h4>{{ number + 1 }}</h4>
                         </div>
-                        <div class="form-group col-12 mt-4">
+                        <div class="form-group col-12 mt-4" style="padding-right: 100px;">
                             <h3>{{ data.description }}</h3>
                         </div>
                     </div>
