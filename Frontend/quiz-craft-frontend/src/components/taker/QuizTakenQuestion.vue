@@ -21,7 +21,7 @@ defineProps({
             <div class="col">
                 <form>
                     <div class="form-row ">
-                        <div class="grade" v-if="data.grade != null && data.grade != undefined">Score: {{ data.grade }}/{{ data.maxGrade }}</div>
+                        <div class="grade" v-if="!isNaN(data.grade)">Score: {{ data.grade }}/{{ data.maxGrade }}</div>
                         <div class="grade" v-else>Max score: {{ data.maxGrade }}</div>
 
                         <div class="question-number">
