@@ -11,6 +11,11 @@ defineProps({
     taskId:{
         type:Number,
         required: true
+    },
+    type:{
+        type:String,
+        required: false,
+        default: ()=>"Task"
     }
 });
 
@@ -32,7 +37,9 @@ defineProps({
         </td>
         <td class="border-bottom-0">
             <p class="fw-semibold mb-1" style="overflow-x: hidden;">
-                <RouterLink :to="{ name: 'quiz-answers-detail', params: { taskId: taskId, responseId: data.id } }">
+                <RouterLink v-if="type=='Task'" :to="{ name: 'quiz-answers-detail', params: { taskId: taskId, responseId: data.id } }">
+                    Details</RouterLink>
+                <RouterLink v-else-if="type=='Game'" :to="{ name: 'game-answers-detail', params: { taskId: taskId, responseId: data.id } }">
                     Details</RouterLink>
             </p>
         </td>

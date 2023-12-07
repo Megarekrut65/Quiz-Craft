@@ -3,7 +3,7 @@ from django.urls import path
 from .views.game_views import GameListView, GameDetailView, GameUIDCreateView, GameUIDRetrieveDestroyView, \
     GameRetrieveByUIDView
 from .views.response_views import TaskResponseCreateView, TaskResponseRetrieveView, TaskResponsesListView, \
-    TaskResponseDetailView, QuestionResponseGradeUpdateView, GameResponseCreateView
+    TaskResponseDetailView, QuestionResponseGradeUpdateView, GameResponseCreateView, GameResponseRetrieveView
 from .views.task_views import TaskCreateView, TaskListView, TaskDetailView, TaskUIDCreateView, \
     TaskUIDRetrieveDestroyView, TaskRetrieveByUIDView
 from .views.user_views import UserProfileListView, UserRegistrationView, UserLoginView, UserLogoutView
@@ -30,4 +30,5 @@ urlpatterns = [
     path('games/uid/get-game/<str:uid>/', GameRetrieveByUIDView.as_view(), name='uid-get-game'),
     path('question-responses/grade/<int:pk>/', QuestionResponseGradeUpdateView.as_view(), name='question-response-update-grade'),
     path('game-responses/create/', GameResponseCreateView.as_view(), name='game_response_create'),
+    path('game-responses/<str:uid>/', GameResponseRetrieveView.as_view(), name='game-response-retrieve'),
 ]

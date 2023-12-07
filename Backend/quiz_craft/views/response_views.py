@@ -205,10 +205,34 @@ class GameResponseCreateView(generics.CreateAPIView):
 
         question_response.save(force_insert=True)
 
-        task_response_serializer = TaskResponseSerializer(task_response)
-
         response_data = {
-            'task_response': task_response_serializer.data
+            'answer_id': answer.id,
+            'correct': answer.correct
         }
 
         return Response(response_data, status=status.HTTP_201_CREATED)
+
+
+class GameResponseRetrieveView(generics.RetrieveAPIView):
+    serializer_class = TaskResponseSerializer
+    permission_classes = [IsAuthenticated]
+
+    def get_queryset(self):
+        uid = self.kwargs.get('uid')
+        try:
+            game_uid = GameUID.objects.get(uid=uid)
+        except GameUID.DoesNotExist:
+            return TaskResponse.objects.none()
+
+        task = game_uid.game.task
+        return TaskResponse.objects.filter(task=task, profile=self.request.user.userprofile)
+
+    def retrieve(self, request, *args, **kwargs):
+        queryset = self.get_queryset()
+        if not queryset.exists():
+            return Response({"detail": "No response found for the given game and user, or owner closed the game."},
+                            status=status.HTTP_404_NOT_FOUND)
+
+        instance = queryset.first()
+        serializer = self.get_serializer(instance)
+        return Response(serializer.data, status=status.HTTP_200_OK)
