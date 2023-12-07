@@ -27,6 +27,7 @@ environ.Env.read_env()
 
 # SECURITY WARNING: keep the secret key used in production secret!
 SECRET_KEY = 'django-insecure-9h537k4wi18-7p2^dnzg5de!v@g%#3(hy30n$h(kushpj3pxn('
+GPT_API = env('GPT_API')
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = False
