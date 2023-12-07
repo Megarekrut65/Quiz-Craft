@@ -73,6 +73,7 @@ const closeError = () => {
 
 const errorLog = (err) => {
     active.value = false;
+    loaded.value = true;
     console.log(err);
 
     errorMessage.value = parseError(err);

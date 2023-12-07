@@ -166,7 +166,7 @@ subscribeUserChangeState(changeState);
               </div>
             </div>
           </div>
-          <div class="col-md-6 col-lg-3">
+          <div class="col-md-6 col-lg-3" v-if="isLogged&&role==='TEACHER'">
             <div class="info_links">
               <h5>
                 Content

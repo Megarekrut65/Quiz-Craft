@@ -71,6 +71,7 @@ const closeError = () => {
 
 const errorLog = (err) => {
     active.value = false;
+    loaded.value = true;
     console.log(err);
 
     errorMessage.value = parseError(err);
@@ -163,6 +164,8 @@ const submitTask = () => {
     modalText.value = "After saving game you can't edit it anymore!";
 
     modalSubmit.value = () => {
+        loaded.value = false;
+
         saveGame(gameObj)
             .then(res => {
                 readOnly.value = true;
@@ -218,7 +221,7 @@ const showAnswers = () => {
 
                         <form onsubmit="return false;">
                             <div>
-                                <h4 class="form-row">
+                                <h4 class="form-row mt-2">
                                     <div class="form-group col-lg-2">
                                         <label>Game title</label>
                                     </div>
@@ -246,13 +249,13 @@ const showAnswers = () => {
                                     <label> Game type</label>
                                 </div>
                                 <div class="form-group col-lg-6">
-                                    <select class="form-control" required v-model="game.type">
+                                    <select class="form-control" required v-model="game.type" v-bind:disabled="readOnly">
                                         <option value="SINGLEANSWER">Single answer game</option>
                                     </select>
                                 </div>
                                 <div class="form-group col-lg-6">
                                     <label>Player weapon</label>
-                                    <select class="form-control" required v-model="game['player_weapon']">
+                                    <select class="form-control" required v-model="game['player_weapon']" v-bind:disabled="readOnly">
                                         <option value="SWORD">Sword</option>
                                         <option value="HAMMER">Hammer</option>
                                         <option value="SCYTHE">Scythe</option>
@@ -265,7 +268,7 @@ const showAnswers = () => {
                                 </div>
                                 <div class="form-group col-lg-6">
                                     <label>Enemy weapon</label>
-                                    <select class="form-control" required v-model="game['enemy_weapon']">
+                                    <select class="form-control" required v-model="game['enemy_weapon']" v-bind:disabled="readOnly">
                                         <option value="SWORD">Sword</option>
                                         <option value="HAMMER">Hammer</option>
                                         <option value="SCYTHE">Scythe</option>

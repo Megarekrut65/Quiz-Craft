@@ -22,12 +22,10 @@ const type = props.data.type;
 
 const answerValue = (type === "MULTI") ? ref([]) : ref();
 const answers = props.data.answers;
-
 if (type === "SINGLE") {
     answerValue.value = answers[0]?.id ?? -1;
     props.updateSelf(props.data.id, type, toRaw(answerValue.value));
 }
-
 
 </script>
 <template>

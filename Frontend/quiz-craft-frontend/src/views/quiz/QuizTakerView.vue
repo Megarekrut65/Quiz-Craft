@@ -123,13 +123,16 @@ getTaskByUid(uid).then(res=>{
                 </QuizTakenQuestion>
             </div>
             <div v-else>
-                <QuizTakerQuestion v-for="(data, index) in questions" :key="index" :data="data" :number="index" :update-self="updateAnswer">
-                </QuizTakerQuestion>
-                <div class="row mb-4">
-                <div class="col text-right">
-                    <input type="button" value="Submit" class="btn btn-success" @click="submitAnswers">
-                </div>
-            </div>
+                <form @submit.prevent="submitAnswers" onsubmit="return false;" style="background: none; box-shadow: none;">
+                    <QuizTakerQuestion v-for="(data, index) in questions" :key="index" :data="data" :number="index" :update-self="updateAnswer">
+                    </QuizTakerQuestion>
+                    <div class="row mb-4">
+                    <div class="col text-right">
+                        <input type="submit" value="Submit" class="btn btn-success" >
+                    </div>
+                
+                    </div>
+                </form>
             </div>
         </div>
     </section>
