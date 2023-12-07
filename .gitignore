@@ -166,6 +166,8 @@ Backend/.idea/modules.xml
 Backend/.idea/vcs.xml
 Backend/.idea/workspace.xml
 
+Backend/static/admin/*
+
 # This .gitignore file should be placed at the root of your Unity project directory
 #
 # Get latest from https://github.com/github/gitignore/blob/main/Unity.gitignore
