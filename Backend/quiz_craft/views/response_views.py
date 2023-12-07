@@ -10,7 +10,7 @@ from ..models.response import TaskResponse, QuestionResponse
 from ..models.task import Task, Question, Answer, TaskUID
 from ..permissions import IsTeacher
 from ..serializers.response_serializer import TaskResponseSerializer, TaskResponseListSerializer, \
-    TaskResponseDetailSerializer, QuestionResponseSerializer
+    TaskResponseDetailSerializer, QuestionResponseSerializer, GameTaskResponseSerializer
 
 
 class TaskResponseCreateView(generics.CreateAPIView):
@@ -214,7 +214,7 @@ class GameResponseCreateView(generics.CreateAPIView):
 
 
 class GameResponseRetrieveView(generics.RetrieveAPIView):
-    serializer_class = TaskResponseSerializer
+    serializer_class = GameTaskResponseSerializer
     permission_classes = [IsAuthenticated]
 
     def get_queryset(self):

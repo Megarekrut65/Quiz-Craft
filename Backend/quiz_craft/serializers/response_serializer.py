@@ -34,3 +34,19 @@ class TaskResponseDetailSerializer(serializers.ModelSerializer):
     class Meta:
         model = TaskResponse
         fields = ['id', 'profile_id', 'fullname', 'email', 'task', 'question_responses', 'created_at']
+
+
+class GameQuestionResponseSerializer(serializers.ModelSerializer):
+    correct = serializers.BooleanField(source='answer.correct', read_only=True)
+
+    class Meta:
+        model = QuestionResponse
+        fields = ['id', 'question', 'answer', 'text_answer', 'correct', 'grade']
+
+
+class GameTaskResponseSerializer(serializers.ModelSerializer):
+    question_responses = GameQuestionResponseSerializer(many=True)
+
+    class Meta:
+        model = TaskResponse
+        fields = ['profile', 'task', 'question_responses', 'created_at']
