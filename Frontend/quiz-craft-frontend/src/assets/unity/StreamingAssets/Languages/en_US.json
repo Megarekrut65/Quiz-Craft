@@ -1,0 +1,60 @@
+{
+  "items": [
+    {
+      "key": "gameName",
+      "value": "One answer game"
+    },
+    {
+      "key": "loading",
+      "value": "Loading..."
+    },
+    {
+      "key": "start",
+      "value": "Start test"
+    },
+    {
+      "key": "already",
+      "value": "You have already answered some questions from the test. You can play again, but the questions you answered will be skipped"
+    },
+    {
+      "key": "grade",
+      "value": "Evaluation"
+    },
+    {
+      "key": "correct",
+      "value": "Correct answers"
+    },
+    {
+      "key": "saved",
+      "value": "The result is saved, you can close the page"
+    },
+    {
+      "key": "questions",
+      "value": "questions"
+    },
+    {
+      "key": "congratulations",
+      "value": "Congratulations"
+    },
+    {
+      "key": "passed",
+      "value": "you passed the test"
+    },
+    {
+      "key": "sorry",
+      "value": "Unfortunately"
+    },
+    {
+      "key": "unpassed",
+      "value": "you failed to pass the test"
+    },
+    {
+      "key": "notAll",
+      "value": "An error occurred"
+    },
+    {
+      "key": "notAllDescription",
+      "value": "Unfortunately, the answers to some questions have not been saved, please reload the page and take the test again"
+    }
+  ]
+}

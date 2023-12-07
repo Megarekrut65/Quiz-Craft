@@ -60,6 +60,11 @@ const router = createRouter({
       component: () => import('../views/quiz/QuizTakerView.vue')
     },
     {
+      path: '/game/:uid',
+      name: 'game-taker',
+      component: () => import('../views/game/GameTakerView.vue')
+    },
+    {
       path: '/quiz/submitted/:uid',
       name: 'quiz-submitted',
       component: () => import('../views/quiz/QuizSubmittedView.vue')
@@ -71,8 +76,20 @@ const router = createRouter({
       beforeEnter: (to, from, next) => isLoggedAs(to, from, next, "TEACHER")
     },
     {
+      path: '/game/answers/:gameId',
+      name: 'game-answers',
+      component: () => import('../views/game/GameAnswersView.vue'),
+      beforeEnter: (to, from, next) => isLoggedAs(to, from, next, "TEACHER")
+    },
+    {
       path: '/quiz/answers/detail/:taskId/:responseId',
       name: 'quiz-answers-detail',
+      component: () => import('../views/quiz/QuizAnswerDetailView.vue'),
+      beforeEnter: (to, from, next) => isLoggedAs(to, from, next, "TEACHER")
+    },
+    {
+      path: '/game/answers/detail/:taskId/:responseId',
+      name: 'game-answers-detail',
       component: () => import('../views/quiz/QuizAnswerDetailView.vue'),
       beforeEnter: (to, from, next) => isLoggedAs(to, from, next, "TEACHER")
     },
