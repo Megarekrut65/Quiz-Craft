@@ -11,7 +11,7 @@
         <div class="col-12">
           <h1 class="mt-4 mb-4">Quiz Craft</h1>
 
-          <img src="./../../assets/images/quiztime.png" style="float: right;">
+          <img src="./../../assets/images/quiztime.png" style="float: right;" alt="time">
           <h5>🌟 Unleash Your Creativity: Craft Engaging Quizzes</h5>
           <p>
             Transform your ideas into captivating quizzes with our user-friendly quiz creation tools. Whether you're an

@@ -262,9 +262,9 @@ const showAnswers = () => {
                                     </select>
                                 </div>
                                 <div class="form-group col-lg-6 text-center">
-                                    <img v-if="game['player_weapon'] == 'SWORD'" src="../assets/images/SWORD.png" class="weapon-img">
-                                    <img v-else-if="game['player_weapon'] == 'HAMMER'" src="../assets/images/HAMMER.png" class="weapon-img">
-                                    <img v-else-if="game['player_weapon'] == 'SCYTHE'" src="../assets/images/SCYTHE.png" class="weapon-img">
+                                    <img v-if="game['player_weapon'] == 'SWORD'" src="../assets/images/SWORD.png" class="weapon-img" alt="sword">
+                                    <img v-else-if="game['player_weapon'] == 'HAMMER'" src="../assets/images/HAMMER.png" class="weapon-img" alt="hammer">
+                                    <img v-else-if="game['player_weapon'] == 'SCYTHE'" src="../assets/images/SCYTHE.png" class="weapon-img" alt="scythe">
                                 </div>
                                 <div class="form-group col-lg-6">
                                     <label>Enemy weapon</label>
@@ -275,9 +275,9 @@ const showAnswers = () => {
                                     </select>
                                 </div>
                                 <div class="form-group col-lg-6 text-center">
-                                    <img v-if="game['enemy_weapon'] == 'SWORD'" src="../assets/images/enemy_SWORD.png" class="weapon-img">
-                                    <img v-else-if="game['enemy_weapon'] == 'HAMMER'" src="../assets/images/enemy_HAMMER.png" class="weapon-img">
-                                    <img v-else-if="game['enemy_weapon'] == 'SCYTHE'" src="../assets/images/enemy_SCYTHE.png" class="weapon-img">
+                                    <img v-if="game['enemy_weapon'] == 'SWORD'" src="../assets/images/enemy_SWORD.png" class="weapon-img" alt="sword">
+                                    <img v-else-if="game['enemy_weapon'] == 'HAMMER'" src="../assets/images/enemy_HAMMER.png" class="weapon-img" alt="hammer">
+                                    <img v-else-if="game['enemy_weapon'] == 'SCYTHE'" src="../assets/images/enemy_SCYTHE.png" class="weapon-img" alt="scythe">
                                 </div>
                                 <div class="form-group col-12">
                                     <label>Minimum grade to win game</label>

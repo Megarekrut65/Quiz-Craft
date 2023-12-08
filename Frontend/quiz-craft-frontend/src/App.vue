@@ -114,7 +114,7 @@ subscribeUserChangeState(changeState);
           <div class="col-md-6 col-lg-3 info_top">
             <div class="info_logo">
               <a href="/" style="background-color: rgba(0, 0, 0, 0);">
-                <img src="./assets/images/logo.png" alt="">
+                <img src="./assets/images/logo.png" alt="logo">
               </a>
             </div>
           </div>
@@ -123,7 +123,7 @@ subscribeUserChangeState(changeState);
               Address
             </h5>
             <div class="info_contact">
-              <a href="">
+              <a href="/">
                 <i class="fa fa-envelope"></i>
                 <span>
                   quizcraft@gmail.com
@@ -131,16 +131,16 @@ subscribeUserChangeState(changeState);
               </a>
             </div>
             <div class="social_box">
-              <a href="">
+              <a href="/">
                 <i class="fa fa-facebook" aria-hidden="true"></i>
               </a>
-              <a href="">
+              <a href="/">
                 <i class="fa fa-twitter" aria-hidden="true"></i>
               </a>
-              <a href="">
+              <a href="/">
                 <i class="fa fa-linkedin" aria-hidden="true"></i>
               </a>
-              <a href="">
+              <a href="/">
                 <i class="fa fa-instagram" aria-hidden="true"></i>
               </a>
             </div>

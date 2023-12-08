@@ -283,7 +283,7 @@ const closeGenerate = ()=>{
 
                 <div class="row m-4" v-if="!readOnly && questions.length < maxQuestions">
                     <div class="col">
-                        <div class="plus"><img src="../assets/images/plus.png" style="height: 70px;" @click="addQuestion">
+                        <div class="plus"><img src="../assets/images/plus.png" style="height: 70px;" @click="addQuestion" alt="plus">
                         </div>
                     </div>
                 </div>

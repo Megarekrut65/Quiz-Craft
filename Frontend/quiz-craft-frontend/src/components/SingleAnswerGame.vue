@@ -113,7 +113,7 @@ onMounted(loadGame);
         <div id="unity-warning"> </div>
         <div id="unity-footer">
             <div id="unity-webgl-logo"></div>
-            <div id="unity-fullscreen-button"><img src="./../assets/images/fullscreen-button.png"> </div>
+            <div id="unity-fullscreen-button"><img src="./../assets/images/fullscreen-button.png" alt="fullscreen"> </div>
             <div id="unity-build-title" style="opacity: 0;">SingleAnswerGame</div>
         </div>
     </div>
