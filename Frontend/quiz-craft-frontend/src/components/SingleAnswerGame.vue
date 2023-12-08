@@ -40,14 +40,14 @@ const loadGame = () => {
         dataUrl: buildUrl + "/WebBuild.data",
         frameworkUrl: buildUrl + "/WebBuild.framework.js",
         codeUrl: buildUrl + "/WebBuild.wasm",
-        streamingAssetsUrl: "",
+        streamingAssetsUrl: "StreamingAssets",
         companyName: "BOAGames",
         productName: "SingleAnswerGame",
-        productVersion: "1.0",
+        productVersion: "1.1",
         showBanner: unityShowBanner,
     };
 
-    // By default Unity keeps WebGL canvas render target size matched with
+    // By default, Unity keeps WebGL canvas render target size matched with
     // the DOM size of the canvas element (scaled by window.devicePixelRatio)
     // Set this to false if you want to decouple this synchronization from
     // happening inside the engine, and you would instead like to size up
@@ -68,7 +68,7 @@ const loadGame = () => {
         // performance, uncomment the following line:
         // config.devicePixelRatio = 1;
 
-        unityShowBanner('WebGL builds are not supported on mobile devices.');
+
     } else {
         // Desktop style: Render the game canvas in a window that can be maximized to fullscreen:
 
@@ -76,6 +76,7 @@ const loadGame = () => {
         canvas.style.height = "600px";
     }
 
+    canvas.style.background = "url('" + buildUrl + "/WebBuild.jpg') center / cover";
     loadingBar.style.display = "block";
 
     var script = document.createElement("script");
@@ -93,6 +94,7 @@ const loadGame = () => {
             alert(message);
         });
     };
+
     document.body.appendChild(script);
 };
 
@@ -111,7 +113,7 @@ onMounted(loadGame);
         <div id="unity-warning"> </div>
         <div id="unity-footer">
             <div id="unity-webgl-logo"></div>
-            <div id="unity-fullscreen-button"><img src="./../assets/images/fullscreen-button.png"> </div>
+            <div id="unity-fullscreen-button"><img src="./../assets/images/fullscreen-button.png" alt="fullscreen"> </div>
             <div id="unity-build-title" style="opacity: 0;">SingleAnswerGame</div>
         </div>
     </div>
