@@ -34,21 +34,19 @@ const errorLog = (err)=>{
 }
 
 getTaskById(taskId).then(res=>{
-    
-    taskTitle.value = res.title;
-    taskDescription.value = res.description;
-    
-
-    questions.value = res.questions.map(item=>{
-        const newItem = JSON.parse(JSON.stringify(item));
-        newItem.maxGrade = item["max_grade"];
-        maxGrade.value += newItem.maxGrade;
-
-        return newItem;
-    });
-
-
     getResponseById(responseId).then(resp=>{
+        taskTitle.value = res.title;
+        taskDescription.value = res.description;
+        
+
+        questions.value = res.questions.map(item=>{
+            const newItem = JSON.parse(JSON.stringify(item));
+            newItem.maxGrade = item["max_grade"];
+            maxGrade.value += newItem.maxGrade;
+
+            return newItem;
+        });
+
         username.value = resp.fullname;
 
         const gradeSum = updateTaskAnswers(questions.value, resp);
@@ -56,9 +54,9 @@ getTaskById(taskId).then(res=>{
         if(gradeSum) grade.value = gradeSum;
         
         isActive.value = false;
-    });
-
-    loaded.value = true;
+        loaded.value = true;
+    }).catch(errorLog);
+    
 }).catch(errorLog);
 
 
