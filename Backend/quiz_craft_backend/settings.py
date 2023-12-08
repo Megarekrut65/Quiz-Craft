@@ -159,6 +159,7 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 CORS_ALLOWED_ORIGINS = [
     'https://quiz-craft-app.web.app',
-    'https://quiz-craft-game.web.app',
-    'http://localhost:5173'
+    'http://localhost:5000',
+    'http://localhost:5173',
+    'http://localhost'
 ]

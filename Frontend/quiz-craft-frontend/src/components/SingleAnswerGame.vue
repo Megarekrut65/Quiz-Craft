@@ -35,11 +35,11 @@ const loadGame = () => {
     }
 
     var buildUrl = "/assets";
-    var loaderUrl = buildUrl + "/WebBuild.loader.js";
+    var loaderUrl = buildUrl + "/WebBuildLocal.loader.js";
     var config = {
-        dataUrl: buildUrl + "/WebBuild.data",
-        frameworkUrl: buildUrl + "/WebBuild.framework.js",
-        codeUrl: buildUrl + "/WebBuild.wasm",
+        dataUrl: buildUrl + "/WebBuildLocal.data",
+        frameworkUrl: buildUrl + "/WebBuildLocal.framework.js",
+        codeUrl: buildUrl + "/WebBuildLocal.wasm",
         streamingAssetsUrl: "StreamingAssets",
         companyName: "BOAGames",
         productName: "SingleAnswerGame",
@@ -76,7 +76,7 @@ const loadGame = () => {
         canvas.style.height = "600px";
     }
 
-    canvas.style.background = "url('" + buildUrl + "/WebBuild.jpg') center / cover";
+    canvas.style.background = "url('" + buildUrl + "/WebBuildLocal.jpg') center / cover";
     loadingBar.style.display = "block";
 
     var script = document.createElement("script");
